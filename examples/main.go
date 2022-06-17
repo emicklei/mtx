@@ -1,25 +1,28 @@
 package main
 
 import (
-	"github.com/emicklei/mtx/db"
-	"github.com/emicklei/mtx/mapping"
+	"encoding/json"
+	"os"
+
+	"github.com/emicklei/mtx"
 	"github.com/emicklei/mtx/model"
-	"github.com/emicklei/mtx/namespace"
-	"github.com/emicklei/mtx/proto"
 )
 
 func main() {
+	world := mtx.NewWorld()
+	people := world.Namespace("people")
 	// spec a domain entity
-	people := namespace.New("people")
 	pm := people.Model("Person")
 	pm.Attr("id", model.Identifier)
 	pm.Attr("name", model.String)
 	pm.Attr("age", model.Integer)
 	pm.Relation("parents", model.ToMany(pm))
 	pm.Relation("children", model.ToMany(pm))
+	json.NewEncoder(os.Stdout).Encode(pm)
 
+	/**
 	// spec a proto
-	peoplePkg := proto.NewPackage("people")
+	peoplePkg := world.ProtoPackage("people")
 	personMsg := peoplePkg.NewMessage("Person")
 	personMsg.Field("name", proto.String)
 	personMsg.Field("children", proto.Repeated(proto.String))
@@ -34,4 +37,5 @@ func main() {
 	peopleTab.Column("id", db.UUID)
 
 	// spec a entity<->db mapping
+	**/
 }

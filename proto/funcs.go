@@ -1,13 +1,37 @@
 package proto
 
-type Package struct{}
+import "github.com/emicklei/mtx/core"
 
-func NewPackage(name string) *Package { return new(Package) }
+type Package struct {
+	messages []*Message
+}
 
-type Message struct{}
+func NewPackage(name string) *Package {
+	return &Package{}
+}
 
-func (p *Package) NewMessage(name string) *Message { return nil }
+type Message struct {
+	Fields map[string]*Field
+}
+
+func (p *Package) Message(name string) *Message {
+	m, ok := core.FindByName(p.messages, name)
+	if ok {
+		return m
+	}
+	m = &Message{Fields: map[string]*Field{}}
+	p.messages = append(p.messages, m)
+	return m
+}
 
 func (m *Message) Field(name string, fieldtype FieldType) any { return nil }
 
+func (m *Message) Name() string { return m.Name() }
+
 type FieldType int
+
+type Field struct {
+	Type     FieldType
+	Repeated bool
+	Optional bool
+}

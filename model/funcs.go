@@ -34,8 +34,10 @@ type Attribute struct {
 }
 
 type Association struct {
-	One   *Model
-	Other *Model
+	One       *Model
+	Onename   string
+	Other     *Model
+	Othername string
 }
 
 func ToMany(m *Model) *Association {
@@ -47,4 +49,8 @@ func ToMany(m *Model) *Association {
 func (m *Model) Relation(name string, assoc *Association) *Association {
 	assoc.One = m
 	return assoc
+}
+
+func Assoc(fromName string, from *Model, toName string, to *Model) *Association {
+	return nil
 }

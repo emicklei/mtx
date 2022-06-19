@@ -17,9 +17,19 @@ func (d *Dataset) Table(name string) *Table {
 	return t
 }
 
+func (d *Dataset) Doc(c string) *Dataset {
+	d.Named.Doc = c
+	return d
+}
+
 type Table struct {
 	core.Named
 	Columns []*Column
+}
+
+func (t *Table) Doc(c string) *Table {
+	t.Named.Doc = c
+	return t
 }
 
 func (t *Table) Column(name string) *Column {
@@ -35,6 +45,11 @@ func (t *Table) Column(name string) *Column {
 type Column struct {
 	core.Named
 	Type Datatype
+}
+
+func (c *Column) Doc(d string) *Column {
+	c.Named.Doc = d
+	return c
 }
 
 func (c *Column) Datatype(dt Datatype) *Column {

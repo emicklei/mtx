@@ -5,6 +5,8 @@ import (
 	"os"
 
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/core"
+	"github.com/emicklei/mtx/gcp/bq"
 	"github.com/emicklei/mtx/model"
 )
 
@@ -38,4 +40,11 @@ func main() {
 
 	// spec a entity<->db mapping
 	**/
+	{
+		ns := bq.NewNamespace("world")
+		ds := ns.Dataset("mydataset")
+		tab := ds.Table("mytable")
+		_ = tab.Column("id").Datatype(bq.Bytes)
+		core.JSONOut(ds)
+	}
 }

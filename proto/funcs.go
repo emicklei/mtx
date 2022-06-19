@@ -11,6 +11,7 @@ func NewPackage(name string) *Package {
 }
 
 type Message struct {
+	core.Named
 	Fields map[string]*Field
 }
 

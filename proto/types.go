@@ -1,3 +1,5 @@
 package proto
 
-const String = FieldType(1)
+import "github.com/emicklei/mtx/core"
+
+var String = FieldType{Named: core.N("proto.Field", "string")}

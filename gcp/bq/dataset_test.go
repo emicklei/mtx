@@ -11,5 +11,6 @@ func TestDataset(t *testing.T) {
 	ds := ns.Dataset("mydataset")
 	tab := ds.Table("mytable")
 	_ = tab.Column("id").Datatype(Bytes)
+	tab.Column("large").Datatype(BigNumeric(2, 10))
 	core.JSONOut(ds)
 }

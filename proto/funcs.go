@@ -12,7 +12,7 @@ func NewPackage(name string) *Package {
 
 type Message struct {
 	core.Named
-	Fields map[string]*Field
+	Fields []*Field
 }
 
 func (p *Package) Message(name string) *Message {
@@ -20,19 +20,33 @@ func (p *Package) Message(name string) *Message {
 	if ok {
 		return m
 	}
-	m = &Message{Fields: map[string]*Field{}}
+	m = &Message{Named: core.N("proto.Message", name)}
 	p.messages = append(p.messages, m)
 	return m
 }
 
-func (m *Message) Field(name string, fieldtype FieldType) any { return nil }
+func (m *Message) Field(name string) *Field {
+	f, ok := core.FindByName(m.Fields, name)
+	if ok {
+		return f
+	}
+	f = &Field{Named: core.N("proto.Field", name)}
+	m.Fields = append(m.Fields, f)
+	return f
+}
 
-func (m *Message) Name() string { return m.Name() }
-
-type FieldType int
+type FieldType struct {
+	core.Named
+}
 
 type Field struct {
+	core.Named
 	Type     FieldType
 	Repeated bool
 	Optional bool
+}
+
+func (f *Field) FieldType(ft FieldType) *Field {
+	f.Type = ft
+	return f
 }

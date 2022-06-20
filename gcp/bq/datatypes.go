@@ -2,13 +2,6 @@ package bq
 
 import "github.com/emicklei/mtx/core"
 
-type Datatype struct {
-	core.Named
-	Max       int64 `json:"Max,omitempty"`
-	Scale     int   `json:"Scale,omitempty"`     // Maximum scale range: 0 ≤ S ≤ 9
-	Precision int   `json:"Precision,omitempty"` // Maximum precision range: max(1, S) ≤ P ≤ S + 29
-}
-
 var Bytes = Datatype{Named: core.N("bq.Datatype", "BYTES")}
 
 func MaxBytes(max int64) Datatype {

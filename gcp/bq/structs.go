@@ -56,3 +56,10 @@ func (c *Column) Datatype(dt Datatype) *Column {
 	c.Type = dt
 	return c
 }
+
+type Datatype struct {
+	core.Named
+	Max       int64 `json:"Max,omitempty"`
+	Scale     int   `json:"Scale,omitempty"`     // Maximum scale range: 0 ≤ S ≤ 9
+	Precision int   `json:"Precision,omitempty"` // Maximum precision range: max(1, S) ≤ P ≤ S + 29
+}

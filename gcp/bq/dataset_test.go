@@ -14,3 +14,11 @@ func TestDataset(t *testing.T) {
 	tab.Column("large").Datatype(BigNumeric(2, 10))
 	core.JSONOut(ds)
 }
+
+func TestDataset2(t *testing.T) {
+	// generic table with specific colum
+	d := new(Dataset2)
+	tab := d.Table("Test")
+	tab.Column("id")
+	core.JSONOut(tab)
+}

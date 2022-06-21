@@ -4,15 +4,17 @@ import "github.com/emicklei/mtx/core"
 
 type Dataset2 struct {
 	core.Named
-	Tables []*core.Table[core.Column[Datatype]]
+	Tables []*Table2
 }
 
-func (d *Dataset2) Table(name string) *core.Table[core.Column[Datatype]] {
-	t, ok := core.FindByName(d.Tables, name)
-	if ok {
-		return t
-	}
-	t = &core.Table[core.Column[Datatype]]{Named: core.N("bq.Table", name)}
-	d.Tables = append(d.Tables, t)
-	return t
+type Table2 struct {
+	core.Table
+}
+
+func (t *Table2) Column(name string) *Column2 {
+	return nil
+}
+
+type Column2 struct {
+	core.Column
 }

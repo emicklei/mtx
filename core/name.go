@@ -2,14 +2,14 @@ package core
 
 type HasName interface{ HasName(name string) bool }
 
-func FindByName[T HasName](elements []T, name string) (T, bool) {
+func FindByName[T HasName](elements []*T, name string) (*T, bool) {
 	for _, each := range elements {
-		if each.HasName(name) {
+		if (*each).HasName(name) {
 			return each, true
 		}
 	}
 	var t T
-	return t, false
+	return &t, false
 }
 
 type Named struct {

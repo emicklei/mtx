@@ -8,10 +8,8 @@ import (
 
 func TestDataset(t *testing.T) {
 	ns := NewNamespace("myproject")
-	ds := ns.Dataset("mydataset")
-	ds.Doc("dataset comment")
-	tab := ds.Table("mytable")
-	tab.Doc("my table")
+	ds := ns.Dataset("mydataset").Doc("dataset comment")
+	tab := ds.Table("mytable").Doc("my table")
 	_ = tab.Column("id").Datatype(Bytes).Doc("my id")
 	tab.Column("large").Datatype(BigNumeric(2, 10))
 	core.JSONOut(ds)

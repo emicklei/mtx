@@ -11,7 +11,7 @@ func NewPackage(name string) *Package {
 }
 
 type Message struct {
-	core.Named
+	*core.Named
 	Fields []*Field
 }
 
@@ -36,11 +36,11 @@ func (m *Message) Field(name string) *Field {
 }
 
 type FieldType struct {
-	core.Named
+	*core.Named
 }
 
 type Field struct {
-	core.Named
+	*core.Named
 	Type     FieldType
 	Repeated bool
 	Optional bool

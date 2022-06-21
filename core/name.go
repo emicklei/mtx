@@ -13,25 +13,21 @@ func FindByName[T HasName](elements []*T, name string) (*T, bool) {
 }
 
 type Named struct {
-	Name  string
-	Class string
-	Doc   string `json:"Doc,omitempty"`
+	Name       string
+	Class      string
+	Properties map[string]string `json:"Properties,omitempty"`
+	Doc        string            `json:"Doc,omitempty"`
 }
 
 func (n Named) HasName(v string) bool {
 	return n.Name == v
 }
 
-func N(class, name string) Named { return Named{Name: name, Class: class} }
-
-type Namespace struct {
-	Name     string
-	elements map[string]Named
-}
-
-func NewNamespace(name string) *Namespace {
-	return &Namespace{
-		Name:     name,
-		elements: map[string]Named{},
+func (n *Named) Set(key, value string) {
+	if n.Properties == nil {
+		n.Properties = map[string]string{key: value}
 	}
+	n.Properties[key] = value
 }
+
+func N(class, name string) *Named { return &Named{Name: name, Class: class} }

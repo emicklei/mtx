@@ -13,7 +13,7 @@ type ColumnDatatype interface {
 }
 
 type Table[T any, C TableColumn, D ColumnDatatype] struct {
-	Named
+	*Named
 	Columns    []*Column[C, D]
 	Extensions T
 }
@@ -35,7 +35,7 @@ func (t *Table[T, C, D]) Column(name string) *Column[C, D] {
 }
 
 type Column[C TableColumn, D ColumnDatatype] struct {
-	Named
+	*Named
 	Type       Datatype[D]
 	Extensions C
 }
@@ -51,7 +51,7 @@ func (c *Column[C, D]) Datatype(dt Datatype[D]) *Column[C, D] {
 }
 
 type Datatype[D ColumnDatatype] struct {
-	Named
+	*Named
 	Extensions D
 	Scale      int `json:"Scale,omitempty"`     // Maximum scale range: 0 ≤ S ≤ 9
 	Precision  int `json:"Precision,omitempty"` // Maximum precision range: max(1, S) ≤ P ≤ S + 29

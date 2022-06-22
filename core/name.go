@@ -13,10 +13,10 @@ func FindByName[T HasName](elements []*T, name string) (*T, bool) {
 }
 
 type Named struct {
-	Name       string
-	Class      string
-	Properties map[string]string `json:"Properties,omitempty"`
-	Doc        string            `json:"Doc,omitempty"`
+	Name          string
+	Class         string
+	Properties    map[string]string `json:"Properties,omitempty"`
+	Documentation string            `json:"Documentation,omitempty"`
 }
 
 func (n Named) HasName(v string) bool {
@@ -28,6 +28,10 @@ func (n *Named) Set(key, value string) {
 		n.Properties = map[string]string{key: value}
 	}
 	n.Properties[key] = value
+}
+
+func (n *Named) Doc(d string) {
+	n.Documentation = d
 }
 
 func N(class, name string) *Named { return &Named{Name: name, Class: class} }

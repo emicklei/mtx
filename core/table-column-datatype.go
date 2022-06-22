@@ -18,8 +18,8 @@ type Table[T any, C TableColumn, D ColumnDatatype] struct {
 	Extensions T
 }
 
-func (t *Table[T, C, D]) Doc(c string) *Table[T, C, D] {
-	t.Named.Doc = c
+func (t *Table[T, C, D]) Doc(d string) *Table[T, C, D] {
+	t.Documentation = d
 	return t
 }
 
@@ -41,7 +41,7 @@ type Column[C TableColumn, D ColumnDatatype] struct {
 }
 
 func (c *Column[C, D]) Doc(d string) *Column[C, D] {
-	c.Named.Doc = d
+	c.Documentation = d
 	return c
 }
 

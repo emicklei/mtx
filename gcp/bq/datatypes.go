@@ -35,27 +35,27 @@ var INT, SMALLINT, INTEGER, BIGINT, TINYINT, BYTEINT = INT64, INT64, INT64, INT6
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
 func Numeric(p, s int) DType {
 	return DType{
-		Named: core.N("bq.Datatype", "NUMERIC"), Scale: s, Precision: p,
+		Named: core.N("bq.Datatype", "NUMERIC"), Extensions: DatatypeExtensions{Scale: s, Precision: p},
 	}
 }
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
 func Decimal(p, s int) DType {
 	return DType{
-		Named: core.N("bq.Datatype", "DECIMAL"), Scale: s, Precision: p,
+		Named: core.N("bq.Datatype", "DECIMAL"), Extensions: DatatypeExtensions{Scale: s, Precision: p},
 	}
 }
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
 func BigNumeric(p, s int) DType {
 	return DType{
-		Named: core.N("bq.Datatype", "BIGNUMERIC"), Scale: s, Precision: p,
+		Named: core.N("bq.Datatype", "BIGNUMERIC"), Extensions: DatatypeExtensions{Scale: s, Precision: p},
 	}
 }
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
 func BigDecimal(p, s int) DType {
 	return DType{
-		Named: core.N("bq.Datatype", "BIGDECIMAL"), Scale: s, Precision: p,
+		Named: core.N("bq.Datatype", "BIGDECIMAL"), Extensions: DatatypeExtensions{Scale: s, Precision: p},
 	}
 }

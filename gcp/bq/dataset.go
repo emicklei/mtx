@@ -44,7 +44,9 @@ type ColumnExtensions struct {
 func (t ColumnExtensions) OwnerClass() string { return "bq.Column" }
 
 type DatatypeExtensions struct {
-	Max int64
+	Max       int64
+	Scale     int `json:"Scale,omitempty"`     // Maximum scale range: 0 ≤ S ≤ 9
+	Precision int `json:"Precision,omitempty"` // Maximum precision range: max(1, S) ≤ P ≤ S + 29
 }
 
 func (d DatatypeExtensions) OwnerClass() string { return "bq.Datatype" }

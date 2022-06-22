@@ -1,18 +1,18 @@
 package core
 
-type DatabaseTable interface {
+type ExtendsTable interface {
 	OwnerClass() string
 }
 
-type TableColumn interface {
+type ExtendsColumn interface {
 	OwnerClass() string
 }
 
-type ColumnDatatype interface {
+type ExtendsDatatype interface {
 	OwnerClass() string
 }
 
-type Table[T any, C TableColumn, D ColumnDatatype] struct {
+type Table[T ExtendsTable, C ExtendsColumn, D ExtendsDatatype] struct {
 	*Named
 	Columns    []*Column[C, D]
 	Extensions T
@@ -34,7 +34,7 @@ func (t *Table[T, C, D]) Column(name string) *Column[C, D] {
 	return c
 }
 
-type Column[C TableColumn, D ColumnDatatype] struct {
+type Column[C ExtendsColumn, D ExtendsDatatype] struct {
 	*Named
 	Type       Datatype[D]
 	Extensions C
@@ -50,9 +50,7 @@ func (c *Column[C, D]) Datatype(dt Datatype[D]) *Column[C, D] {
 	return c
 }
 
-type Datatype[D ColumnDatatype] struct {
+type Datatype[D ExtendsDatatype] struct {
 	*Named
 	Extensions D
-	Scale      int `json:"Scale,omitempty"`     // Maximum scale range: 0 ≤ S ≤ 9
-	Precision  int `json:"Precision,omitempty"` // Maximum precision range: max(1, S) ≤ P ≤ S + 29
 }

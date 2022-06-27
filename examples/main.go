@@ -21,8 +21,8 @@ func main() {
 	// spec a proto
 	pkg := proto.NewPackage("people")
 	msg := pkg.Message("Person")
-	msg.Field("name").FieldType(proto.String)
-	msg.Field("children").FieldType(proto.String)
+	msg.Field("name").Type(proto.String)
+	msg.Field("children").Type(proto.String)
 
 	/**
 	// spec a entity<->proto mapping

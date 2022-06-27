@@ -35,18 +35,44 @@ func (m *Message) Field(name string) *Field {
 	return f
 }
 
+// Compose adds a copy of a field without the sequence number
+func (m *Message) Compose(f *Field) *Field {
+	cp := *f
+	cp.SequenceNumber = 0
+	m.Fields = append(m.Fields, &cp)
+	return &cp
+}
+
+// Doc overrides to return the receiver
+func (m *Message) Doc(d string) *Message {
+	m.Named.Documentation = d
+	return m
+}
+
 type FieldType struct {
 	*core.Named
 }
 
 type Field struct {
 	*core.Named
-	FieldType FieldType `json:"type"`
-	Repeated  bool
-	Optional  bool
+	FieldType      FieldType `json:"type"`
+	Repeated       bool
+	Optional       bool
+	SequenceNumber int `json:"nr"` // zero means unknown
 }
 
 func (f *Field) Type(ft FieldType) *Field {
 	f.FieldType = ft
+	return f
+}
+
+func (f *Field) Number(seq int) *Field {
+	f.SequenceNumber = seq
+	return f
+}
+
+// Doc overrides to return the receiver
+func (f *Field) Doc(d string) *Field {
+	f.Named.Documentation = d
 	return f
 }

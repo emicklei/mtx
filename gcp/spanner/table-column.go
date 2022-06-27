@@ -9,7 +9,7 @@ import (
 
 type Database struct {
 	*core.Named
-	Tables []*core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions]
+	Tables []*core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] `json:"tables"`
 }
 
 func (d *Database) Table(name string) *core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] {

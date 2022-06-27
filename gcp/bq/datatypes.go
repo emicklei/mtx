@@ -4,7 +4,7 @@ import "github.com/emicklei/mtx/core"
 
 type DType = core.Datatype[DatatypeExtensions]
 
-var Bytes = DType{Named: core.N("bq.Datatype", "BYTES")}
+var BYTES = DType{Named: core.N("bq.Datatype", "BYTES")}
 
 func MaxBytes(max int64) DType {
 	return DType{
@@ -15,18 +15,18 @@ func MaxBytes(max int64) DType {
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type
 // YYYY-[M]M-[D]D
-var Date = DType{Named: core.N("bq.Datatype", "DATE")}
+var DATE = DType{Named: core.N("bq.Datatype", "DATE")}
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type
 // YYYY-[M]M-[D]D[( |T)[H]H:[M]M:[S]S[.F]]
-var DateTime = DType{Named: core.N("bq.Datatype", "DATETIME")}
+var DATETIME = DType{Named: core.N("bq.Datatype", "DATETIME")}
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#geography_type
-var Geography = DType{Named: core.N("bq.Datatype", "GEOGRAPHY")}
+var GEOGRAPHY = DType{Named: core.N("bq.Datatype", "GEOGRAPHY")}
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#interval_type
 // [sign]Y-M [sign]D [sign]H:M:S[.F]
-var Interval = DType{Named: core.N("bq.Datatype", "Interval")}
+var INTERVAL = DType{Named: core.N("bq.Datatype", "INTERVAL")}
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_type
 var INT64 = DType{Named: core.N("bq.Datatype", "INT64")}

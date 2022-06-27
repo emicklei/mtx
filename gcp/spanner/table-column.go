@@ -1,6 +1,11 @@
 package spanner
 
-import "github.com/emicklei/mtx/core"
+import (
+	"fmt"
+	"io"
+
+	"github.com/emicklei/mtx/core"
+)
 
 type Database struct {
 	*core.Named
@@ -28,6 +33,24 @@ type TableExtensions struct {
 }
 
 func (t TableExtensions) OwnerClass() string { return "spanner.Table" }
+
+func (t TableExtensions) SQLOn(table any, w io.Writer) {
+	// we know its actual type
+	tab := table.(*core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions])
+	fmt.Fprintf(w, "CREATE TABLE %s (\n", tab.Name)
+	prims := []string{}
+	for _, each := range tab.Columns {
+		if each.Primary {
+			prims = append(prims, each.Name)
+		}
+		each.SQLOn(w)
+	}
+	fmt.Fprint(w, ") PRIMARY KEY (\n")
+	for _, each := range prims {
+		fmt.Fprintf(w, "\t%s\n", each)
+	}
+	fmt.Fprintf(w, ")")
+}
 
 type ColumnExtensions struct {
 	IsComplex bool

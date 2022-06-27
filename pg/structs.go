@@ -1,6 +1,10 @@
 package pg
 
-import "github.com/emicklei/mtx/core"
+import (
+	"io"
+
+	"github.com/emicklei/mtx/core"
+)
 
 type Database struct{}
 
@@ -14,6 +18,8 @@ type TableExtensions struct {
 }
 
 func (t TableExtensions) OwnerClass() string { return "pg.Table" }
+
+func (t TableExtensions) SQLOn(table any, w io.Writer) {}
 
 type ColumnExtensions struct {
 }

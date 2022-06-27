@@ -8,6 +8,7 @@ import (
 
 type ExtendsTable interface {
 	OwnerClass() string
+	SQLOn(table any, w io.Writer) // cannot use T,C,D here so we need to cast it back later
 }
 
 type ExtendsColumn interface {
@@ -17,6 +18,8 @@ type ExtendsColumn interface {
 type ExtendsDatatype interface {
 	OwnerClass() string
 }
+
+type SQLWriter interface{ SQLOn(w io.Writer) }
 
 type Table[T ExtendsTable, C ExtendsColumn, D ExtendsDatatype] struct {
 	*Named
@@ -30,15 +33,18 @@ func (t *Table[T, C, D]) Doc(d string) *Table[T, C, D] {
 }
 
 func (t *Table[T, C, D]) SQL() string {
-	// TODO this is spanner specific, need to pass control to T
 	buf := new(bytes.Buffer)
-	fmt.Fprintf(buf, "CREATE TABLE %s (\n", t.Name)
-	for _, each := range t.Columns {
-		each.SQLOn(buf)
-	}
-	fmt.Fprint(buf, ") PRIMARY KEY (\n", t.Name)
-	fmt.Fprintf(buf, ")")
+	t.Extensions.SQLOn(t, buf)
 	return buf.String()
+}
+
+func (t *Table[T, C, D]) PrimaryKeyColumns() (list []*Column[C, D]) {
+	for _, each := range t.Columns {
+		if each.Primary {
+			list = append(list, each)
+		}
+	}
+	return
 }
 
 func (t *Table[T, C, D]) Column(name string) *Column[C, D] {
@@ -70,7 +76,12 @@ func (c *Column[C, D]) Doc(d string) *Column[C, D] {
 }
 
 func (c *Column[C, D]) IsNotNull() *Column[C, D] {
-	c.NotNull = true
+	c.Primary = true
+	return c
+}
+
+func (c *Column[C, D]) IsPrimary() *Column[C, D] {
+	c.Primary = true
 	return c
 }
 

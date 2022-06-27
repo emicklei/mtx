@@ -1,6 +1,10 @@
 package bq
 
-import "github.com/emicklei/mtx/core"
+import (
+	"io"
+
+	"github.com/emicklei/mtx/core"
+)
 
 type bqSpace core.Namespace
 
@@ -37,6 +41,8 @@ type TableExtensions struct {
 }
 
 func (t TableExtensions) OwnerClass() string { return "bq.Table" }
+
+func (t TableExtensions) SQLOn(table any, w io.Writer) {}
 
 type ColumnExtensions struct {
 }

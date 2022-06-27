@@ -76,7 +76,7 @@ func (c *Column[C, D]) SQLOn(buf io.Writer) {
 	if c.IsNotNull {
 		fmt.Fprint(buf, " NOT NULL")
 	}
-	fmt.Fprintf(buf, ", -- %s\n", c.Documentation)
+	fmt.Fprintf(buf, " -- %s\n", c.Documentation)
 }
 
 func (c *Column[C, D]) Doc(d string) *Column[C, D] {

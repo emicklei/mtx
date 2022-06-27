@@ -40,11 +40,16 @@ func (t *Table[T, C, D]) SQL() string {
 
 func (t *Table[T, C, D]) PrimaryKeyColumns() (list []*Column[C, D]) {
 	for _, each := range t.Columns {
-		if each.Primary {
+		if each.IsPrimary {
 			list = append(list, each)
 		}
 	}
 	return
+}
+
+// PrimaryKey is short for Column().IsPrimary()
+func (t *Table[T, C, D]) PrimaryKey(name string) *Column[C, D] {
+	return t.Column(name).Primary()
 }
 
 func (t *Table[T, C, D]) Column(name string) *Column[C, D] {
@@ -61,13 +66,17 @@ func (t *Table[T, C, D]) Column(name string) *Column[C, D] {
 type Column[C ExtendsColumn, D ExtendsDatatype] struct {
 	*Named
 	ColumnType Datatype[D] `json:"type"`
-	Primary    bool        `json:"is_primary"`
-	NotNull    bool        `json:"is_not_null"`
+	IsPrimary  bool        `json:"is_primary"`
+	IsNotNull  bool        `json:"is_not_null"`
 	Extensions C           `json:"ext"`
 }
 
 func (c *Column[C, D]) SQLOn(buf io.Writer) {
-	fmt.Fprintf(buf, "\t%s %s, -- %s\n", c.Name, c.ColumnType.Name, c.Documentation)
+	fmt.Fprintf(buf, "\t%s %s", c.Name, c.ColumnType.Name)
+	if c.IsNotNull {
+		fmt.Fprint(buf, " NOT NULL")
+	}
+	fmt.Fprintf(buf, ", -- %s\n", c.Documentation)
 }
 
 func (c *Column[C, D]) Doc(d string) *Column[C, D] {
@@ -75,13 +84,13 @@ func (c *Column[C, D]) Doc(d string) *Column[C, D] {
 	return c
 }
 
-func (c *Column[C, D]) IsNotNull() *Column[C, D] {
-	c.Primary = true
+func (c *Column[C, D]) NotNull() *Column[C, D] {
+	c.IsNotNull = true
 	return c
 }
 
-func (c *Column[C, D]) IsPrimary() *Column[C, D] {
-	c.Primary = true
+func (c *Column[C, D]) Primary() *Column[C, D] {
+	c.IsPrimary = true
 	return c
 }
 

@@ -40,7 +40,7 @@ func (t TableExtensions) SQLOn(table any, w io.Writer) {
 	fmt.Fprintf(w, "CREATE TABLE %s (\n", tab.Name)
 	prims := []string{}
 	for _, each := range tab.Columns {
-		if each.Primary {
+		if each.IsPrimary {
 			prims = append(prims, each.Name)
 		}
 		each.SQLOn(w)

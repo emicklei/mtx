@@ -1,5 +1,11 @@
 package core
 
+import (
+	"bytes"
+	"fmt"
+	"io"
+)
+
 type ExtendsTable interface {
 	OwnerClass() string
 }
@@ -23,6 +29,18 @@ func (t *Table[T, C, D]) Doc(d string) *Table[T, C, D] {
 	return t
 }
 
+func (t *Table[T, C, D]) SQL() string {
+	// TODO this is spanner specific, need to pass control to T
+	buf := new(bytes.Buffer)
+	fmt.Fprintf(buf, "CREATE TABLE %s (\n", t.Name)
+	for _, each := range t.Columns {
+		each.SQLOn(buf)
+	}
+	fmt.Fprint(buf, ") PRIMARY KEY (\n", t.Name)
+	fmt.Fprintf(buf, ")")
+	return buf.String()
+}
+
 func (t *Table[T, C, D]) Column(name string) *Column[C, D] {
 	c, ok := FindByName(t.Columns, name)
 	if ok {
@@ -37,11 +55,22 @@ func (t *Table[T, C, D]) Column(name string) *Column[C, D] {
 type Column[C ExtendsColumn, D ExtendsDatatype] struct {
 	*Named
 	ColumnType Datatype[D] `json:"type"`
+	Primary    bool        `json:"is_primary"`
+	NotNull    bool        `json:"is_not_null"`
 	Extensions C           `json:"ext"`
+}
+
+func (c *Column[C, D]) SQLOn(buf io.Writer) {
+	fmt.Fprintf(buf, "\t%s %s, -- %s\n", c.Name, c.ColumnType.Name, c.Documentation)
 }
 
 func (c *Column[C, D]) Doc(d string) *Column[C, D] {
 	c.Documentation = d
+	return c
+}
+
+func (c *Column[C, D]) IsNotNull() *Column[C, D] {
+	c.NotNull = true
 	return c
 }
 

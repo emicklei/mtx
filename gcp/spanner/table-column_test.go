@@ -9,6 +9,6 @@ import (
 func TestTable(t *testing.T) {
 	tab := new(Database).Table("test")
 	tab.Set("custom", "prop")
-	tab.Column("col").Datatype(BigInteger)
+	tab.Column("col").Type(BigInteger)
 	core.JSONOut(tab)
 }

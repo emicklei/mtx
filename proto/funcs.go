@@ -3,7 +3,7 @@ package proto
 import "github.com/emicklei/mtx/core"
 
 type Package struct {
-	messages []*Message
+	Messages []*Message `json:"messages"`
 }
 
 func NewPackage(name string) *Package {
@@ -12,16 +12,16 @@ func NewPackage(name string) *Package {
 
 type Message struct {
 	*core.Named
-	Fields []*Field
+	Fields []*Field `json:"fields"`
 }
 
 func (p *Package) Message(name string) *Message {
-	m, ok := core.FindByName(p.messages, name)
+	m, ok := core.FindByName(p.Messages, name)
 	if ok {
 		return m
 	}
 	m = &Message{Named: core.N("proto.Message", name)}
-	p.messages = append(p.messages, m)
+	p.Messages = append(p.Messages, m)
 	return m
 }
 
@@ -41,12 +41,12 @@ type FieldType struct {
 
 type Field struct {
 	*core.Named
-	Type     FieldType
-	Repeated bool
-	Optional bool
+	FieldType FieldType `json:"type"`
+	Repeated  bool
+	Optional  bool
 }
 
-func (f *Field) FieldType(ft FieldType) *Field {
-	f.Type = ft
+func (f *Field) Type(ft FieldType) *Field {
+	f.FieldType = ft
 	return f
 }

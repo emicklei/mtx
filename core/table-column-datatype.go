@@ -15,7 +15,7 @@ type ExtendsDatatype interface {
 type Table[T ExtendsTable, C ExtendsColumn, D ExtendsDatatype] struct {
 	*Named
 	Columns    []*Column[C, D]
-	Extensions T
+	Extensions T `json:"ext"`
 }
 
 func (t *Table[T, C, D]) Doc(d string) *Table[T, C, D] {
@@ -36,8 +36,8 @@ func (t *Table[T, C, D]) Column(name string) *Column[C, D] {
 
 type Column[C ExtendsColumn, D ExtendsDatatype] struct {
 	*Named
-	Type       Datatype[D]
-	Extensions C
+	ColumnType Datatype[D] `json:"type"`
+	Extensions C           `json:"ext"`
 }
 
 func (c *Column[C, D]) Doc(d string) *Column[C, D] {
@@ -45,12 +45,12 @@ func (c *Column[C, D]) Doc(d string) *Column[C, D] {
 	return c
 }
 
-func (c *Column[C, D]) Datatype(dt Datatype[D]) *Column[C, D] {
-	c.Type = dt
+func (c *Column[C, D]) Type(dt Datatype[D]) *Column[C, D] {
+	c.ColumnType = dt
 	return c
 }
 
 type Datatype[D ExtendsDatatype] struct {
 	*Named
-	Extensions D
+	Extensions D `json:"ext"`
 }

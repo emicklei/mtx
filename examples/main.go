@@ -40,7 +40,7 @@ func main() {
 		ns := bq.NewNamespace("world")
 		ds := ns.Dataset("mydataset")
 		tab := ds.Table("mytable")
-		_ = tab.Column("id").Datatype(bq.Bytes)
+		_ = tab.Column("id").Type(bq.Bytes)
 		core.JSONOut(ds)
 	}
 }

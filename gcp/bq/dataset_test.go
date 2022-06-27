@@ -10,7 +10,7 @@ func TestDataset(t *testing.T) {
 	ns := NewNamespace("myproject")
 	ds := ns.Dataset("mydataset").Doc("dataset comment")
 	tab := ds.Table("mytable").Doc("my table")
-	tab.Column("id").Datatype(Bytes).Doc("my id")
-	tab.Column("large").Datatype(BigNumeric(2, 10))
+	tab.Column("id").Type(Bytes).Doc("my id")
+	tab.Column("large").Type(BigNumeric(2, 10))
 	core.JSONOut(ds)
 }

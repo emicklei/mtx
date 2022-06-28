@@ -8,30 +8,40 @@ import (
 	"github.com/emicklei/mtx/core"
 )
 
-func simple(typename string) core.Datatype[DatatypeExtensions] {
-	return core.Datatype[DatatypeExtensions]{
+type dtType = core.Datatype[DatatypeExtensions]
+
+func simple(typename string) dtType {
+	return dtType{
 		Named: core.N("spanner.Datatype", typename),
 	}
 }
 
-var BigInteger = core.Datatype[DatatypeExtensions]{
+var BigInteger = dtType{
 	Named:      core.N("spanner.Datatype", "BIGINT"),
 	Extensions: DatatypeExtensions{Max: 1024},
 }
 
 var (
+	BOOL      = simple("BOOL")
 	BYTES     = simple("BYTES(MAX)")
-	ARRAY     = simple("ARRAY")
 	DATE      = simple("DATE")
-	TIMESTAMP = simple("TIMESTAMP")
 	JSON      = simple("JSON")
+	TIMESTAMP = simple("TIMESTAMP")
 	INT64     = simple("INT64")
+	FLOAT64   = simple("FLOAT64")
+	NUMERIC   = simple("NUMERIC") // suitable for financial calculations
 	STRING    = simple("STRING(MAX)")
 )
 
-func String(max int) core.Datatype[DatatypeExtensions] {
-	return core.Datatype[DatatypeExtensions]{
+func String(max int) dtType {
+	return dtType{
 		Named:      core.N("spanner.Datatype", fmt.Sprintf("STRING(%d)", max)),
 		Extensions: DatatypeExtensions{Max: int64(max)},
+	}
+}
+
+func Array(elementType dtType) dtType {
+	return dtType{
+		Named: core.N("spanner.Datatype", fmt.Sprintf("ARRAY(%s)", elementType.Name)),
 	}
 }

@@ -44,20 +44,21 @@ func (t TableExtensions) SQLOn(table any, w io.Writer) {
 			prims = append(prims, each.Name)
 		}
 		if i > 0 {
-			fmt.Fprintf(w, "\t,")
+			fmt.Fprintf(w, ",")
 		}
+		fmt.Fprintf(w, "\t")
 		each.SQLOn(w)
 	}
 	fmt.Fprint(w, ") PRIMARY KEY (\n")
 	for i, each := range prims {
 		if i > 0 {
-			fmt.Fprintf(w, "\t,")
-		} else {
-			fmt.Fprintf(w, "\t")
+			fmt.Fprintf(w, ",")
 		}
+		fmt.Fprintf(w, "\t")
 		fmt.Fprintf(w, "%s\n", each)
 	}
 	fmt.Fprintf(w, ")")
+	// TODO check for Interleave
 }
 
 type ColumnExtensions struct {
@@ -67,7 +68,7 @@ type ColumnExtensions struct {
 func (t ColumnExtensions) OwnerClass() string { return "spanner.Column" }
 
 type DatatypeExtensions struct {
-	Max int64 `json:"Max,omitempty"`
+	Max int64 `json:"max,omitempty"`
 }
 
 func (d DatatypeExtensions) OwnerClass() string { return "spanner.Datatype" }

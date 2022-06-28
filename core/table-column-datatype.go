@@ -8,7 +8,7 @@ import (
 
 type ExtendsTable interface {
 	OwnerClass() string
-	SQLOn(table any, w io.Writer) // cannot use T,C,D here so we need to cast it back later
+	SQLOn(table any, w io.Writer) // cannot use T,C,D here so we need to type-assert it back later
 }
 
 type ExtendsColumn interface {
@@ -23,8 +23,8 @@ type SQLWriter interface{ SQLOn(w io.Writer) }
 
 type Table[T ExtendsTable, C ExtendsColumn, D ExtendsDatatype] struct {
 	*Named
-	Columns    []*Column[C, D]
-	Extensions T `json:"ext"`
+	Columns    []*Column[C, D] `json:"columns"`
+	Extensions T               `json:"ext"`
 }
 
 func (t *Table[T, C, D]) Doc(d string) *Table[T, C, D] {
@@ -52,6 +52,11 @@ func (t *Table[T, C, D]) PrimaryKey(name string) *Column[C, D] {
 	return t.Column(name).Primary()
 }
 
+// C is a shortcut for Column.Type.Doc
+func (t *Table[T, C, D]) C(name string, dt Datatype[D], doc string) *Column[C, D] {
+	return t.Column(name).Type(dt).Doc(doc)
+}
+
 func (t *Table[T, C, D]) Column(name string) *Column[C, D] {
 	c, ok := FindByName(t.Columns, name)
 	if ok {
@@ -72,7 +77,7 @@ type Column[C ExtendsColumn, D ExtendsDatatype] struct {
 }
 
 func (c *Column[C, D]) SQLOn(buf io.Writer) {
-	fmt.Fprintf(buf, "\t%s %s", c.Name, c.ColumnType.Name)
+	fmt.Fprintf(buf, "%s %s", c.Name, c.ColumnType.Name)
 	if c.IsNotNull {
 		fmt.Fprint(buf, " NOT NULL")
 	}

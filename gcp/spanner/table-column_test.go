@@ -11,4 +11,5 @@ func TestTable(t *testing.T) {
 	tab.Set("custom", "prop")
 	tab.Column("col").Type(BigInteger)
 	core.JSONOut(tab)
+	core.JSONOut(tab.ToEntity())
 }

@@ -44,17 +44,19 @@ func (t TableExtensions) SQLOn(table any, w io.Writer) {
 			prims = append(prims, each.Name)
 		}
 		if i > 0 {
-			fmt.Fprintf(w, ",")
+			fmt.Fprintf(w, ",\t")
+		} else {
+			fmt.Fprintf(w, " \t")
 		}
-		fmt.Fprintf(w, "\t")
 		each.SQLOn(w)
 	}
 	fmt.Fprint(w, ") PRIMARY KEY (\n")
 	for i, each := range prims {
 		if i > 0 {
-			fmt.Fprintf(w, ",")
+			fmt.Fprintf(w, ",\t")
+		} else {
+			fmt.Fprintf(w, " \t")
 		}
-		fmt.Fprintf(w, "\t")
 		fmt.Fprintf(w, "%s\n", each)
 	}
 	fmt.Fprintf(w, ")")

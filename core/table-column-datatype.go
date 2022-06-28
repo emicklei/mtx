@@ -68,6 +68,24 @@ func (t *Table[T, C, D]) Column(name string) *Column[C, D] {
 	return c
 }
 
+// ToEntity creates a new Entity that represents a Row in this table data.
+// TODO how to handle name mapping?  type mapping?
+func (t *Table[T, C, D]) ToEntity() *Entity {
+	m := NewEntity(t.Name)
+	// see if property overrides this
+	if n, ok := t.Get("model.Name"); ok {
+		m.Named.Name = n
+	}
+	for _, each := range t.Columns {
+		attr := m.Attribute(each.Name)
+		// see if property overrides this
+		if n, ok := t.Get("model.Name"); ok {
+			attr.Named.Name = n
+		}
+	}
+	return m
+}
+
 type Column[C ExtendsColumn, D ExtendsDatatype] struct {
 	*Named
 	ColumnType Datatype[D] `json:"type"`
@@ -106,5 +124,11 @@ func (c *Column[C, D]) Type(dt Datatype[D]) *Column[C, D] {
 
 type Datatype[D ExtendsDatatype] struct {
 	*Named
-	Extensions D `json:"ext"`
+	AttributeType AttributeType `json:"_"`
+	Extensions    D             `json:"ext"`
+}
+
+func (d Datatype[D]) WithAttributeType(at AttributeType) Datatype[D] {
+	d.AttributeType = at
+	return d
 }

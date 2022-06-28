@@ -30,6 +30,14 @@ func (n *Named) Set(key, value string) {
 	n.Properties[key] = value
 }
 
+func (n *Named) Get(key string) (string, bool) {
+	if n.Properties == nil {
+		return "", false
+	}
+	v, ok := n.Properties[key]
+	return v, ok
+}
+
 func (n *Named) Doc(d string) {
 	n.Documentation = d
 }

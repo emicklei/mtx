@@ -22,7 +22,7 @@ var BigInteger = dtType{
 }
 
 var (
-	BOOL      = simple("BOOL")
+	BOOL      = simple("BOOL").WithAttributeType(core.BOOLEAN)
 	BYTES     = simple("BYTES(MAX)")
 	DATE      = simple("DATE")
 	JSON      = simple("JSON")

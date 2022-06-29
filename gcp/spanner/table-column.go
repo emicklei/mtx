@@ -63,6 +63,8 @@ func (t TableExtensions) SQLOn(table any, w io.Writer) {
 	// TODO check for Interleave
 }
 
+var _ core.ExtendsColumn = ColumnExtensions{}
+
 type ColumnExtensions struct {
 	IsComplex bool
 }

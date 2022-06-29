@@ -79,9 +79,10 @@ func (t *Table[T, C, D]) ToEntity() *Entity {
 	for _, each := range t.Columns {
 		attr := m.Attribute(each.Name)
 		// see if property overrides this
-		if n, ok := t.Get("model.Name"); ok {
+		if n, ok := each.Get("model.Name"); ok {
 			attr.Named.Name = n
 		}
+		attr.AttributeType = each.ColumnType.AttributeType
 	}
 	return m
 }
@@ -124,11 +125,11 @@ func (c *Column[C, D]) Type(dt Datatype[D]) *Column[C, D] {
 
 type Datatype[D ExtendsDatatype] struct {
 	*Named
-	AttributeType AttributeType `json:"_"`
+	AttributeType AttributeType `json:"-"`
 	Extensions    D             `json:"ext"`
 }
 
-func (d Datatype[D]) WithAttributeType(at AttributeType) Datatype[D] {
+func (d Datatype[D]) WithCoreType(at AttributeType) Datatype[D] {
 	d.AttributeType = at
 	return d
 }

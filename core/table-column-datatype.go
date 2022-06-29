@@ -27,8 +27,15 @@ type Table[T ExtendsTable, C ExtendsColumn, D ExtendsDatatype] struct {
 	Extensions T               `json:"ext"`
 }
 
+// Doc overrides Named.Doc to preserve return type
 func (t *Table[T, C, D]) Doc(d string) *Table[T, C, D] {
 	t.Documentation = d
+	return t
+}
+
+// Set overrides Named.Set to preserve return type
+func (t *Table[T, C, D]) Set(key string, value any) *Table[T, C, D] {
+	t.Named.Set(key, value)
 	return t
 }
 
@@ -73,15 +80,16 @@ func (t *Table[T, C, D]) Column(name string) *Column[C, D] {
 func (t *Table[T, C, D]) ToEntity() *Entity {
 	m := NewEntity(t.Name)
 	// see if property overrides this
-	if n, ok := t.Get("model.Name"); ok {
-		m.Named.Name = n
+	if n, ok := t.Get(EntityName); ok {
+		m.Named.Name = n.(string)
 	}
 	for _, each := range t.Columns {
 		attr := m.Attribute(each.Name)
 		// see if property overrides this
-		if n, ok := each.Get("model.Name"); ok {
-			attr.Named.Name = n
+		if n, ok := each.Get(EntityName); ok {
+			attr.Named.Name = n.(string)
 		}
+		attr.Doc(each.Documentation)
 		attr.AttributeType = each.ColumnType.AttributeType
 	}
 	return m
@@ -103,8 +111,15 @@ func (c *Column[C, D]) SQLOn(buf io.Writer) {
 	fmt.Fprintf(buf, " -- %s\n", c.Documentation)
 }
 
+// Doc overrides Named.Doc to preserve return type
 func (c *Column[C, D]) Doc(d string) *Column[C, D] {
 	c.Documentation = d
+	return c
+}
+
+// Set overrides Named.Set to preserve return type
+func (c *Column[C, D]) Set(key string, value any) *Column[C, D] {
+	c.Named.Set(key, value)
 	return c
 }
 
@@ -127,6 +142,12 @@ type Datatype[D ExtendsDatatype] struct {
 	*Named
 	AttributeType AttributeType `json:"-"`
 	Extensions    D             `json:"ext"`
+}
+
+// Set overrides Named.Set to preserve return type
+func (d Datatype[D]) Set(key string, value any) Datatype[D] {
+	d.Named.Set(key, value)
+	return d
 }
 
 func (d Datatype[D]) WithCoreType(at AttributeType) Datatype[D] {

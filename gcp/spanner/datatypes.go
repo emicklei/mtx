@@ -33,6 +33,10 @@ var (
 	STRING    = simple("STRING(MAX)").WithCoreType(core.STRING)
 )
 
+func init() {
+	INT64.Set("bits", "64")
+}
+
 func String(max int) dtType {
 	return dtType{
 		Named:      core.N("spanner.Datatype", fmt.Sprintf("STRING(%d)", max)),

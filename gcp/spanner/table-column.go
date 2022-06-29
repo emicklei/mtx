@@ -28,6 +28,8 @@ func (d *Database) Doc(doc string) *Database {
 	return d
 }
 
+var _ core.ExtendsTable = TableExtensions{}
+
 type TableExtensions struct {
 	Interleave any
 }
@@ -70,6 +72,8 @@ type ColumnExtensions struct {
 }
 
 func (t ColumnExtensions) OwnerClass() string { return "spanner.Column" }
+
+var _ core.ExtendsDatatype = DatatypeExtensions{}
 
 type DatatypeExtensions struct {
 	Max int64 `json:"max,omitempty"`

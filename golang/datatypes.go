@@ -10,7 +10,8 @@ var attributeTypeToGoTypeMapping = map[string]string{
 	core.BYTES.Name:     "[]byte",
 	core.DATE.Name:      "time.Time",
 	core.TIMESTAMP.Name: "time.Time",
-	core.FLOAT.Name:     "float64",
+	core.FLOAT.Name:     "float32",
+	core.DOUBLE.Name:    "float64",
 	core.STRING.Name:    "string",
 	//core.DECIMAL: TODO
 }

@@ -1,5 +1,10 @@
 package core
 
+import (
+	"fmt"
+	"io"
+)
+
 const (
 	EntityClass          = "Entity"
 	EntityAttributeClass = "Attribute"
@@ -49,4 +54,8 @@ func (a *Attribute) Doc(d string) *Attribute {
 func (a *Attribute) Optional() *Attribute {
 	a.IsRequired = false
 	return a
+}
+
+func (a *Attribute) SourceOn(w io.Writer) {
+	fmt.Fprintf(w, "ent.Attribute(\"%s\")", a.Name)
 }

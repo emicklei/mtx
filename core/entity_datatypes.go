@@ -16,6 +16,7 @@ var (
 	TIMESTAMP = AttributeType{Name: "timestamp"} // yyyy mm dd hh mm ss + zone
 	BYTES     = AttributeType{Name: "bytes"}
 	FLOAT     = AttributeType{Name: "float"}
+	DOUBLE    = AttributeType{Name: "double"}
 	DECIMAL   = AttributeType{Name: "decimal"}
 )
 

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -17,4 +18,14 @@ func ToJSON(what any) string {
 	enc.SetIndent("", "  ")
 	enc.Encode(what)
 	return buf.String()
+}
+
+func ToSource(what SourceWriter) string {
+	buf := new(bytes.Buffer)
+	what.SourceOn(buf)
+	return buf.String()
+}
+
+type SourceWriter interface {
+	SourceOn(io.Writer)
 }

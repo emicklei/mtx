@@ -1,13 +1,29 @@
 package proto
 
-import "github.com/emicklei/mtx/core"
+import (
+	"fmt"
+	"io"
+	"strings"
+
+	"github.com/emicklei/mtx/core"
+)
 
 type Package struct {
+	*core.Named
 	Messages []*Message `json:"messages"`
 }
 
 func NewPackage(name string) *Package {
-	return &Package{}
+	return &Package{Named: core.N("proto.Package", name)}
+}
+
+func (p *Package) SourceOn(w io.Writer) {
+	fmt.Fprintf(w, "pkg := proto.NewPackage(\"%s\")", p.Name)
+	p.Named.SourceOn(w)
+	for _, each := range p.Messages {
+		fmt.Fprintln(w)
+		each.SourceOn(w)
+	}
 }
 
 type Message struct {
@@ -25,6 +41,20 @@ func (p *Package) Message(name string) *Message {
 	return m
 }
 
+func (p *Package) Doc(doc string) *Package {
+	p.Named.Doc(doc)
+	return p
+}
+
+func (m *Message) SourceOn(w io.Writer) {
+	fmt.Fprintf(w, "msg := pkg.Message(\"%s\")", m.Name)
+	m.Named.SourceOn(w)
+	for _, each := range m.Fields {
+		fmt.Fprintln(w)
+		each.SourceOn(w)
+	}
+}
+
 func (m *Message) Field(name string) *Field {
 	f, ok := core.FindByName(m.Fields, name)
 	if ok {
@@ -33,6 +63,11 @@ func (m *Message) Field(name string) *Field {
 	f = &Field{Named: core.N("proto.Field", name)}
 	m.Fields = append(m.Fields, f)
 	return f
+}
+
+// F is a shortcut for Field.Number.Type.Doc
+func (m *Message) F(name string, nr int, ft FieldType, doc string) *Field {
+	return m.Field(name).Number(nr).Type(ft).Doc(doc)
 }
 
 // Compose adds a copy of a field without the sequence number
@@ -51,6 +86,16 @@ func (m *Message) Doc(d string) *Message {
 
 type FieldType struct {
 	*core.Named
+	AttributeType core.AttributeType `json:"-"`
+}
+
+func (ft FieldType) SourceOn(w io.Writer) {
+	fmt.Fprintf(w, "proto.%s", strings.ToUpper(ft.Name))
+}
+
+func (ft FieldType) WithCoreType(at core.AttributeType) FieldType {
+	ft.AttributeType = at
+	return ft
 }
 
 type Field struct {
@@ -59,6 +104,12 @@ type Field struct {
 	Repeated       bool
 	Optional       bool
 	SequenceNumber int `json:"nr"` // zero means unknown
+}
+
+func (f *Field) SourceOn(w io.Writer) {
+	fmt.Fprintf(w, "msg.F(\"%s\",%d,", f.Name, f.SequenceNumber)
+	f.FieldType.SourceOn(w)
+	fmt.Fprintf(w, ",\"%s\")", f.Documentation)
 }
 
 func (f *Field) Type(ft FieldType) *Field {

@@ -10,27 +10,46 @@ import (
 
 type dtType = core.Datatype[DatatypeExtensions]
 
-func simple(typename string) dtType {
-	return dtType{
-		Named: core.N("spanner.Datatype", typename),
-	}
+var knownTypes = map[string]dtType{}
+
+func register(dt dtType) dtType {
+	knownTypes[dt.Name] = dt
+	return dt
 }
 
-var BigInteger = dtType{
+// MappedAttributeType returns the best matching spanner type.
+func MappedAttributeType(at core.AttributeType) dtType {
+	for _, each := range knownTypes {
+		if each.AttributeType.Equals(at) {
+			return each
+		}
+	}
+	// TODO specials
+	return STRING
+}
+
+func simple(typename string, at core.AttributeType) dtType {
+	return register(dtType{
+		Named: core.N("spanner.Datatype", typename),
+	}.WithCoreType(at))
+}
+
+var BigInteger = register(dtType{
 	Named:      core.N("spanner.Datatype", "BIGINT"),
 	Extensions: DatatypeExtensions{Max: 1024},
-}.WithCoreType(core.INTEGER)
+}.WithCoreType(core.INTEGER))
 
 var (
-	BOOL      = simple("BOOL").WithCoreType(core.BOOLEAN)
-	BYTES     = simple("BYTES(MAX)").WithCoreType(core.BYTES)
-	DATE      = simple("DATE").WithCoreType(core.DATE)
-	JSON      = simple("JSON")
-	TIMESTAMP = simple("TIMESTAMP").WithCoreType(core.TIMESTAMP)
-	INT64     = simple("INT64").WithCoreType(core.INTEGER)
-	FLOAT64   = simple("FLOAT64").WithCoreType(core.FLOAT)
-	NUMERIC   = simple("NUMERIC").WithCoreType(core.DECIMAL) // suitable for financial calculations
-	STRING    = simple("STRING(MAX)").WithCoreType(core.STRING)
+	UNKNOWN   = simple("ANY", core.UNKNOWN)
+	BOOL      = simple("BOOL", core.BOOLEAN)
+	BYTES     = simple("BYTES(MAX)", core.BYTES)
+	DATE      = simple("DATE", core.DATE)
+	JSON      = simple("JSON", core.JSON)
+	TIMESTAMP = simple("TIMESTAMP", core.TIMESTAMP)
+	INT64     = simple("INT64", core.INTEGER)
+	FLOAT64   = simple("FLOAT64", core.FLOAT)
+	NUMERIC   = simple("NUMERIC", core.DECIMAL) // suitable for financial calculations
+	STRING    = simple("STRING(MAX)", core.STRING)
 )
 
 func init() {

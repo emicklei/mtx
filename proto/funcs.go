@@ -3,7 +3,6 @@ package proto
 import (
 	"fmt"
 	"io"
-	"strings"
 
 	"github.com/emicklei/mtx/core"
 )
@@ -82,20 +81,6 @@ func (m *Message) Compose(f *Field) *Field {
 func (m *Message) Doc(d string) *Message {
 	m.Named.Documentation = d
 	return m
-}
-
-type FieldType struct {
-	*core.Named
-	AttributeType core.AttributeType `json:"-"`
-}
-
-func (ft FieldType) SourceOn(w io.Writer) {
-	fmt.Fprintf(w, "proto.%s", strings.ToUpper(ft.Name))
-}
-
-func (ft FieldType) WithCoreType(at core.AttributeType) FieldType {
-	ft.AttributeType = at
-	return ft
 }
 
 type Field struct {

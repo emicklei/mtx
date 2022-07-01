@@ -7,6 +7,7 @@ type AttributeType struct {
 }
 
 var (
+	UNKNOWN   = AttributeType{Name: "any"}
 	BOOLEAN   = AttributeType{Name: "boolean"}
 	STRING    = AttributeType{Name: "string"}
 	INTEGER   = AttributeType{Name: "integer"}
@@ -18,8 +19,22 @@ var (
 	FLOAT     = AttributeType{Name: "float"}
 	DOUBLE    = AttributeType{Name: "double"}
 	DECIMAL   = AttributeType{Name: "decimal"}
+	JSON      = AttributeType{Name: "JSON"}
 )
 
 func Array(elementType AttributeType) AttributeType {
 	return AttributeType{Name: "array", ElementType: &elementType}
+}
+
+func (a AttributeType) Equals(o AttributeType) bool {
+	if a.Name != o.Name {
+		return false
+	}
+	// TODO
+	return true
+}
+
+func RegisterType(name string) AttributeType {
+	// register(
+	return AttributeType{Name: name}
 }

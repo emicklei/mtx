@@ -31,15 +31,20 @@ func TypeNamed(name string) FieldType {
 			return v
 		}
 	}
-	return UNKNOWN
+	return RegisterType(name)
 }
 
 type FieldType struct {
 	*core.Named
+	IsCustom      bool               `json:"is_custom"`
 	AttributeType core.AttributeType `json:"-"`
 }
 
 func (ft FieldType) SourceOn(w io.Writer) {
+	if ft.IsCustom {
+		fmt.Fprintf(w, "proto.RegisterType(\"%s\")", ft.Name)
+		return
+	}
 	fmt.Fprintf(w, "proto.%s", strings.ToUpper(ft.Name))
 }
 
@@ -49,6 +54,11 @@ func (ft FieldType) WithCoreType(at core.AttributeType) FieldType {
 }
 
 func RegisterType(name string) FieldType {
-	ft := FieldType{Named: core.N("proto.FieldType", name)}.WithCoreType(core.RegisterType(name))
+	// exists?
+	if ft, ok := knownTypes[name]; ok {
+		return ft
+	}
+	// new!
+	ft := FieldType{Named: core.N("proto.FieldType", name), IsCustom: true}.WithCoreType(core.RegisterType(name))
 	return register(ft)
 }

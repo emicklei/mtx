@@ -4,21 +4,21 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/emicklei/mtx/core"
+	"github.com/emicklei/mtx"
 )
 
 type Database struct {
-	*core.Named
-	Tables []*core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] `json:"tables"`
+	*mtx.Named
+	Tables []*mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] `json:"tables"`
 }
 
-func (d *Database) Table(name string) *core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] {
-	tab, ok := core.FindByName(d.Tables, name)
+func (d *Database) Table(name string) *mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] {
+	tab, ok := mtx.FindByName(d.Tables, name)
 	if ok {
 		return tab
 	}
-	tab = new(core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions])
-	tab.Named = core.N(tab.Extensions.OwnerClass(), name)
+	tab = new(mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions])
+	tab.Named = mtx.N(tab.Extensions.OwnerClass(), name)
 	d.Tables = append(d.Tables, tab)
 	return tab
 }
@@ -28,7 +28,7 @@ func (d *Database) Doc(doc string) *Database {
 	return d
 }
 
-var _ core.ExtendsTable = TableExtensions{}
+var _ mtx.ExtendsTable = TableExtensions{}
 
 type TableExtensions struct {
 	Interleave any
@@ -38,7 +38,7 @@ func (t TableExtensions) OwnerClass() string { return "spanner.Table" }
 
 func (t TableExtensions) SQLOn(table any, w io.Writer) {
 	// we know its actual type
-	tab := table.(*core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions])
+	tab := table.(*mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions])
 	fmt.Fprintf(w, "CREATE TABLE %s (\n", tab.Name)
 	prims := []string{}
 	for i, each := range tab.Columns {
@@ -65,7 +65,7 @@ func (t TableExtensions) SQLOn(table any, w io.Writer) {
 	// TODO check for Interleave
 }
 
-var _ core.ExtendsColumn = ColumnExtensions{}
+var _ mtx.ExtendsColumn = ColumnExtensions{}
 
 type ColumnExtensions struct {
 	IsComplex bool
@@ -73,7 +73,7 @@ type ColumnExtensions struct {
 
 func (t ColumnExtensions) OwnerClass() string { return "spanner.Column" }
 
-var _ core.ExtendsDatatype = DatatypeExtensions{}
+var _ mtx.ExtendsDatatype = DatatypeExtensions{}
 
 type DatatypeExtensions struct {
 	Max int64 `json:"max,omitempty"`

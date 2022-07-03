@@ -3,7 +3,7 @@ package spanner
 import (
 	"testing"
 
-	"github.com/emicklei/mtx/core"
+	"github.com/emicklei/mtx"
 )
 
 func TestCoreMapping(t *testing.T) {
@@ -16,7 +16,7 @@ func TestCoreMapping(t *testing.T) {
 }
 
 func TestMappedAttributeType(t *testing.T) {
-	st := MappedAttributeType(core.STRING)
+	st := MappedAttributeType(mtx.STRING)
 	if got, want := st, STRING; got != want {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}

@@ -5,17 +5,17 @@ import (
 	"io"
 	"strings"
 
-	"github.com/emicklei/mtx/core"
+	"github.com/emicklei/mtx"
 )
 
 var (
-	UNKNOWN = register(FieldType{Named: core.N("proto.FieldType", "any")}.WithCoreType(core.UNKNOWN))
-	DOUBLE  = register(FieldType{Named: core.N("proto.FieldType", "double")}.WithCoreType(core.DOUBLE))
-	FLOAT   = register(FieldType{Named: core.N("proto.FieldType", "float")}.WithCoreType(core.FLOAT))
-	STRING  = register(FieldType{Named: core.N("proto.FieldType", "string")}.WithCoreType(core.STRING))
-	INT32   = register(FieldType{Named: core.N("proto.FieldType", "int32")}.WithCoreType(core.INTEGER))
-	INT64   = register(FieldType{Named: core.N("proto.FieldType", "int64")}.WithCoreType(core.INTEGER)) //.Set("bits", 64))
-	BOOL    = register(FieldType{Named: core.N("proto.FieldType", "bool")}.WithCoreType(core.BOOLEAN))
+	UNKNOWN = register(FieldType{Named: mtx.N("proto.FieldType", "any")}.WithCoreType(mtx.UNKNOWN))
+	DOUBLE  = register(FieldType{Named: mtx.N("proto.FieldType", "double")}.WithCoreType(mtx.DOUBLE))
+	FLOAT   = register(FieldType{Named: mtx.N("proto.FieldType", "float")}.WithCoreType(mtx.FLOAT))
+	STRING  = register(FieldType{Named: mtx.N("proto.FieldType", "string")}.WithCoreType(mtx.STRING))
+	INT32   = register(FieldType{Named: mtx.N("proto.FieldType", "int32")}.WithCoreType(mtx.INTEGER))
+	INT64   = register(FieldType{Named: mtx.N("proto.FieldType", "int64")}.WithCoreType(mtx.INTEGER)) //.Set("bits", 64))
+	BOOL    = register(FieldType{Named: mtx.N("proto.FieldType", "bool")}.WithCoreType(mtx.BOOLEAN))
 )
 
 var knownTypes = map[string]FieldType{}
@@ -35,9 +35,9 @@ func TypeNamed(name string) FieldType {
 }
 
 type FieldType struct {
-	*core.Named
-	IsCustom      bool               `json:"is_custom"`
-	AttributeType core.AttributeType `json:"-"`
+	*mtx.Named
+	IsCustom      bool              `json:"is_custom"`
+	AttributeType mtx.AttributeType `json:"-"`
 }
 
 func (ft FieldType) SourceOn(w io.Writer) {
@@ -48,7 +48,7 @@ func (ft FieldType) SourceOn(w io.Writer) {
 	fmt.Fprintf(w, "proto.%s", strings.ToUpper(ft.Name))
 }
 
-func (ft FieldType) WithCoreType(at core.AttributeType) FieldType {
+func (ft FieldType) WithCoreType(at mtx.AttributeType) FieldType {
 	ft.AttributeType = at
 	return ft
 }
@@ -59,6 +59,6 @@ func RegisterType(name string) FieldType {
 		return ft
 	}
 	// new!
-	ft := FieldType{Named: core.N("proto.FieldType", name), IsCustom: true}.WithCoreType(core.RegisterType(name))
+	ft := FieldType{Named: mtx.N("proto.FieldType", name), IsCustom: true}.WithCoreType(mtx.RegisterType(name))
 	return register(ft)
 }

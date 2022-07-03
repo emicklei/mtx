@@ -1,4 +1,4 @@
-package core
+package mtx
 
 type Namespace struct {
 	Name     string

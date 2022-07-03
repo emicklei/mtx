@@ -3,14 +3,14 @@ package pg
 import (
 	"io"
 
-	"github.com/emicklei/mtx/core"
+	"github.com/emicklei/mtx"
 )
 
 type Database struct{}
 
-func (d *Database) Table(name string) *core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] {
-	tab := new(core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions])
-	tab.Named = core.N(tab.Extensions.OwnerClass(), name)
+func (d *Database) Table(name string) *mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] {
+	tab := new(mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions])
+	tab.Named = mtx.N(tab.Extensions.OwnerClass(), name)
 	return tab
 }
 

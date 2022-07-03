@@ -3,31 +3,31 @@ package bq
 import (
 	"io"
 
-	"github.com/emicklei/mtx/core"
+	"github.com/emicklei/mtx"
 )
 
-type bqSpace core.Namespace
+type bqSpace mtx.Namespace
 
 func NewNamespace(name string) *bqSpace {
-	return (*bqSpace)(core.NewNamespace(name))
+	return (*bqSpace)(mtx.NewNamespace(name))
 }
 
 func (s bqSpace) Dataset(n string) *Dataset {
-	return &Dataset{Named: core.N("bq.Dataset", n)}
+	return &Dataset{Named: mtx.N("bq.Dataset", n)}
 }
 
 type Dataset struct {
-	*core.Named
-	Tables []*core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] `json:"tables"`
+	*mtx.Named
+	Tables []*mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] `json:"tables"`
 }
 
-func (d *Dataset) Table(name string) *core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] {
-	tab, ok := core.FindByName(d.Tables, name)
+func (d *Dataset) Table(name string) *mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] {
+	tab, ok := mtx.FindByName(d.Tables, name)
 	if ok {
 		return tab
 	}
-	tab = new(core.Table[TableExtensions, ColumnExtensions, DatatypeExtensions])
-	tab.Named = core.N(tab.Extensions.OwnerClass(), name)
+	tab = new(mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions])
+	tab.Named = mtx.N(tab.Extensions.OwnerClass(), name)
 	d.Tables = append(d.Tables, tab)
 	return tab
 }

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/emicklei/mtx/core"
+	"github.com/emicklei/mtx"
 	"github.com/iancoleman/strcase"
 )
 
@@ -14,7 +14,7 @@ type Option struct {
 
 func Package(pkg string) Option { return Option{Package: pkg} }
 
-func Source(e *core.Entity, options ...Option) string {
+func Source(e *mtx.Entity, options ...Option) string {
 	buf := new(bytes.Buffer)
 	if d := e.Documentation; d != "" {
 		fmt.Fprintf(buf, "// %s", e.Documentation)
@@ -28,8 +28,8 @@ func Source(e *core.Entity, options ...Option) string {
 }
 
 // TODO handle nullable
-func goTypeSource(a *core.Attribute) string {
-	if gt, ok := a.Get(core.GoTypeName); ok {
+func goTypeSource(a *mtx.Attribute) string {
+	if gt, ok := a.Get(mtx.GoTypeName); ok {
 		return gt.(string)
 	}
 	typ, ok := attributeTypeToGoTypeMapping[a.AttributeType.Name]
@@ -40,7 +40,7 @@ func goTypeSource(a *core.Attribute) string {
 	return "any"
 }
 
-func goFieldName(a *core.Attribute) string {
+func goFieldName(a *mtx.Attribute) string {
 	// TODO check override
 	return strcase.ToCamel(a.Name)
 }

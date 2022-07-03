@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/emicklei/mtx/core"
+	"github.com/emicklei/mtx"
 )
 
 type Package struct {
-	*core.Named
+	*mtx.Named
 	Messages []*Message `json:"messages"`
 }
 
 func NewPackage(name string) *Package {
-	return &Package{Named: core.N("proto.Package", name)}
+	return &Package{Named: mtx.N("proto.Package", name)}
 }
 
 func (p *Package) SourceOn(w io.Writer) {
@@ -26,16 +26,16 @@ func (p *Package) SourceOn(w io.Writer) {
 }
 
 type Message struct {
-	*core.Named
+	*mtx.Named
 	Fields []*Field `json:"fields"`
 }
 
 func (p *Package) Message(name string) *Message {
-	m, ok := core.FindByName(p.Messages, name)
+	m, ok := mtx.FindByName(p.Messages, name)
 	if ok {
 		return m
 	}
-	m = &Message{Named: core.N("proto.Message", name)}
+	m = &Message{Named: mtx.N("proto.Message", name)}
 	p.Messages = append(p.Messages, m)
 	return m
 }
@@ -55,11 +55,11 @@ func (m *Message) SourceOn(w io.Writer) {
 }
 
 func (m *Message) Field(name string) *Field {
-	f, ok := core.FindByName(m.Fields, name)
+	f, ok := mtx.FindByName(m.Fields, name)
 	if ok {
 		return f
 	}
-	f = &Field{Named: core.N("proto.Field", name)}
+	f = &Field{Named: mtx.N("proto.Field", name)}
 	m.Fields = append(m.Fields, f)
 	return f
 }
@@ -84,7 +84,7 @@ func (m *Message) Doc(d string) *Message {
 }
 
 type Field struct {
-	*core.Named
+	*mtx.Named
 	FieldType      FieldType `json:"type"`
 	Repeated       bool
 	Optional       bool

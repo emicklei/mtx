@@ -1,4 +1,4 @@
-package core
+package mtx
 
 type AttributeType struct {
 	Name string `json:"name"`

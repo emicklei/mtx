@@ -5,10 +5,10 @@ package spanner
 import (
 	"fmt"
 
-	"github.com/emicklei/mtx/core"
+	"github.com/emicklei/mtx"
 )
 
-type dtType = core.Datatype[DatatypeExtensions]
+type dtType = mtx.Datatype[DatatypeExtensions]
 
 var knownTypes = map[string]dtType{}
 
@@ -18,7 +18,7 @@ func register(dt dtType) dtType {
 }
 
 // MappedAttributeType returns the best matching spanner type.
-func MappedAttributeType(at core.AttributeType) dtType {
+func MappedAttributeType(at mtx.AttributeType) dtType {
 	for _, each := range knownTypes {
 		if each.AttributeType.Equals(at) {
 			return each
@@ -28,28 +28,28 @@ func MappedAttributeType(at core.AttributeType) dtType {
 	return STRING
 }
 
-func simple(typename string, at core.AttributeType) dtType {
+func simple(typename string, at mtx.AttributeType) dtType {
 	return register(dtType{
-		Named: core.N("spanner.Datatype", typename),
+		Named: mtx.N("spanner.Datatype", typename),
 	}.WithCoreType(at))
 }
 
 var BigInteger = register(dtType{
-	Named:      core.N("spanner.Datatype", "BIGINT"),
+	Named:      mtx.N("spanner.Datatype", "BIGINT"),
 	Extensions: DatatypeExtensions{Max: 1024},
-}.WithCoreType(core.INTEGER))
+}.WithCoreType(mtx.INTEGER))
 
 var (
-	UNKNOWN   = simple("ANY", core.UNKNOWN)
-	BOOL      = simple("BOOL", core.BOOLEAN)
-	BYTES     = simple("BYTES(MAX)", core.BYTES)
-	DATE      = simple("DATE", core.DATE)
-	JSON      = simple("JSON", core.JSON)
-	TIMESTAMP = simple("TIMESTAMP", core.TIMESTAMP)
-	INT64     = simple("INT64", core.INTEGER)
-	FLOAT64   = simple("FLOAT64", core.FLOAT)
-	NUMERIC   = simple("NUMERIC", core.DECIMAL) // suitable for financial calculations
-	STRING    = simple("STRING(MAX)", core.STRING)
+	UNKNOWN   = simple("ANY", mtx.UNKNOWN)
+	BOOL      = simple("BOOL", mtx.BOOLEAN)
+	BYTES     = simple("BYTES(MAX)", mtx.BYTES)
+	DATE      = simple("DATE", mtx.DATE)
+	JSON      = simple("JSON", mtx.JSON)
+	TIMESTAMP = simple("TIMESTAMP", mtx.TIMESTAMP)
+	INT64     = simple("INT64", mtx.INTEGER)
+	FLOAT64   = simple("FLOAT64", mtx.FLOAT)
+	NUMERIC   = simple("NUMERIC", mtx.DECIMAL) // suitable for financial calculations
+	STRING    = simple("STRING(MAX)", mtx.STRING)
 )
 
 func init() {
@@ -58,13 +58,13 @@ func init() {
 
 func String(max int) dtType {
 	return dtType{
-		Named:      core.N("spanner.Datatype", fmt.Sprintf("STRING(%d)", max)),
+		Named:      mtx.N("spanner.Datatype", fmt.Sprintf("STRING(%d)", max)),
 		Extensions: DatatypeExtensions{Max: int64(max)},
-	}.WithCoreType(core.STRING)
+	}.WithCoreType(mtx.STRING)
 }
 
 func Array(elementType dtType) dtType {
 	return dtType{
-		Named: core.N("spanner.Datatype", fmt.Sprintf("ARRAY(%s)", elementType.Name)),
-	}.WithCoreType(core.Array(elementType.AttributeType))
+		Named: mtx.N("spanner.Datatype", fmt.Sprintf("ARRAY(%s)", elementType.Name)),
+	}.WithCoreType(mtx.Array(elementType.AttributeType))
 }

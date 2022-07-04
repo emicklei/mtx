@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"strings"
 )
 
 type ExtendsTable interface {
@@ -150,7 +151,15 @@ func (d Datatype[D]) Set(key string, value any) Datatype[D] {
 	return d
 }
 
-func (d Datatype[D]) WithCoreType(at AttributeType) Datatype[D] {
+func (d Datatype[D]) WithAttributeType(at AttributeType) Datatype[D] {
 	d.AttributeType = at
 	return d
+}
+
+func (d Datatype[D]) AttrType() AttributeType { return d.AttributeType }
+
+func (d Datatype[D]) SourceOn(w io.Writer) {
+	pkg := d.Class[0:strings.Index(d.Class, ".")]
+	// TODO check for custom
+	fmt.Fprintf(w, "%s.%s", pkg, strings.ToUpper(d.Name))
 }

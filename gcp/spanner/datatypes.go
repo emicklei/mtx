@@ -8,63 +8,52 @@ import (
 	"github.com/emicklei/mtx"
 )
 
-type dtType = mtx.Datatype[DatatypeExtensions]
+type DType = mtx.Datatype[DatatypeExtensions]
 
-var knownTypes = map[string]dtType{}
+var registry = mtx.NewTypeRegistry[DType]()
 
-func register(dt dtType) dtType {
-	knownTypes[dt.Name] = dt
-	return dt
+func register(typename string, at mtx.AttributeType) DType {
+	dt := DType{
+		Named: mtx.N("pg.Datatype", typename),
+	}.WithAttributeType(at)
+	return registry.Add(dt)
 }
 
-// MappedAttributeType returns the best matching spanner type.
-func MappedAttributeType(at mtx.AttributeType) dtType {
-	for _, each := range knownTypes {
-		if each.AttributeType.Equals(at) {
-			return each
-		}
-	}
-	// TODO specials
-	return STRING
+func MappedAttributeType(at mtx.AttributeType) DType {
+	return registry.MappedAttributeType(at)
 }
 
-func simple(typename string, at mtx.AttributeType) dtType {
-	return register(dtType{
-		Named: mtx.N("spanner.Datatype", typename),
-	}.WithCoreType(at))
-}
-
-var BigInteger = register(dtType{
+var BigInteger = DType{
 	Named:      mtx.N("spanner.Datatype", "BIGINT"),
 	Extensions: DatatypeExtensions{Max: 1024},
-}.WithCoreType(mtx.INTEGER))
+}.WithAttributeType(mtx.INTEGER)
 
 var (
-	UNKNOWN   = simple("ANY", mtx.UNKNOWN)
-	BOOL      = simple("BOOL", mtx.BOOLEAN)
-	BYTES     = simple("BYTES(MAX)", mtx.BYTES)
-	DATE      = simple("DATE", mtx.DATE)
-	JSON      = simple("JSON", mtx.JSON)
-	TIMESTAMP = simple("TIMESTAMP", mtx.TIMESTAMP)
-	INT64     = simple("INT64", mtx.INTEGER)
-	FLOAT64   = simple("FLOAT64", mtx.FLOAT)
-	NUMERIC   = simple("NUMERIC", mtx.DECIMAL) // suitable for financial calculations
-	STRING    = simple("STRING(MAX)", mtx.STRING)
+	UNKNOWN   = register("ANY", mtx.UNKNOWN)
+	BOOL      = register("BOOL", mtx.BOOLEAN)
+	BYTES     = register("BYTES(MAX)", mtx.BYTES)
+	DATE      = register("DATE", mtx.DATE)
+	JSON      = register("JSON", mtx.JSON)
+	TIMESTAMP = register("TIMESTAMP", mtx.TIMESTAMP)
+	INT64     = register("INT64", mtx.INTEGER)
+	FLOAT64   = register("FLOAT64", mtx.FLOAT)
+	NUMERIC   = register("NUMERIC", mtx.DECIMAL) // suitable for financial calculations
+	STRING    = register("STRING(MAX)", mtx.STRING)
 )
 
 func init() {
 	INT64.Set("bits", "64")
 }
 
-func String(max int) dtType {
-	return dtType{
+func String(max int) DType {
+	return DType{
 		Named:      mtx.N("spanner.Datatype", fmt.Sprintf("STRING(%d)", max)),
 		Extensions: DatatypeExtensions{Max: int64(max)},
-	}.WithCoreType(mtx.STRING)
+	}.WithAttributeType(mtx.STRING)
 }
 
-func Array(elementType dtType) dtType {
-	return dtType{
+func Array(elementType DType) DType {
+	return DType{
 		Named: mtx.N("spanner.Datatype", fmt.Sprintf("ARRAY(%s)", elementType.Name)),
-	}.WithCoreType(mtx.Array(elementType.AttributeType))
+	}.WithAttributeType(mtx.Array(elementType.AttributeType))
 }

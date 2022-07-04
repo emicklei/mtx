@@ -5,11 +5,11 @@ import (
 	"io"
 )
 
-type HasName interface{ HasName(name string) bool }
+type HasName interface{ GetName() string }
 
 func FindByName[T HasName](elements []*T, name string) (*T, bool) {
 	for _, each := range elements {
-		if (*each).HasName(name) {
+		if (*each).GetName() == name {
 			return each, true
 		}
 	}
@@ -24,8 +24,8 @@ type Named struct {
 	Documentation string         `json:"documentation,omitempty"`
 }
 
-func (n Named) HasName(v string) bool {
-	return n.Name == v
+func (n Named) GetName() string {
+	return n.Name
 }
 
 func (n Named) SourceOn(w io.Writer) {

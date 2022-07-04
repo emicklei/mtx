@@ -23,6 +23,14 @@ func MappedAttributeType(at mtx.AttributeType) DType {
 	return registry.MappedAttributeType(at)
 }
 
+func Type(name string) DType {
+	dt, ok := registry.TypeNamed(name)
+	if ok {
+		return dt
+	}
+	return register(name, mtx.UNKNOWN)
+}
+
 var BigInteger = DType{
 	Named:      mtx.N("spanner.Datatype", "BIGINT"),
 	Extensions: DatatypeExtensions{Max: 1024},

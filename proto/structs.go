@@ -86,9 +86,9 @@ func (m *Message) Doc(d string) *Message {
 type Field struct {
 	*mtx.Named
 	FieldType      DType `json:"type"`
-	Repeated       bool
-	Optional       bool
-	SequenceNumber int `json:"nr"` // zero means unknown
+	Repeated       bool  `json:"repeated,omitempty"`
+	Optional       bool  `json:"optional,omitempty"`
+	SequenceNumber int   `json:"nr"` // zero means unknown
 }
 
 func (f *Field) SourceOn(w io.Writer) {

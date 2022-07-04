@@ -8,9 +8,10 @@ type DType = mtx.Datatype[DatatypeExtensions]
 
 var registry = mtx.NewTypeRegistry[DType]()
 
-func register(typename string, at mtx.AttributeType) DType {
+func register(typename string, at mtx.AttributeType, isUserDefined bool) DType {
 	dt := DType{
-		Named: mtx.N("proto.Datatype", typename),
+		Named:         mtx.N("proto.Datatype", typename),
+		IsUserDefined: isUserDefined,
 	}.WithAttributeType(at)
 	return registry.Add(dt)
 }
@@ -20,19 +21,27 @@ func TypeNamed(name string) DType {
 	if ok {
 		return dt
 	}
-	return register(name, mtx.UNKNOWN)
+	return register(name, mtx.UNKNOWN, true)
 }
 
 func MappedAttributeType(at mtx.AttributeType) DType {
 	return registry.MappedAttributeType(at)
 }
 
+func Type(name string) DType {
+	dt, ok := registry.TypeNamed(name)
+	if ok {
+		return dt
+	}
+	return register(name, mtx.UNKNOWN, true)
+}
+
 var (
-	UNKNOWN = register("any", mtx.UNKNOWN)
+	UNKNOWN = register("any", mtx.UNKNOWN, true)
 	// DOUBLE  = register(FieldType{Named: mtx.N("proto.FieldType", "double")}.WithAttributeType(mtx.DOUBLE))
 	// FLOAT   = register(FieldType{Named: mtx.N("proto.FieldType", "float")}.WithAttributeType(mtx.FLOAT))
-	// STRING  = register(FieldType{Named: mtx.N("proto.FieldType", "string")}.WithAttributeType(mtx.STRING))
-	INT32 = register("int32", mtx.INTEGER)
+	STRING = register("string", mtx.STRING, false)
+	INT32  = register("int32", mtx.INTEGER, false)
 	// INT64   = register(FieldType{Named: mtx.N("proto.FieldType", "int64")}.WithAttributeType(mtx.INTEGER)) //.Set("bits", 64))
-	// BOOL    = register(FieldType{Named: mtx.N("proto.FieldType", "bool")}.WithAttributeType(mtx.BOOLEAN))
+	BOOL = register("bool", mtx.BOOLEAN, false)
 )

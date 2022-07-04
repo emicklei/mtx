@@ -142,7 +142,8 @@ func (c *Column[C, D]) Type(dt Datatype[D]) *Column[C, D] {
 type Datatype[D ExtendsDatatype] struct {
 	*Named
 	AttributeType AttributeType `json:"-"`
-	Extensions    D             `json:"ext"`
+	IsUserDefined bool          `json:"is_user_defined,omitempty"`
+	Extensions    D             `json:"ext,omitempty"`
 }
 
 // Set overrides Named.Set to preserve return type
@@ -160,6 +161,9 @@ func (d Datatype[D]) AttrType() AttributeType { return d.AttributeType }
 
 func (d Datatype[D]) SourceOn(w io.Writer) {
 	pkg := d.Class[0:strings.Index(d.Class, ".")]
-	// TODO check for custom
+	if d.IsUserDefined {
+		fmt.Fprintf(w, "%s.Type(\"%s\")", pkg, d.Name)
+		return
+	}
 	fmt.Fprintf(w, "%s.%s", pkg, strings.ToUpper(d.Name))
 }

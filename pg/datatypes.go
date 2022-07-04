@@ -4,6 +4,7 @@ import (
 	"github.com/emicklei/mtx"
 )
 
+// BEGIN: copy from datatypes.go.template
 type DType = mtx.Datatype[DatatypeExtensions]
 
 var registry = mtx.NewTypeRegistry[DType]()
@@ -26,6 +27,8 @@ func Type(name string) DType {
 	}
 	return register(name, mtx.UNKNOWN)
 }
+
+// END: copy from datatypes.go.template
 
 var (
 	UNKNOWN = register("ANY", mtx.UNKNOWN)

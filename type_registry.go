@@ -1,5 +1,10 @@
 package mtx
 
+const (
+	StandardType    = false
+	UserDefinedType = true
+)
+
 type TypeRegistry[T HasAttributeType] struct {
 	knownTypes map[string]T
 }

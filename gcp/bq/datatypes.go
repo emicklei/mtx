@@ -2,7 +2,32 @@ package bq
 
 import "github.com/emicklei/mtx"
 
+// BEGIN: copy from datatypes.go.template
 type DType = mtx.Datatype[DatatypeExtensions]
+
+var registry = mtx.NewTypeRegistry[DType]()
+
+func register(typename string, at mtx.AttributeType, isUserDefined bool) DType {
+	dt := DType{
+		Named:         mtx.N("bq.Datatype", typename),
+		IsUserDefined: isUserDefined,
+	}.WithAttributeType(at)
+	return registry.Add(dt)
+}
+
+func MappedAttributeType(at mtx.AttributeType) DType {
+	return registry.MappedAttributeType(at)
+}
+
+func Type(name string) DType {
+	dt, ok := registry.TypeNamed(name)
+	if ok {
+		return dt
+	}
+	return register(name, mtx.UNKNOWN, true)
+}
+
+// END: copy from datatypes.go.template
 
 var BYTES = DType{Named: mtx.N("bq.Datatype", "BYTES")}
 
@@ -15,18 +40,18 @@ func MaxBytes(max int64) DType {
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type
 // YYYY-[M]M-[D]D
-var DATE = DType{Named: mtx.N("bq.Datatype", "DATE")}
+var DATE = register("DATE", mtx.DATE, mtx.StandardType)
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type
 // YYYY-[M]M-[D]D[( |T)[H]H:[M]M:[S]S[.F]]
-var DATETIME = DType{Named: mtx.N("bq.Datatype", "DATETIME")}
+var DATETIME = register("DATETIME", mtx.DATETIME, mtx.StandardType)
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#geography_type
-var GEOGRAPHY = DType{Named: mtx.N("bq.Datatype", "GEOGRAPHY")}
+var GEOGRAPHY = register("GEOGRAPHY", mtx.STRING, mtx.StandardType)
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#interval_type
 // [sign]Y-M [sign]D [sign]H:M:S[.F]
-var INTERVAL = DType{Named: mtx.N("bq.Datatype", "INTERVAL")}
+var INTERVAL = register("INTERVAL", mtx.UNKNOWN, mtx.UserDefinedType)
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_type
 var INT64 = DType{Named: mtx.N("bq.Datatype", "INT64")}

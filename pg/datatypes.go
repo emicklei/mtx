@@ -32,5 +32,6 @@ func Type(name string) DType {
 
 var (
 	UNKNOWN = register("ANY", mtx.UNKNOWN)
-	STRING  = register("string", mtx.STRING)
+	STRING  = register("pg.Text", mtx.STRING)
+	DATE    = register("pg.Date", mtx.DATE)
 )

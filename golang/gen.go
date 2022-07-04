@@ -17,7 +17,7 @@ func Package(pkg string) Option { return Option{Package: pkg} }
 func Source(e *mtx.Entity, options ...Option) string {
 	buf := new(bytes.Buffer)
 	if d := e.Documentation; d != "" {
-		fmt.Fprintf(buf, "// %s", e.Documentation)
+		fmt.Fprintf(buf, "// %s\n", e.Documentation)
 	}
 	fmt.Fprintf(buf, "type %s struct {\n", e.Name)
 	for _, each := range e.Attributes {

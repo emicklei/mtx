@@ -84,6 +84,7 @@ func (t *Table[T, C, D]) ToEntity() *Entity {
 	if n, ok := t.Get(EntityName); ok {
 		m.Named.Name = n.(string)
 	}
+	m.Doc(t.Documentation)
 	for _, each := range t.Columns {
 		attr := m.Attribute(each.Name)
 		// see if property overrides this

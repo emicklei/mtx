@@ -54,6 +54,19 @@ func (m *Message) SourceOn(w io.Writer) {
 	}
 }
 
+func (m *Message) ToEntity() *mtx.Entity {
+	n := m.Name
+	if s, ok := m.Get(mtx.GoTypeName); ok {
+		n = s.(string)
+	}
+	e := mtx.NewEntity(n)
+	e.Doc(m.Documentation)
+	for _, each := range m.Fields {
+		e.A(each.Name, each.FieldType.AttributeType, each.Documentation)
+	}
+	return e
+}
+
 func (m *Message) Field(name string) *Field {
 	f, ok := mtx.FindByName(m.Fields, name)
 	if ok {

@@ -1,0 +1,5 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/emicklei/xProjects/mtx'
+go test -cover -v ./...
+make: Leaving directory `/Users/emicklei/xProjects/mtx'
+ 

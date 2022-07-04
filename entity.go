@@ -21,9 +21,18 @@ func NewEntity(name string) *Entity {
 	return &Entity{Named: N(EntityClass, name)}
 }
 
+func (e *Entity) A(name string, typ AttributeType, doc string) *Attribute {
+	return e.Attribute(name).Type(typ).Doc(doc)
+}
+
+func (e *Entity) Doc(doc string) *Entity {
+	e.Documentation = doc
+	return e
+}
+
 // if modetype is given then create the attribute if missing
-func (m *Entity) Attribute(name string) *Attribute {
-	attr, ok := FindByName(m.Attributes, name)
+func (e *Entity) Attribute(name string) *Attribute {
+	attr, ok := FindByName(e.Attributes, name)
 	if ok {
 		return attr
 	}
@@ -31,8 +40,12 @@ func (m *Entity) Attribute(name string) *Attribute {
 		IsRequired: true, // required by default
 	}
 	attr.Named = N(EntityAttributeClass, name)
-	m.Attributes = append(m.Attributes, attr)
+	e.Attributes = append(e.Attributes, attr)
 	return attr
+}
+
+// SourceOn writes Go source to recreate the receiver.
+func (e *Entity) SourceOn(w io.Writer) {
 }
 
 type Attribute struct {
@@ -56,6 +69,7 @@ func (a *Attribute) Optional() *Attribute {
 	return a
 }
 
+// SourceOn writes Go source to recreate the receiver.
 func (a *Attribute) SourceOn(w io.Writer) {
 	fmt.Fprintf(w, "ent.Attribute(\"%s\")", a.Name)
 }

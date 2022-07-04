@@ -14,12 +14,12 @@ func ToJSON(what any) string {
 	return buf.String()
 }
 
-func ToSource(what SourceWriter) string {
+func ToSource(what SourceWriteable) string {
 	buf := new(bytes.Buffer)
 	what.SourceOn(buf)
 	return buf.String()
 }
 
-type SourceWriter interface {
+type SourceWriteable interface {
 	SourceOn(io.Writer)
 }

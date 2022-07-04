@@ -15,6 +15,9 @@ func TestPostgresTable(t *testing.T) {
 	tab.C("birthDay", pg.DATE, "day of birth")
 	t.Log("\n", mtx.ToJSON(tab))
 
+	// create SQL to create table
+	t.Log("\n", tab.SQL())
+
 	// create entity from table
 	e := tab.ToEntity()
 	t.Log("\n", mtx.ToJSON(e))

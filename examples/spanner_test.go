@@ -11,8 +11,11 @@ import (
 func TestSpannerTable(t *testing.T) {
 	db := new(spanner.Database)
 	tab := db.Table("my_table").Doc("Awesome table")
-	tab.C("id", spanner.INT64, "identifier of a row")
+	tab.C("id", spanner.INT64, "identifier of a row").Primary()
 	t.Log("\n", mtx.ToJSON(tab))
+
+	// create SQL to create table
+	t.Log("\n", tab.SQL())
 
 	// create entity from spanner table
 	e := tab.ToEntity()

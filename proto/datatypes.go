@@ -33,10 +33,10 @@ func Type(name string) DType {
 
 var (
 	UNKNOWN = register("any", mtx.UNKNOWN, mtx.UserDefinedType)
-	// DOUBLE  = register(FieldType{Named: mtx.N("proto.FieldType", "double")}.WithAttributeType(mtx.DOUBLE))
-	// FLOAT   = register(FieldType{Named: mtx.N("proto.FieldType", "float")}.WithAttributeType(mtx.FLOAT))
-	STRING = register("string", mtx.STRING, mtx.StandardType)
-	INT32  = register("int32", mtx.INTEGER, mtx.StandardType)
-	// INT64   = register(FieldType{Named: mtx.N("proto.FieldType", "int64")}.WithAttributeType(mtx.INTEGER)) //.Set("bits", 64))
-	BOOL = register("bool", mtx.BOOLEAN, mtx.StandardType)
+	DOUBLE  = register("double", mtx.DOUBLE, mtx.StandardType)
+	FLOAT   = register("float", mtx.FLOAT, mtx.StandardType)
+	STRING  = register("string", mtx.STRING, mtx.StandardType)
+	INT32   = register("int32", mtx.INTEGER, mtx.StandardType)
+	INT64   = register("int64", mtx.INTEGER, mtx.StandardType) //.Set("bits", 64))
+	BOOL    = register("bool", mtx.BOOLEAN, mtx.StandardType)
 )

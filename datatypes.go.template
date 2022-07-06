@@ -11,6 +11,9 @@ func register(typename string, at mtx.AttributeType, isUserDefined bool) DType {
 	return registry.Add(dt)
 }
 
+func RegisterType(typename string, at mtx.AttributeType) DType {
+	return register(typename, at, mtx.UserDefinedType)
+}
 
 func MappedAttributeType(at mtx.AttributeType) DType {
 	return registry.MappedAttributeType(at)

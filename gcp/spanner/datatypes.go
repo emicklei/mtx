@@ -21,6 +21,11 @@ func register(typename string, at mtx.AttributeType, isUserDefined bool) DType {
 	return registry.Add(dt)
 }
 
+func RegisterType(typename string, at mtx.AttributeType) DType {
+	return register(typename, at, mtx.UserDefinedType)
+}
+
+// Returns the best matching spanner type for the attribute type
 func MappedAttributeType(at mtx.AttributeType) DType {
 	return registry.MappedAttributeType(at)
 }
@@ -35,13 +40,8 @@ func Type(name string) DType {
 
 // END: copy from datatypes.go.template
 
-var BigInteger = DType{
-	Named:      mtx.N("spanner.Datatype", "BIGINT"),
-	Extensions: DatatypeExtensions{Max: 1024},
-}.WithAttributeType(mtx.INTEGER)
-
+// these are documented available types
 var (
-	UNKNOWN   = register("ANY", mtx.UNKNOWN, mtx.UserDefinedType)
 	BOOL      = register("BOOL", mtx.BOOLEAN, mtx.StandardType)
 	BYTES     = register("BYTES(MAX)", mtx.BYTES, mtx.StandardType)
 	DATE      = register("DATE", mtx.DATE, mtx.StandardType)
@@ -55,7 +55,18 @@ var (
 
 func init() {
 	INT64.Set("bits", "64")
+	// define encoding for remaining standard types
+	registry.EncodeAs(mtx.DURATION, STRING)
+	registry.EncodeAs(mtx.UUID, String(32))
+	//registry.EncodeAs(mtx.DATERANGE, Array(DATE))
 }
+
+var UNKNOWN = register("ANY", mtx.UNKNOWN, mtx.UserDefinedType)
+
+var BigInteger = DType{
+	Named:      mtx.N("spanner.Datatype", "BIGINT"),
+	Extensions: DatatypeExtensions{Max: 1024},
+}.WithAttributeType(mtx.INTEGER)
 
 func String(max int) DType {
 	return DType{

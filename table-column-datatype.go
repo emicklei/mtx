@@ -168,3 +168,12 @@ func (d Datatype[D]) SourceOn(w io.Writer) {
 	}
 	fmt.Fprintf(w, "%s.%s", pkg, strings.ToUpper(d.Name))
 }
+
+func (d Datatype[D]) EncodedFrom(at AttributeType) Datatype[D] {
+	d.AttributeType = at
+	return d
+}
+
+func (d Datatype[D]) String() string {
+	return fmt.Sprintf("%s (%s) : %T", d.Name, d.Class, d)
+}

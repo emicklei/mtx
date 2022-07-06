@@ -19,11 +19,18 @@ var (
 	FLOAT     = AttributeType{Name: "float"}
 	DOUBLE    = AttributeType{Name: "double"}
 	DECIMAL   = AttributeType{Name: "decimal"}
-	JSON      = AttributeType{Name: "JSON"}
+	JSON      = AttributeType{Name: "json"}
+	DURATION  = AttributeType{Name: "duration"} // y,m,d,h,m,s
+	UUID      = AttributeType{Name: "uuid"}
 )
 
 func Array(elementType AttributeType) AttributeType {
 	return AttributeType{Name: "array", ElementType: &elementType}
+}
+
+func (a AttributeType) String() string {
+	return a.Name
+	// TODO array elementtype
 }
 
 func (a AttributeType) Equals(o AttributeType) bool {

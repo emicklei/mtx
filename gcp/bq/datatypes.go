@@ -15,6 +15,10 @@ func register(typename string, at mtx.AttributeType, isUserDefined bool) DType {
 	return registry.Add(dt)
 }
 
+func RegisterType(typename string, at mtx.AttributeType) DType {
+	return register(typename, at, mtx.UserDefinedType)
+}
+
 func MappedAttributeType(at mtx.AttributeType) DType {
 	return registry.MappedAttributeType(at)
 }
@@ -24,7 +28,7 @@ func Type(name string) DType {
 	if ok {
 		return dt
 	}
-	return register(name, mtx.UNKNOWN, true)
+	return register(name, mtx.UNKNOWN, mtx.UserDefinedType)
 }
 
 // END: copy from datatypes.go.template

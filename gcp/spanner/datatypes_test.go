@@ -20,4 +20,10 @@ func TestMappedAttributeType(t *testing.T) {
 	if got, want := st, STRING; got != want {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
+	{
+		st := MappedAttributeType(mtx.JSON)
+		if got, want := st, JSON; got != want {
+			t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+		}
+	}
 }

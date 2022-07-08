@@ -35,9 +35,24 @@ func Type(name string) DType {
 
 // END: copy from datatypes.go.template
 
+// https://www.postgresql.org/docs/current/datatype.html
 var (
-	UNKNOWN = register("ANY", mtx.UNKNOWN, mtx.StandardType)
-	STRING  = register("text", mtx.STRING, mtx.StandardType)
-	DATE    = register("date", mtx.DATE, mtx.StandardType)
-	BYTES   = register("bytes", mtx.BYTES, mtx.StandardType)
+	UNKNOWN          = register("ANY", mtx.UNKNOWN, mtx.StandardType)
+	BIGINT           = register("bigint", mtx.INTEGER, mtx.StandardType)
+	BOOLEAN          = register("boolean", mtx.BOOLEAN, mtx.StandardType)
+	BYTEA            = register("bytea", mtx.BYTES, mtx.StandardType)
+	DATE             = register("date", mtx.DATE, mtx.StandardType)
+	DOUBLE_PRECISION = register("double precision", mtx.DOUBLE, mtx.StandardType)
+	FLOAT8           = DOUBLE_PRECISION
+	INTEGER          = register("integer", mtx.DOUBLE, mtx.StandardType)
+	INT              = INTEGER
+	INT4             = INTEGER
+	JSON             = register("json", mtx.JSON, mtx.StandardType)
+	JSONB            = register("jsonb", mtx.UNKNOWN, mtx.StandardType)
+	//INTERVAL         = register("interval", mtx.INTERVAL, mtx.StandardType)
+	// TODO
+	TEXT       = register("text", mtx.STRING, mtx.StandardType)
+	TIMESTAMP  = register("timestamp", mtx.DATETIME, mtx.StandardType)
+	TIMESTAMPZ = register("timestampz", mtx.TIMESTAMP, mtx.StandardType)
+	UUID       = register("uuid", mtx.UUID, mtx.StandardType)
 )

@@ -25,3 +25,11 @@ func TestOneToManyRelation(t *testing.T) {
 	r.Many("children")
 	t.Log("\n", mtx.ToJSON(p))
 }
+
+func TestManyToManyRelation(t *testing.T) {
+	p := mtx.NewPackage("persons")
+	e := p.Entity("Person")
+	r := p.ManyToMany(e, e)
+	r.Name = "followers"
+	t.Log("\n", mtx.ToJSON(p))
+}

@@ -6,13 +6,7 @@ import (
 	"github.com/emicklei/mtx"
 )
 
-type bqSpace mtx.Namespace
-
-func NewNamespace(name string) *bqSpace {
-	return (*bqSpace)(mtx.NewNamespace(name))
-}
-
-func (s bqSpace) Dataset(n string) *Dataset {
+func NewDataset(n string) *Dataset {
 	return &Dataset{Named: mtx.N("bq.Dataset", n)}
 }
 

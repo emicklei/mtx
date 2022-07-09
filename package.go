@@ -7,7 +7,6 @@ import (
 
 type Package struct {
 	*Named
-	pkg       *Package
 	Entities  []*Entity
 	Relations []any
 }

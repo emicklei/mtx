@@ -11,7 +11,7 @@ import (
 func TestPostgresTable(t *testing.T) {
 	db := new(pg.Database)
 	tab := db.Table("persons")
-	tab.C("id", pg.STRING, "identifier of a person")
+	tab.C("id", pg.TEXT, "identifier of a person")
 	tab.C("birthDay", pg.DATE, "day of birth")
 	t.Log("\n", mtx.ToJSON(tab))
 

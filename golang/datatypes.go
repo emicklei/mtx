@@ -11,5 +11,6 @@ var attributeTypeToGoTypeMapping = map[string]string{
 	mtx.FLOAT.Name:     "float32",
 	mtx.DOUBLE.Name:    "float64",
 	mtx.STRING.Name:    "string",
+	mtx.UUID.Name:      "uuid.UUID",
 	//mtx.DECIMAL: TODO
 }

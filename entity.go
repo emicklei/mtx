@@ -14,6 +14,7 @@ const (
 
 type Entity struct {
 	*Named
+	pkg        *Package
 	Attributes []*Attribute `json:"attributes"`
 }
 

@@ -8,10 +8,20 @@ import (
 )
 
 func TestPersonModel(t *testing.T) {
-	e := mtx.NewEntity("Person").Doc("A human")
+	p := mtx.NewPackage("persons")
+	e := p.Entity("Person").Doc("A human")
 	e.A("firstName", mtx.STRING, "calling name")
 	t.Log("\n", mtx.ToJSON(e))
 
 	// create Go struct source from entity
 	t.Log("\n", golang.Source(e))
+}
+
+func TestOneToManyRelation(t *testing.T) {
+	p := mtx.NewPackage("persons")
+	e := p.Entity("Person")
+	r := p.OneToMany(e, e)
+	r.One("parent")
+	r.Many("children")
+	t.Log("\n", mtx.ToJSON(p))
 }

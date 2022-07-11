@@ -31,7 +31,6 @@ func (e *Entity) Doc(doc string) *Entity {
 	return e
 }
 
-// if modetype is given then create the attribute if missing
 func (e *Entity) Attribute(name string) *Attribute {
 	attr, ok := FindByName(e.Attributes, name)
 	if ok {

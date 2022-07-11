@@ -21,8 +21,8 @@ func TestOneToManyRelation(t *testing.T) {
 	p := mtx.NewPackage("persons")
 	e := p.Entity("Person")
 	r := p.OneToMany(e, e)
-	r.One("parent")
-	r.Many("children")
+	r.Left("parent")
+	r.Right("children")
 	t.Log("\n", mtx.ToJSON(p))
 }
 

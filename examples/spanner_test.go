@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"os"
 	"testing"
 
 	"github.com/emicklei/mtx"
@@ -23,4 +25,15 @@ func TestSpannerTable(t *testing.T) {
 
 	// create Go struct source from entity
 	t.Log("\n", golang.Source(e))
+
+	// write to file, read it back
+	js := mtx.ToJSON(db)
+	fn := "TestSpannerTable.json"
+	os.WriteFile(fn, []byte(js), os.ModePerm)
+	defer os.Remove(fn)
+	data, _ := os.ReadFile(fn)
+	db2 := new(spanner.Database)
+	json.Unmarshal(data, db2)
+	t.Log("\n", mtx.ToJSON(db))
+
 }

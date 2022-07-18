@@ -11,7 +11,7 @@ import (
 )
 
 func TestSpannerTable(t *testing.T) {
-	db := new(spanner.Database)
+	db := spanner.NewDatabase("testdb")
 	tab := db.Table("my_table").Doc("Awesome table")
 	tab.C("id", spanner.INT64, "identifier of a row").Primary()
 	t.Log("\n", mtx.ToJSON(tab))
@@ -32,7 +32,7 @@ func TestSpannerTable(t *testing.T) {
 	os.WriteFile(fn, []byte(js), os.ModePerm)
 	defer os.Remove(fn)
 	data, _ := os.ReadFile(fn)
-	db2 := new(spanner.Database)
+	db2 := spanner.NewDatabase("testdb2")
 	json.Unmarshal(data, db2)
 	t.Log("\n", mtx.ToJSON(db))
 

@@ -9,48 +9,42 @@ import (
 )
 
 // BEGIN: copy from datatypes.go.template
-type DType = mtx.Datatype[DatatypeExtensions]
 
-var registry = mtx.NewTypeRegistry[DType]()
+var registry = mtx.NewTypeRegistry("spanner.Datatype")
 
-func register(typename string, at mtx.AttributeType, isUserDefined bool) DType {
-	dt := DType{
-		Named:         mtx.N("spanner.Datatype", typename),
-		IsUserDefined: isUserDefined,
-	}.WithAttributeType(at)
-	return registry.Add(dt)
+func register(typename string, at mtx.AttributeType) mtx.Datatype {
+	return registry.Register(typename, at, false)
 }
 
-func RegisterType(typename string, at mtx.AttributeType) DType {
-	return register(typename, at, mtx.UserDefinedType)
+func RegisterType(typename string, at mtx.AttributeType) mtx.Datatype {
+	return registry.Register(typename, at, true)
 }
 
-// Returns the best matching spanner type for the attribute type
-func MappedAttributeType(at mtx.AttributeType) DType {
+func MappedAttributeType(at mtx.AttributeType) mtx.Datatype {
 	return registry.MappedAttributeType(at)
 }
 
-func Type(name string) DType {
-	dt, ok := registry.TypeNamed(name)
+func Type(typename string) mtx.Datatype {
+	dt, ok := registry.TypeNamed(typename)
 	if ok {
 		return dt
 	}
-	return register(name, mtx.UNKNOWN, mtx.UserDefinedType)
+	return registry.Register(typename, mtx.UNKNOWN, true)
 }
 
 // END: copy from datatypes.go.template
 
 // these are documented available types
 var (
-	BOOL      = register("BOOL", mtx.BOOLEAN, mtx.StandardType)
-	BYTES     = register("BYTES(MAX)", mtx.BYTES, mtx.StandardType)
-	DATE      = register("DATE", mtx.DATE, mtx.StandardType)
-	JSON      = register("JSON", mtx.JSON, mtx.StandardType)
-	TIMESTAMP = register("TIMESTAMP", mtx.TIMESTAMP, mtx.StandardType)
-	INT64     = register("INT64", mtx.INTEGER, mtx.StandardType)
-	FLOAT64   = register("FLOAT64", mtx.FLOAT, mtx.StandardType)
-	NUMERIC   = register("NUMERIC", mtx.DECIMAL, mtx.StandardType) // suitable for financial calculations
-	STRING    = register("STRING(MAX)", mtx.STRING, mtx.StandardType)
+	BOOL      = register("BOOL", mtx.BOOLEAN)
+	BYTES     = register("BYTES(MAX)", mtx.BYTES)
+	DATE      = register("DATE", mtx.DATE)
+	JSON      = register("JSON", mtx.JSON)
+	TIMESTAMP = register("TIMESTAMP", mtx.TIMESTAMP)
+	INT64     = register("INT64", mtx.INTEGER)
+	FLOAT64   = register("FLOAT64", mtx.FLOAT)
+	NUMERIC   = register("NUMERIC", mtx.DECIMAL) // suitable for financial calculations
+	STRING    = register("STRING(MAX)", mtx.STRING)
 )
 
 func init() {
@@ -61,22 +55,22 @@ func init() {
 	//registry.EncodeAs(mtx.DATERANGE, Array(DATE))
 }
 
-var UNKNOWN = register("ANY", mtx.UNKNOWN, mtx.UserDefinedType)
+var UNKNOWN = registry.Register("ANY", mtx.UNKNOWN, true)
 
-var BigInteger = DType{
+var BigInteger = mtx.Datatype{
 	Named:      mtx.N("spanner.Datatype", "BIGINT"),
 	Extensions: DatatypeExtensions{Max: 1024},
 }.WithAttributeType(mtx.INTEGER)
 
-func String(max int) DType {
-	return DType{
+func String(max int) mtx.Datatype {
+	return mtx.Datatype{
 		Named:      mtx.N("spanner.Datatype", fmt.Sprintf("STRING(%d)", max)),
 		Extensions: DatatypeExtensions{Max: int64(max)},
 	}.WithAttributeType(mtx.STRING)
 }
 
-func Array(elementType DType) DType {
-	return DType{
+func Array(elementType mtx.Datatype) mtx.Datatype {
+	return mtx.Datatype{
 		Named: mtx.N("spanner.Datatype", fmt.Sprintf("ARRAY(%s)", elementType.Name)),
 	}.WithAttributeType(mtx.Array(elementType.AttributeType))
 }

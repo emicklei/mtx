@@ -6,9 +6,10 @@ const (
 	UserDefinedType = true
 )
 
-type TypeRegistry[T HasAttributeType] struct {
-	knownTypes   map[string]T
-	encodedTypes map[string]T
+type TypeRegistry struct {
+	class        string
+	knownTypes   map[string]Datatype
+	encodedTypes map[string]Datatype
 }
 
 type HasAttributeType interface {
@@ -16,15 +17,16 @@ type HasAttributeType interface {
 	AttrType() AttributeType
 }
 
-func NewTypeRegistry[T HasAttributeType]() *TypeRegistry[T] {
-	return &TypeRegistry[T]{
-		knownTypes:   map[string]T{},
-		encodedTypes: map[string]T{},
+func NewTypeRegistry(class string) *TypeRegistry {
+	return &TypeRegistry{
+		class:        class,
+		knownTypes:   map[string]Datatype{},
+		encodedTypes: map[string]Datatype{},
 	}
 }
 
 // MappedAttributeType returns the best matching type.
-func (r *TypeRegistry[T]) MappedAttributeType(at AttributeType) T {
+func (r *TypeRegistry) MappedAttributeType(at AttributeType) Datatype {
 	for _, each := range r.knownTypes {
 		if each.AttrType().Equals(at) {
 			return each
@@ -38,7 +40,7 @@ func (r *TypeRegistry[T]) MappedAttributeType(at AttributeType) T {
 	return r.knownTypes["any"] // TODO return the unknown
 }
 
-func (r *TypeRegistry[T]) EncodeAs(at AttributeType, dt T) {
+func (r *TypeRegistry) EncodeAs(at AttributeType, dt Datatype) {
 	// check existing
 	_, ok := r.encodedTypes[at.Name]
 	if ok {
@@ -47,17 +49,26 @@ func (r *TypeRegistry[T]) EncodeAs(at AttributeType, dt T) {
 	r.encodedTypes[at.Name] = dt
 }
 
-func (r *TypeRegistry[T]) Add(dt T) T {
+func (r *TypeRegistry) Add(d Datatype) Datatype {
 	// check existing
-	_, ok := r.knownTypes[dt.GetName()]
+	_, ok := r.knownTypes[d.GetName()]
 	if ok {
-		panic("duplicate known key:" + dt.GetName())
+		panic("duplicate known key:" + d.GetName())
 	}
-	r.knownTypes[dt.GetName()] = dt
-	return dt
+	r.knownTypes[d.GetName()] = d
+	return d
 }
 
-func (r *TypeRegistry[T]) TypeNamed(name string) (T, bool) {
+func (r *TypeRegistry) TypeNamed(name string) (Datatype, bool) {
 	e, ok := r.knownTypes[name]
 	return e, ok
+}
+
+func (r *TypeRegistry) Register(typename string, at AttributeType, isUserDefined bool) Datatype {
+	dt := Datatype{
+		Named:         N(r.class, typename),
+		IsUserDefined: isUserDefined,
+		AttributeType: at,
+	}
+	return r.Add(dt)
 }

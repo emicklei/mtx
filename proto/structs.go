@@ -78,7 +78,7 @@ func (m *Message) Field(name string) *Field {
 }
 
 // F is a shortcut for Field.Number.Type.Doc
-func (m *Message) F(name string, nr int, ft DType, doc string) *Field {
+func (m *Message) F(name string, nr int, ft mtx.Datatype, doc string) *Field {
 	return m.Field(name).Number(nr).Type(ft).Doc(doc)
 }
 
@@ -98,10 +98,10 @@ func (m *Message) Doc(d string) *Message {
 
 type Field struct {
 	*mtx.Named
-	FieldType      DType `json:"type"`
-	Repeated       bool  `json:"repeated,omitempty"`
-	Optional       bool  `json:"optional,omitempty"`
-	SequenceNumber int   `json:"nr"` // zero means unknown
+	FieldType      mtx.Datatype `json:"type"`
+	Repeated       bool         `json:"repeated,omitempty"`
+	Optional       bool         `json:"optional,omitempty"`
+	SequenceNumber int          `json:"nr"` // zero means unknown
 }
 
 func (f *Field) SourceOn(w io.Writer) {
@@ -110,7 +110,7 @@ func (f *Field) SourceOn(w io.Writer) {
 	fmt.Fprintf(w, ",\"%s\")", f.Documentation)
 }
 
-func (f *Field) Type(ft DType) *Field {
+func (f *Field) Type(ft mtx.Datatype) *Field {
 	f.FieldType = ft
 	return f
 }

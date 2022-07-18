@@ -1,13 +1,13 @@
 package mtx
 
-type TableDiff[C ExtendsColumn, D ExtendsDatatype] struct {
-	ColumnAdditions []*Column[C, D]
-	ColumnChanges   []*Column[C, D]
-	ColumnRemovals  []*Column[C, D]
+type TableDiff struct {
+	ColumnAdditions []*Column
+	ColumnChanges   []*Column
+	ColumnRemovals  []*Column
 }
 
-func (t *Table[T, C, D]) Diff(other *Table[T, C, D]) TableDiff[C, D] {
-	diff := TableDiff[C, D]{}
+func (t *Table) Diff(other *Table) TableDiff {
+	diff := TableDiff{}
 	// columns not in other or different
 	for _, left := range t.Columns {
 		right, ok := FindByName(other.Columns, left.Name)

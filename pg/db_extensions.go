@@ -7,22 +7,20 @@ import (
 	"github.com/emicklei/mtx"
 )
 
-type Database struct{}
+type DatabaseExtensions struct{}
 
-func (d *Database) Table(name string) *mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] {
-	tab := new(mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions])
-	tab.Named = mtx.N(tab.Extensions.OwnerClass(), name)
-	return tab
-}
+func (d *DatabaseExtensions) Table() mtx.ExtendsTable { return new(TableExtensions) }
 
-type TableExtensions struct {
-}
+func (d DatabaseExtensions) TableClass() string { return "pg.Table" }
+
+type TableExtensions struct{}
 
 func (t TableExtensions) OwnerClass() string { return "pg.Table" }
 
-func (t TableExtensions) SQLOn(table any, w io.Writer) {
+func (t TableExtensions) Column() mtx.ExtendsColumn { return new(ColumnExtensions) }
+
+func (t TableExtensions) SQLOn(tab *mtx.Table, w io.Writer) {
 	// we know its actual type
-	tab := table.(*mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions])
 	fmt.Fprintf(w, "CREATE TABLE %s (\n", tab.Name)
 	prims := []string{}
 	for i, each := range tab.Columns {
@@ -39,12 +37,12 @@ func (t TableExtensions) SQLOn(table any, w io.Writer) {
 	fmt.Fprint(w, ")\n")
 }
 
-type ColumnExtensions struct {
-}
+type ColumnExtensions struct{}
 
 func (t ColumnExtensions) OwnerClass() string { return "pg.Column" }
 
-type DatatypeExtensions struct {
-}
+func (t ColumnExtensions) Datatype() mtx.ExtendsDatatype { return new(DatatypeExtensions) }
+
+type DatatypeExtensions struct{}
 
 func (d DatatypeExtensions) OwnerClass() string { return "pg.Datatype" }

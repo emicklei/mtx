@@ -5,54 +5,49 @@ import (
 )
 
 // BEGIN: copy from datatypes.go.template
-type DType = mtx.Datatype[DatatypeExtensions]
 
-var registry = mtx.NewTypeRegistry[DType]()
+var registry = mtx.NewTypeRegistry("pg.Datatype")
 
-func register(typename string, at mtx.AttributeType, isUserDefined bool) DType {
-	dt := DType{
-		Named:         mtx.N("pg.Datatype", typename),
-		IsUserDefined: isUserDefined,
-	}.WithAttributeType(at)
-	return registry.Add(dt)
+func register(typename string, at mtx.AttributeType) mtx.Datatype {
+	return registry.Register(typename, at, false)
 }
 
-func RegisterType(typename string, at mtx.AttributeType) DType {
-	return register(typename, at, mtx.UserDefinedType)
+func RegisterType(typename string, at mtx.AttributeType) mtx.Datatype {
+	return registry.Register(typename, at, true)
 }
 
-func MappedAttributeType(at mtx.AttributeType) DType {
+func MappedAttributeType(at mtx.AttributeType) mtx.Datatype {
 	return registry.MappedAttributeType(at)
 }
 
-func Type(name string) DType {
-	dt, ok := registry.TypeNamed(name)
+func Type(typename string) mtx.Datatype {
+	dt, ok := registry.TypeNamed(typename)
 	if ok {
 		return dt
 	}
-	return register(name, mtx.UNKNOWN, mtx.UserDefinedType)
+	return registry.Register(typename, mtx.UNKNOWN, true)
 }
 
 // END: copy from datatypes.go.template
 
 // https://www.postgresql.org/docs/current/datatype.html
 var (
-	UNKNOWN          = register("ANY", mtx.UNKNOWN, mtx.StandardType)
-	BIGINT           = register("bigint", mtx.INTEGER, mtx.StandardType)
-	BOOLEAN          = register("boolean", mtx.BOOLEAN, mtx.StandardType)
-	BYTEA            = register("bytea", mtx.BYTES, mtx.StandardType)
-	DATE             = register("date", mtx.DATE, mtx.StandardType)
-	DOUBLE_PRECISION = register("double precision", mtx.DOUBLE, mtx.StandardType)
+	UNKNOWN          = register("ANY", mtx.UNKNOWN)
+	BIGINT           = register("bigint", mtx.INTEGER)
+	BOOLEAN          = register("boolean", mtx.BOOLEAN)
+	BYTEA            = register("bytea", mtx.BYTES)
+	DATE             = register("date", mtx.DATE)
+	DOUBLE_PRECISION = register("double precision", mtx.DOUBLE)
 	FLOAT8           = DOUBLE_PRECISION
-	INTEGER          = register("integer", mtx.DOUBLE, mtx.StandardType)
+	INTEGER          = register("integer", mtx.DOUBLE)
 	INT              = INTEGER
 	INT4             = INTEGER
-	JSON             = register("json", mtx.JSON, mtx.StandardType)
-	JSONB            = register("jsonb", mtx.UNKNOWN, mtx.StandardType)
+	JSON             = register("json", mtx.JSON)
+	JSONB            = register("jsonb", mtx.UNKNOWN)
 	//INTERVAL         = register("interval", mtx.INTERVAL, mtx.StandardType)
 	// TODO
-	TEXT       = register("text", mtx.STRING, mtx.StandardType)
-	TIMESTAMP  = register("timestamp", mtx.DATETIME, mtx.StandardType)
-	TIMESTAMPZ = register("timestampz", mtx.TIMESTAMP, mtx.StandardType)
-	UUID       = register("uuid", mtx.UUID, mtx.StandardType)
+	TEXT       = register("text", mtx.STRING)
+	TIMESTAMP  = register("timestamp", mtx.DATETIME)
+	TIMESTAMPZ = register("timestampz", mtx.TIMESTAMP)
+	UUID       = register("uuid", mtx.UUID)
 )

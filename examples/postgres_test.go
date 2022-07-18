@@ -9,7 +9,7 @@ import (
 )
 
 func TestPostgresTable(t *testing.T) {
-	db := new(pg.Database)
+	db := pg.NewDatabase("all")
 	tab := db.Table("persons")
 	tab.C("id", pg.TEXT, "identifier of a person")
 	tab.C("birthDay", pg.DATE, "day of birth")

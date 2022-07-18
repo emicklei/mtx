@@ -7,8 +7,6 @@ import (
 	"github.com/emicklei/mtx"
 )
 
-type Table = mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions]
-
 type Database struct{}
 
 func (d *Database) Table(name string) *mtx.Table[TableExtensions, ColumnExtensions, DatatypeExtensions] {

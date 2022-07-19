@@ -48,10 +48,16 @@ func (e *Entity) Attribute(name string) *Attribute {
 func (e *Entity) SourceOn(w io.Writer) {
 }
 
+//var _ TypedLabel = new(Attribute)
+
 type Attribute struct {
 	*Named
 	AttributeType AttributeType `json:"type"`
 	IsRequired    bool          `json:"required"`
+}
+
+func (a *Attribute) GetDatatype() Datatype {
+	return Datatype{Named: a.Named, AttributeType: a.AttributeType}
 }
 
 func (a *Attribute) Type(t AttributeType) *Attribute {

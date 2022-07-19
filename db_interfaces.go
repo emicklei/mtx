@@ -20,5 +20,3 @@ type ExtendsColumn interface {
 type ExtendsDatatype interface {
 	OwnerClass() string
 }
-
-type SQLWriter interface{ SQLOn(w io.Writer) }

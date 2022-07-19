@@ -28,7 +28,7 @@ func Type(typename string) mtx.Datatype {
 
 // END: copy from datatypes.go.template
 
-var BYTES = mtx.Datatype{Named: mtx.N("bq.Datatype", "BYTES")}
+var BYTES = register("BYTES", mtx.BYTES)
 
 func MaxBytes(max int64) mtx.Datatype {
 	return mtx.Datatype{

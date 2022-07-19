@@ -104,6 +104,8 @@ type Field struct {
 	SequenceNumber int          `json:"nr"` // zero means unknown
 }
 
+func (f *Field) GetDatatype() mtx.Datatype { return f.FieldType }
+
 func (f *Field) SourceOn(w io.Writer) {
 	fmt.Fprintf(w, "msg.F(\"%s\",%d,", f.Name, f.SequenceNumber)
 	f.FieldType.SourceOn(w)

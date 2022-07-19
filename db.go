@@ -20,6 +20,9 @@ func (d *Database) Doc(doc string) *Database {
 }
 
 func (d *Database) Table(name string) *Table {
+	if t, ok := FindByName(d.Tables, name); ok {
+		return t
+	}
 	ext := d.Extensions.Table()
 	return &Table{
 		Named:      N(ext.OwnerClass(), name),
@@ -59,6 +62,9 @@ func (t *Table) PrimaryKey(name string) *Column {
 }
 
 func (t *Table) Column(name string) *Column {
+	if c, ok := FindByName(t.Columns, name); ok {
+		return c
+	}
 	ext := t.Extensions.Column()
 	return &Column{Named: N(ext.OwnerClass(), name)}
 }
@@ -93,6 +99,8 @@ func (t *Table) ToEntity() *Entity {
 	return m
 }
 
+var _ TypedLabel = new(Column)
+
 type Column struct {
 	*Named
 	ColumnType Datatype `json:"type"`
@@ -100,6 +108,8 @@ type Column struct {
 	IsNotNull  bool     `json:"is_not_null"`
 	Extensions ExtendsColumn
 }
+
+func (c *Column) GetDatatype() Datatype { return c.ColumnType }
 
 func (c *Column) Set(key string, value any) *Column {
 	c.Named.Set(key, value)

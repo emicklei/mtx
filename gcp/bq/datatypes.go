@@ -1,6 +1,10 @@
 package bq
 
-import "github.com/emicklei/mtx"
+import (
+	"fmt"
+
+	"github.com/emicklei/mtx"
+)
 
 // BEGIN: copy from datatypes.go.template
 
@@ -28,7 +32,10 @@ func Type(typename string) mtx.Datatype {
 
 // END: copy from datatypes.go.template
 
-var BYTES = register("BYTES", mtx.BYTES)
+var (
+	BYTES  = register("BYTES", mtx.BYTES)
+	STRING = register("STRING", mtx.BYTES)
+)
 
 func MaxBytes(max int64) mtx.Datatype {
 	return mtx.Datatype{
@@ -37,9 +44,11 @@ func MaxBytes(max int64) mtx.Datatype {
 	}
 }
 
+// TODO look at civil package https://pkg.go.dev/cloud.google.com/go/bigquery#InferSchema
+
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type
 // YYYY-[M]M-[D]D
-var DATE = register("DATE", mtx.DATE)
+var DATE = register("DATE", mtx.RegisterType("civil.Date"))
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type
 // YYYY-[M]M-[D]D[( |T)[H]H:[M]M:[S]S[.F]]
@@ -78,8 +87,8 @@ func BigNumeric(p, s int) mtx.Datatype {
 }
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
-func BigDecimal(p, s int) mtx.Datatype {
+func BigDecimal(precision, scale int) mtx.Datatype {
 	return mtx.Datatype{
-		Named: mtx.N("bq.Datatype", "BIGDECIMAL"), Extensions: DatatypeExtensions{Scale: s, Precision: p},
+		Named: mtx.N("bq.Datatype", fmt.Sprintf("BIGDECIMAL(%d,%d)", precision, scale)), Extensions: DatatypeExtensions{Scale: scale, Precision: precision},
 	}
 }

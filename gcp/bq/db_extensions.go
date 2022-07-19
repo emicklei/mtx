@@ -17,7 +17,9 @@ type TableExtensions struct {
 
 func (t TableExtensions) OwnerClass() string { return "bq.Table" }
 
-func (t TableExtensions) SQLOn(table *mtx.Table, w io.Writer) {}
+func (t TableExtensions) SQLOn(table *mtx.Table, w io.Writer) {
+	io.WriteString(w, "there will be BQ")
+}
 
 func (t TableExtensions) Column() mtx.ExtendsColumn { return new(ColumnExtensions) }
 

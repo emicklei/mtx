@@ -9,9 +9,9 @@ import (
 
 type Database struct {
 	*Named
-	Tables []*Table
+	Tables []*Table `json:"tables"`
 	// Views TODO
-	Extensions ExtendsDatabase
+	Extensions ExtendsDatabase `json:"ext"`
 }
 
 func (d *Database) Doc(doc string) *Database {
@@ -24,10 +24,12 @@ func (d *Database) Table(name string) *Table {
 		return t
 	}
 	ext := d.Extensions.Table()
-	return &Table{
+	t := &Table{
 		Named:      N(ext.OwnerClass(), name),
 		Extensions: ext,
 	}
+	d.Tables = append(d.Tables, t)
+	return t
 }
 
 type Table struct {
@@ -66,7 +68,9 @@ func (t *Table) Column(name string) *Column {
 		return c
 	}
 	ext := t.Extensions.Column()
-	return &Column{Named: N(ext.OwnerClass(), name)}
+	c := &Column{Named: N(ext.OwnerClass(), name), Extensions: ext}
+	t.Columns = append(t.Columns, c)
+	return c
 }
 
 func (t *Table) PrimaryKeyColumns() (list []*Column) {
@@ -103,10 +107,10 @@ var _ TypedLabel = new(Column)
 
 type Column struct {
 	*Named
-	ColumnType Datatype `json:"type"`
-	IsPrimary  bool     `json:"is_primary"`
-	IsNotNull  bool     `json:"is_not_null"`
-	Extensions ExtendsColumn
+	ColumnType Datatype      `json:"type"`
+	IsPrimary  bool          `json:"is_primary"`
+	IsNotNull  bool          `json:"is_not_null"`
+	Extensions ExtendsColumn `json:"ext"`
 }
 
 func (c *Column) GetDatatype() Datatype { return c.ColumnType }
@@ -147,12 +151,19 @@ func (c *Column) SQLOn(buf io.Writer) {
 type Datatype struct {
 	*Named
 	AttributeType AttributeType `json:"-"`
-	IsUserDefined bool          `json:"is_user_defined,omitempty"`
-	Extensions    ExtendsDatatype
+	// This means : can the datatype be used to capture a NULL value
+	CanRepresentNull bool            `json:"can_present_null,omitempty"`
+	IsUserDefined    bool            `json:"is_user_defined,omitempty"`
+	Extensions       ExtendsDatatype `json:"ext"`
 }
 
 func (d Datatype) EncodedFrom(at AttributeType) Datatype {
 	d.AttributeType = at
+	return d
+}
+
+func (d Datatype) Optional() Datatype {
+	d.CanRepresentNull = true
 	return d
 }
 

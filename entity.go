@@ -53,7 +53,8 @@ func (e *Entity) SourceOn(w io.Writer) {
 type Attribute struct {
 	*Named
 	AttributeType AttributeType `json:"type"`
-	IsRequired    bool          `json:"required"`
+	IsNullable    bool          `json:"is_nullable,omitempty"`
+	IsRequired    bool          `json:"required,omitempty"`
 }
 
 func (a *Attribute) GetDatatype() Datatype {

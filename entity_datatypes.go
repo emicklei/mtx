@@ -1,47 +1,45 @@
 package mtx
 
-type AttributeType struct {
-	Name string `json:"name"`
-	// array or dictionary
-	ElementType *AttributeType `json:"element_type,omitempty"`
+var registry = NewTypeRegistry("mtx.Datatype")
+
+func register(typename string) Datatype {
+	return registry.Register(typename, false)
+}
+
+func Register(typename string) Datatype {
+	return registry.Register(typename, true)
 }
 
 var (
-	UNKNOWN   = AttributeType{Name: "any"}
-	BOOLEAN   = AttributeType{Name: "boolean"}
-	STRING    = AttributeType{Name: "string"}
-	INTEGER   = AttributeType{Name: "integer"}
-	ID        = AttributeType{Name: "identifier"}
-	DATE      = AttributeType{Name: "date"}      // yyyy mm dd
-	DATETIME  = AttributeType{Name: "datetime"}  // yyyy mm dd hh mm ss
-	TIMESTAMP = AttributeType{Name: "timestamp"} // yyyy mm dd hh mm ss + zone
-	BYTES     = AttributeType{Name: "bytes"}
-	FLOAT     = AttributeType{Name: "float"}
-	DOUBLE    = AttributeType{Name: "double"}
-	DECIMAL   = AttributeType{Name: "decimal"}
-	JSON      = AttributeType{Name: "json"}
-	DURATION  = AttributeType{Name: "duration"} // y,m,d,h,m,s
-	UUID      = AttributeType{Name: "uuid"}
+	UNKNOWN   = register("any")
+	BOOLEAN   = register("boolean")
+	STRING    = register("string")
+	INTEGER   = register("integer")
+	ID        = register("identifier")
+	DATE      = register("date")      // yyyy mm dd
+	DATETIME  = register("datetime")  // yyyy mm dd hh mm ss
+	TIMESTAMP = register("timestamp") // yyyy mm dd hh mm ss + zone
+	BYTES     = register("bytes")
+	FLOAT     = register("float")
+	DOUBLE    = register("double")
+	DECIMAL   = register("decimal")
+	JSON      = register("json")
+	DURATION  = register("duration") // y,m,d,h,m,s
+	UUID      = register("uuid")
 )
 
-func Array(elementType AttributeType) AttributeType {
-	return AttributeType{Name: "array", ElementType: &elementType}
+func Array(elementType Datatype) Datatype {
+	dt := Datatype{
+		Named:       N("mtx.Datatype", "array"),
+		ElementType: &elementType,
+	}
+	return registry.Add(dt)
 }
 
-func (a AttributeType) String() string {
-	return a.Name
-	// TODO array elementtype
-}
-
-func (a AttributeType) Equals(o AttributeType) bool {
+func (a Datatype) Equals(o Datatype) bool {
 	if a.Name != o.Name {
 		return false
 	}
 	// TODO
 	return true
-}
-
-func RegisterType(name string) AttributeType {
-	// register(
-	return AttributeType{Name: name}
 }

@@ -54,7 +54,7 @@ func (r *Relation) Right(rightName string) *Relation {
 	return r
 }
 
-func (r *Relation) A(name string, typ AttributeType, doc string) *Attribute {
+func (r *Relation) A(name string, typ Datatype, doc string) *Attribute {
 	return r.Attribute(name).Type(typ).Doc(doc)
 }
 

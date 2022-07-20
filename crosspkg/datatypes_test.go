@@ -11,6 +11,6 @@ import (
 func TestDefaultDataType(t *testing.T) {
 	proto.RegisterType("common.IString", mtx.JSON)
 	pt := proto.Type("common.IString")
-	st := spanner.MappedAttributeType(pt.AttributeType)
+	st := spanner.MappedAttributeType(*pt.AttributeDatatype)
 	t.Log(st)
 }

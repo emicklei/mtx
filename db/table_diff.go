@@ -1,4 +1,6 @@
-package mtx
+package db
+
+import "github.com/emicklei/mtx"
 
 type TableDiff struct {
 	ColumnAdditions []*Column
@@ -10,7 +12,7 @@ func (t *Table) Diff(other *Table) TableDiff {
 	diff := TableDiff{}
 	// columns not in other or different
 	for _, left := range t.Columns {
-		right, ok := FindByName(other.Columns, left.Name)
+		right, ok := mtx.FindByName(other.Columns, left.Name)
 		if !ok { // not in other
 			diff.ColumnRemovals = append(diff.ColumnRemovals, left)
 		} else {
@@ -21,7 +23,7 @@ func (t *Table) Diff(other *Table) TableDiff {
 				if left.IsPrimary != left.IsPrimary {
 					diff.ColumnChanges = append(diff.ColumnChanges, right)
 				} else {
-					if left.IsNotNull != left.IsNotNull {
+					if left.IsNullable != left.IsNullable {
 						diff.ColumnChanges = append(diff.ColumnChanges, right)
 					}
 				}
@@ -30,7 +32,7 @@ func (t *Table) Diff(other *Table) TableDiff {
 	}
 	// columns not in t
 	for _, right := range other.Columns {
-		_, ok := FindByName(t.Columns, right.Name)
+		_, ok := mtx.FindByName(t.Columns, right.Name)
 		if !ok { // not in t
 			diff.ColumnAdditions = append(diff.ColumnAdditions, right)
 		}

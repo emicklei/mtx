@@ -4,16 +4,17 @@ import (
 	"encoding/json"
 
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/db"
 )
 
-func NewDataset(name string) *mtx.Database {
-	return &mtx.Database{
+func NewDataset(name string) *db.Database {
+	return &db.Database{
 		Named:      mtx.N("spanner.Dataset", name),
 		Extensions: new(DatabaseExtensions),
 	}
 }
 
-func ToJSONSchema(tab *mtx.Table) string {
+func ToJSONSchema(tab *db.Table) string {
 	cols := []JSONSchemaColumn{}
 	for _, each := range tab.Columns {
 		col := JSONSchemaColumn{
@@ -22,7 +23,7 @@ func ToJSONSchema(tab *mtx.Table) string {
 			Type:        each.ColumnType.Name,
 			Mode:        "NULLABLE",
 		}
-		if each.IsNotNull {
+		if !each.IsNullable {
 			col.Mode = "REQUIRED"
 		}
 		cols = append(cols, col)

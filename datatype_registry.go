@@ -12,11 +12,6 @@ type TypeRegistry struct {
 	encodedTypes map[string]Datatype
 }
 
-type HasAttributeType interface {
-	HasName
-	AttrType() AttributeType
-}
-
 func NewTypeRegistry(class string) *TypeRegistry {
 	return &TypeRegistry{
 		class:        class,
@@ -26,9 +21,9 @@ func NewTypeRegistry(class string) *TypeRegistry {
 }
 
 // MappedAttributeType returns the best matching type.
-func (r *TypeRegistry) MappedAttributeType(at AttributeType) Datatype {
+func (r *TypeRegistry) MappedAttributeType(at Datatype) Datatype {
 	for _, each := range r.knownTypes {
-		if each.AttrType().Equals(at) {
+		if dt := each.AttributeDatatype; dt != nil && dt.Name == at.Name {
 			return each
 		}
 	}
@@ -40,7 +35,7 @@ func (r *TypeRegistry) MappedAttributeType(at AttributeType) Datatype {
 	return r.knownTypes["any"] // TODO return the unknown
 }
 
-func (r *TypeRegistry) EncodeAs(at AttributeType, dt Datatype) {
+func (r *TypeRegistry) EncodeAs(at Datatype, dt Datatype) {
 	// check existing
 	_, ok := r.encodedTypes[at.Name]
 	if ok {
@@ -64,11 +59,10 @@ func (r *TypeRegistry) TypeNamed(name string) (Datatype, bool) {
 	return e, ok
 }
 
-func (r *TypeRegistry) Register(typename string, at AttributeType, isUserDefined bool) Datatype {
+func (r *TypeRegistry) Register(typename string, isUserDefined bool) Datatype {
 	dt := Datatype{
 		Named:         N(r.class, typename),
 		IsUserDefined: isUserDefined,
-		AttributeType: at,
 	}
 	return r.Add(dt)
 }

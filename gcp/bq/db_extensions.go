@@ -3,12 +3,12 @@ package bq
 import (
 	"io"
 
-	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/db"
 )
 
 type DatabaseExtensions struct{}
 
-func (d *DatabaseExtensions) Table() mtx.ExtendsTable { return new(TableExtensions) }
+func (d *DatabaseExtensions) Table() db.ExtendsTable { return new(TableExtensions) }
 
 func (d DatabaseExtensions) TableClass() string { return "bq.Table" }
 
@@ -17,16 +17,16 @@ type TableExtensions struct {
 
 func (t TableExtensions) OwnerClass() string { return "bq.Table" }
 
-func (t TableExtensions) SQLOn(table *mtx.Table, w io.Writer) {
+func (t TableExtensions) SQLOn(table *db.Table, w io.Writer) {
 	io.WriteString(w, "there will be BQ")
 }
 
-func (t TableExtensions) Column() mtx.ExtendsColumn { return new(ColumnExtensions) }
+func (t TableExtensions) Column() db.ExtendsColumn { return new(ColumnExtensions) }
 
 type ColumnExtensions struct {
 }
 
-func (t ColumnExtensions) Datatype() mtx.ExtendsDatatype { return new(DatatypeExtensions) }
+func (t ColumnExtensions) Datatype() db.ExtendsDatatype { return new(DatatypeExtensions) }
 
 func (t ColumnExtensions) OwnerClass() string { return "bq.Column" }
 

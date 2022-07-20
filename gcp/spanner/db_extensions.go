@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/db"
 )
 
 type DatabaseExtensions struct{}
 
-func (d *DatabaseExtensions) Table() mtx.ExtendsTable { return new(TableExtensions) }
+func (d *DatabaseExtensions) Table() db.ExtendsTable { return new(TableExtensions) }
 
 func (d DatabaseExtensions) TableClass() string { return "spanner.Table" }
 
-var _ mtx.ExtendsTable = TableExtensions{}
+var _ db.ExtendsTable = TableExtensions{}
 
 type TableExtensions struct {
 	Interleave any
@@ -21,9 +21,9 @@ type TableExtensions struct {
 
 func (t TableExtensions) OwnerClass() string { return "spanner.Table" }
 
-func (t TableExtensions) Column() mtx.ExtendsColumn { return new(ColumnExtensions) }
+func (t TableExtensions) Column() db.ExtendsColumn { return new(ColumnExtensions) }
 
-func (t TableExtensions) SQLOn(table *mtx.Table, w io.Writer) {
+func (t TableExtensions) SQLOn(table *db.Table, w io.Writer) {
 	fmt.Fprintf(w, "CREATE TABLE %s (\n", table.Name)
 	prims := []string{}
 	for i, each := range table.Columns {
@@ -50,17 +50,17 @@ func (t TableExtensions) SQLOn(table *mtx.Table, w io.Writer) {
 	// TODO check for Interleave
 }
 
-var _ mtx.ExtendsColumn = ColumnExtensions{}
+var _ db.ExtendsColumn = ColumnExtensions{}
 
 type ColumnExtensions struct {
 	IsComplex bool
 }
 
-func (t ColumnExtensions) Datatype() mtx.ExtendsDatatype { return new(DatatypeExtensions) }
+func (t ColumnExtensions) Datatype() db.ExtendsDatatype { return new(DatatypeExtensions) }
 
 func (t ColumnExtensions) OwnerClass() string { return "spanner.Column" }
 
-var _ mtx.ExtendsDatatype = DatatypeExtensions{}
+var _ db.ExtendsDatatype = DatatypeExtensions{}
 
 type DatatypeExtensions struct {
 	Max int64 `json:"max,omitempty"`

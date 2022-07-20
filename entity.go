@@ -22,7 +22,7 @@ func NewEntity(name string) *Entity {
 	return &Entity{Named: N(EntityClass, name)}
 }
 
-func (e *Entity) A(name string, typ AttributeType, doc string) *Attribute {
+func (e *Entity) A(name string, typ Datatype, doc string) *Attribute {
 	return e.Attribute(name).Type(typ).Doc(doc)
 }
 
@@ -52,16 +52,17 @@ func (e *Entity) SourceOn(w io.Writer) {
 
 type Attribute struct {
 	*Named
-	AttributeType AttributeType `json:"type"`
-	IsNullable    bool          `json:"is_nullable,omitempty"`
-	IsRequired    bool          `json:"required,omitempty"`
+	AttributeType Datatype `json:"type"`
+	// IsNullable = true means the value can be NULL/nil
+	IsNullable bool `json:"is_nullable,omitempty"`
+	IsRequired bool `json:"required,omitempty"`
 }
 
-func (a *Attribute) GetDatatype() Datatype {
-	return Datatype{Named: a.Named, AttributeType: a.AttributeType}
-}
+// func (a *Attribute) GetDatatype() Datatype {
+// 	return Datatype{Named: a.Named, AttributeType: a.AttributeType}
+// }
 
-func (a *Attribute) Type(t AttributeType) *Attribute {
+func (a *Attribute) Type(t Datatype) *Attribute {
 	a.AttributeType = t
 	return a
 }

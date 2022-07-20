@@ -8,15 +8,25 @@ import (
 
 var registry = mtx.NewTypeRegistry("pg.Datatype")
 
-func register(typename string, at mtx.AttributeType) mtx.Datatype {
-	return registry.Register(typename, at, false)
+func register(typename string, at mtx.Datatype) mtx.Datatype {
+	dt := mtx.Datatype{
+		Named:             mtx.N("pg.Datatype", typename),
+		AttributeDatatype: &at,
+	}
+	return registry.Add(dt)
 }
 
-func RegisterType(typename string, at mtx.AttributeType) mtx.Datatype {
-	return registry.Register(typename, at, true)
+func RegisterType(typename string, at mtx.Datatype) mtx.Datatype {
+	dt := mtx.Datatype{
+		Named:             mtx.N("pg.Datatype", typename),
+		AttributeDatatype: &at,
+		IsUserDefined:     true,
+	}
+	return registry.Add(dt)
 }
 
-func MappedAttributeType(at mtx.AttributeType) mtx.Datatype {
+// MappedAttributeType returns the mapped proto type for a given attribute type
+func MappedAttributeType(at mtx.Datatype) mtx.Datatype {
 	return registry.MappedAttributeType(at)
 }
 
@@ -25,7 +35,7 @@ func Type(typename string) mtx.Datatype {
 	if ok {
 		return dt
 	}
-	return registry.Register(typename, mtx.UNKNOWN, true)
+	return RegisterType(typename, mtx.UNKNOWN)
 }
 
 // END: copy from datatypes.go.template

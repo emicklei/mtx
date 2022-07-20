@@ -12,15 +12,25 @@ import (
 
 var registry = mtx.NewTypeRegistry("spanner.Datatype")
 
-func register(typename string, at mtx.AttributeType) mtx.Datatype {
-	return registry.Register(typename, at, false)
+func register(typename string, at mtx.Datatype) mtx.Datatype {
+	dt := mtx.Datatype{
+		Named:             mtx.N("spanner.Datatype", typename),
+		AttributeDatatype: &at,
+	}
+	return registry.Add(dt)
 }
 
-func RegisterType(typename string, at mtx.AttributeType) mtx.Datatype {
-	return registry.Register(typename, at, true)
+func RegisterType(typename string, at mtx.Datatype) mtx.Datatype {
+	dt := mtx.Datatype{
+		Named:             mtx.N("spanner.Datatype", typename),
+		AttributeDatatype: &at,
+		IsUserDefined:     true,
+	}
+	return registry.Add(dt)
 }
 
-func MappedAttributeType(at mtx.AttributeType) mtx.Datatype {
+// MappedAttributeType returns the mapped spanner type for a given attribute type
+func MappedAttributeType(at mtx.Datatype) mtx.Datatype {
 	return registry.MappedAttributeType(at)
 }
 
@@ -29,7 +39,7 @@ func Type(typename string) mtx.Datatype {
 	if ok {
 		return dt
 	}
-	return registry.Register(typename, mtx.UNKNOWN, true)
+	return RegisterType(typename, mtx.UNKNOWN)
 }
 
 // END: copy from datatypes.go.template
@@ -55,22 +65,22 @@ func init() {
 	//registry.EncodeAs(mtx.DATERANGE, Array(DATE))
 }
 
-var UNKNOWN = registry.Register("ANY", mtx.UNKNOWN, true)
+var UNKNOWN = registry.Register("ANY", true)
 
 var BigInteger = mtx.Datatype{
 	Named:      mtx.N("spanner.Datatype", "BIGINT"),
 	Extensions: DatatypeExtensions{Max: 1024},
-}.WithAttributeType(mtx.INTEGER)
+}.WithAttributeDatatype(mtx.INTEGER)
 
 func String(max int) mtx.Datatype {
 	return mtx.Datatype{
 		Named:      mtx.N("spanner.Datatype", fmt.Sprintf("STRING(%d)", max)),
 		Extensions: DatatypeExtensions{Max: int64(max)},
-	}.WithAttributeType(mtx.STRING)
+	}.WithAttributeDatatype(mtx.STRING)
 }
 
 func Array(elementType mtx.Datatype) mtx.Datatype {
 	return mtx.Datatype{
 		Named: mtx.N("spanner.Datatype", fmt.Sprintf("ARRAY(%s)", elementType.Name)),
-	}.WithAttributeType(mtx.Array(elementType.AttributeType))
+	}.WithAttributeDatatype(mtx.Array(*elementType.AttributeDatatype))
 }

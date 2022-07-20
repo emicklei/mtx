@@ -4,22 +4,20 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/db"
 )
 
 type DatabaseExtensions struct{}
 
-func (d *DatabaseExtensions) Table() mtx.ExtendsTable { return new(TableExtensions) }
-
-func (d DatabaseExtensions) TableClass() string { return "pg.Table" }
+func (d *DatabaseExtensions) Table() db.ExtendsTable { return new(TableExtensions) }
 
 type TableExtensions struct{}
 
 func (t TableExtensions) OwnerClass() string { return "pg.Table" }
 
-func (t TableExtensions) Column() mtx.ExtendsColumn { return new(ColumnExtensions) }
+func (t TableExtensions) Column() db.ExtendsColumn { return new(ColumnExtensions) }
 
-func (t TableExtensions) SQLOn(tab *mtx.Table, w io.Writer) {
+func (t TableExtensions) SQLOn(tab *db.Table, w io.Writer) {
 	// we know its actual type
 	fmt.Fprintf(w, "CREATE TABLE %s (\n", tab.Name)
 	prims := []string{}
@@ -41,7 +39,7 @@ type ColumnExtensions struct{}
 
 func (t ColumnExtensions) OwnerClass() string { return "pg.Column" }
 
-func (t ColumnExtensions) Datatype() mtx.ExtendsDatatype { return new(DatatypeExtensions) }
+func (t ColumnExtensions) Datatype() db.ExtendsDatatype { return new(DatatypeExtensions) }
 
 type DatatypeExtensions struct{}
 

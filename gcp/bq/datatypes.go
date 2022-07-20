@@ -10,15 +10,25 @@ import (
 
 var registry = mtx.NewTypeRegistry("bq.Datatype")
 
-func register(typename string, at mtx.AttributeType) mtx.Datatype {
-	return registry.Register(typename, at, false)
+func register(typename string, at mtx.Datatype) mtx.Datatype {
+	dt := mtx.Datatype{
+		Named:             mtx.N("bq.Datatype", typename),
+		AttributeDatatype: &at,
+	}
+	return registry.Add(dt)
 }
 
-func RegisterType(typename string, at mtx.AttributeType) mtx.Datatype {
-	return registry.Register(typename, at, true)
+func RegisterType(typename string, at mtx.Datatype) mtx.Datatype {
+	dt := mtx.Datatype{
+		Named:             mtx.N("bq.Datatype", typename),
+		AttributeDatatype: &at,
+		IsUserDefined:     true,
+	}
+	return registry.Add(dt)
 }
 
-func MappedAttributeType(at mtx.AttributeType) mtx.Datatype {
+// MappedAttributeType returns the mapped bq type for a given attribute type
+func MappedAttributeType(at mtx.Datatype) mtx.Datatype {
 	return registry.MappedAttributeType(at)
 }
 
@@ -27,7 +37,7 @@ func Type(typename string) mtx.Datatype {
 	if ok {
 		return dt
 	}
-	return registry.Register(typename, mtx.UNKNOWN, true)
+	return RegisterType(typename, mtx.UNKNOWN)
 }
 
 // END: copy from datatypes.go.template
@@ -48,7 +58,7 @@ func MaxBytes(max int64) mtx.Datatype {
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type
 // YYYY-[M]M-[D]D
-var DATE = register("DATE", mtx.RegisterType("civil.Date"))
+var DATE = register("DATE", mtx.Register("civil.Date"))
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type
 // YYYY-[M]M-[D]D[( |T)[H]H:[M]M:[S]S[.F]]

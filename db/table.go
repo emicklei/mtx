@@ -1,14 +1,15 @@
-package mtx
+package db
 
 import (
 	"bytes"
 	"fmt"
 	"io"
-	"strings"
+
+	"github.com/emicklei/mtx"
 )
 
 type Database struct {
-	*Named
+	*mtx.Named
 	Tables []*Table `json:"tables"`
 	// Views TODO
 	Extensions ExtendsDatabase `json:"ext"`
@@ -20,12 +21,12 @@ func (d *Database) Doc(doc string) *Database {
 }
 
 func (d *Database) Table(name string) *Table {
-	if t, ok := FindByName(d.Tables, name); ok {
+	if t, ok := mtx.FindByName(d.Tables, name); ok {
 		return t
 	}
 	ext := d.Extensions.Table()
 	t := &Table{
-		Named:      N(ext.OwnerClass(), name),
+		Named:      mtx.N(ext.OwnerClass(), name),
 		Extensions: ext,
 	}
 	d.Tables = append(d.Tables, t)
@@ -33,7 +34,7 @@ func (d *Database) Table(name string) *Table {
 }
 
 type Table struct {
-	*Named
+	*mtx.Named
 	Columns    []*Column    `json:"columns,omitempty"`
 	Extensions ExtendsTable `json:"ext"`
 }
@@ -54,7 +55,7 @@ func (t *Table) SQL() string {
 	return buf.String()
 }
 
-func (t *Table) C(name string, d Datatype, doc string) *Column {
+func (t *Table) C(name string, d mtx.Datatype, doc string) *Column {
 	return t.Column(name).Type(d).Doc(doc)
 }
 
@@ -64,11 +65,11 @@ func (t *Table) PrimaryKey(name string) *Column {
 }
 
 func (t *Table) Column(name string) *Column {
-	if c, ok := FindByName(t.Columns, name); ok {
+	if c, ok := mtx.FindByName(t.Columns, name); ok {
 		return c
 	}
 	ext := t.Extensions.Column()
-	c := &Column{Named: N(ext.OwnerClass(), name), Extensions: ext}
+	c := &Column{Named: mtx.N(ext.OwnerClass(), name), Extensions: ext}
 	t.Columns = append(t.Columns, c)
 	return c
 }
@@ -84,43 +85,45 @@ func (t *Table) PrimaryKeyColumns() (list []*Column) {
 
 // ToEntity creates a new Entity that represents a Row in this table data.
 // TODO how to handle name mapping?  type mapping?
-func (t *Table) ToEntity() *Entity {
-	m := NewEntity(t.Name)
+func (t *Table) ToEntity() *mtx.Entity {
+	m := mtx.NewEntity(t.Name)
 	// see if property overrides this
-	if n, ok := t.Get(EntityName); ok {
+	if n, ok := t.Get(mtx.EntityName); ok {
 		m.Named.Name = n.(string)
 	}
 	m.Doc(t.Documentation)
 	for _, each := range t.Columns {
 		attr := m.Attribute(each.Name)
 		// see if property overrides this
-		if n, ok := each.Get(EntityName); ok {
+		if n, ok := each.Get(mtx.EntityName); ok {
 			attr.Named.Name = n.(string)
 		}
+		attr.AttributeType = *each.GetDatatype().AttributeDatatype
+		attr.IsNullable = each.IsNullable
 		attr.Doc(each.Documentation)
-		attr.AttributeType = each.ColumnType.AttributeType
 	}
 	return m
 }
 
-var _ TypedLabel = new(Column)
+var _ mtx.TypedLabel = new(Column)
 
 type Column struct {
-	*Named
-	ColumnType Datatype      `json:"type"`
-	IsPrimary  bool          `json:"is_primary"`
-	IsNotNull  bool          `json:"is_not_null"`
+	*mtx.Named
+	ColumnType mtx.Datatype `json:"type"`
+	IsPrimary  bool         `json:"is_primary"`
+	// IsNotNull = true means the value is never NULL
+	IsNullable bool          `json:"is_nullable"`
 	Extensions ExtendsColumn `json:"ext"`
 }
 
-func (c *Column) GetDatatype() Datatype { return c.ColumnType }
+func (c *Column) GetDatatype() mtx.Datatype { return c.ColumnType }
 
 func (c *Column) Set(key string, value any) *Column {
 	c.Named.Set(key, value)
 	return c
 }
 
-func (c *Column) Type(d Datatype) *Column {
+func (c *Column) Type(d mtx.Datatype) *Column {
 	c.ColumnType = d
 	return c
 }
@@ -131,7 +134,13 @@ func (c *Column) Primary() *Column {
 }
 
 func (c *Column) NotNull() *Column {
-	c.IsNotNull = true
+	c.IsNullable = false
+	return c
+}
+
+// Nullable means the Column value can be NULL.
+func (c *Column) Nullable() *Column {
+	c.IsNullable = true
 	return c
 }
 
@@ -142,53 +151,8 @@ func (c *Column) Doc(d string) *Column {
 
 func (c *Column) SQLOn(buf io.Writer) {
 	fmt.Fprintf(buf, "%s %s", c.Name, c.ColumnType.Name)
-	if c.IsNotNull {
+	if !c.IsNullable {
 		fmt.Fprint(buf, " NOT NULL")
 	}
 	fmt.Fprintf(buf, " -- %s\n", c.Documentation)
-}
-
-type Datatype struct {
-	*Named
-	AttributeType AttributeType `json:"-"`
-	// This means : can the datatype be used to capture a NULL value
-	CanRepresentNull bool            `json:"can_present_null,omitempty"`
-	IsUserDefined    bool            `json:"is_user_defined,omitempty"`
-	Extensions       ExtendsDatatype `json:"ext"`
-}
-
-func (d Datatype) EncodedFrom(at AttributeType) Datatype {
-	d.AttributeType = at
-	return d
-}
-
-func (d Datatype) Optional() Datatype {
-	d.CanRepresentNull = true
-	return d
-}
-
-func (d Datatype) String() string {
-	return fmt.Sprintf("%s (%s) : %T", d.Name, d.Class, d)
-}
-
-func (d Datatype) SourceOn(w io.Writer) {
-	pkg := d.Class[0:strings.Index(d.Class, ".")]
-	if d.IsUserDefined {
-		fmt.Fprintf(w, "%s.Type(\"%s\")", pkg, d.Name)
-		return
-	}
-	fmt.Fprintf(w, "%s.%s", pkg, strings.ToUpper(d.Name))
-}
-
-func (d Datatype) AttrType() AttributeType { return d.AttributeType }
-
-func (d Datatype) WithAttributeType(at AttributeType) Datatype {
-	d.AttributeType = at
-	return d
-}
-
-// Set overrides Named.Set to preserve return type
-func (d Datatype) Set(key string, value any) Datatype {
-	d.Named.Set(key, value)
-	return d
 }

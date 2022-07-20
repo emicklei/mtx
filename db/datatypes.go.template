@@ -1,8 +1,4 @@
-package proto
-
-import (
-	"github.com/emicklei/mtx"
-)
+// BEGIN: copy from datatypes.go.template
 
 var registry = mtx.NewTypeRegistry("proto.Datatype")
 
@@ -36,16 +32,4 @@ func Type(typename string) mtx.Datatype {
 	return RegisterType(typename, mtx.UNKNOWN)
 }
 
-func init() {
-}
-
-var (
-	UNKNOWN = register("any", mtx.UNKNOWN) // bytes is the fallback
-	DOUBLE  = register("double", mtx.DOUBLE)
-	FLOAT   = register("float", mtx.FLOAT)
-	STRING  = register("string", mtx.STRING)
-	INT32   = register("int32", mtx.INTEGER)
-	INT64   = register("int64", mtx.INTEGER) //.Set("bits", 64))
-	BOOL    = register("bool", mtx.BOOLEAN)
-	BYTES   = register("bytes", mtx.BYTES)
-)
+// END: copy from datatypes.go.template

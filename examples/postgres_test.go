@@ -12,7 +12,7 @@ func TestPostgresTable(t *testing.T) {
 	db := pg.NewDatabase("all")
 	tab := db.Table("persons")
 	tab.C("id", pg.TEXT, "identifier of a person")
-	tab.C("birthDay", pg.DATE, "day of birth")
+	tab.C("birthDay", pg.DATE, "day of birth").Nullable()
 	t.Log("\n", mtx.ToJSON(tab))
 
 	// create SQL to create table

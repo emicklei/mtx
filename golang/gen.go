@@ -30,10 +30,21 @@ func Source(e *mtx.Entity, options ...Option) string {
 // TODO handle nullable
 func goTypeSource(a *mtx.Attribute) string {
 	if gt, ok := a.Get(mtx.GoTypeName); ok {
+		if a.IsNullable {
+			// TODO too simple
+			return "*" + gt.(string)
+		}
 		return gt.(string)
+	}
+	if a.AttributeType.Named == nil {
+		panic("missing Named in attribute.attributetype")
 	}
 	typ, ok := attributeTypeToGoTypeMapping[a.AttributeType.Name]
 	if ok {
+		if a.IsNullable {
+			// TODO too simple
+			return "*" + typ
+		}
 		return typ
 	}
 	// fallback

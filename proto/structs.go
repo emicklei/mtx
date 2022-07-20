@@ -62,7 +62,7 @@ func (m *Message) ToEntity() *mtx.Entity {
 	e := mtx.NewEntity(n)
 	e.Doc(m.Documentation)
 	for _, each := range m.Fields {
-		e.A(each.Name, each.FieldType.AttributeType, each.Documentation)
+		e.A(each.Name, *each.FieldType.AttributeDatatype, each.Documentation)
 	}
 	return e
 }
@@ -95,6 +95,8 @@ func (m *Message) Doc(d string) *Message {
 	m.Named.Documentation = d
 	return m
 }
+
+var _ mtx.TypedLabel = new(Field)
 
 type Field struct {
 	*mtx.Named

@@ -12,12 +12,11 @@ type ExtendsDatatype interface {
 
 type Datatype struct {
 	*Named
-	AttributeDatatype *Datatype `json:"attribute_type,omitempty"`
-	// This means : can the datatype be used to capture a NULL value
-	CanRepresentNull bool            `json:"can_present_null,omitempty"`
-	IsUserDefined    bool            `json:"is_user_defined,omitempty"`
-	ElementType      *Datatype       `json:"element_type,omitempty"`
-	Extensions       ExtendsDatatype `json:"ext,omitempty"`
+	AttributeDatatype         *Datatype       `json:"attribute_type,omitempty"`
+	NullableAttributeDatatype *Datatype       `json:"nullable_attribute_type,omitempty"`
+	IsUserDefined             bool            `json:"is_user_defined,omitempty"`
+	ElementType               *Datatype       `json:"element_type,omitempty"`
+	Extensions                ExtendsDatatype `json:"ext,omitempty"`
 }
 
 func (d Datatype) EncodedFrom(at Datatype) Datatype {
@@ -25,13 +24,13 @@ func (d Datatype) EncodedFrom(at Datatype) Datatype {
 	return d
 }
 
-func (d Datatype) Optional() Datatype {
-	d.CanRepresentNull = true
+func (d Datatype) WithAttributeDatatype(dt Datatype) Datatype {
+	d.AttributeDatatype = &dt
 	return d
 }
 
-func (d Datatype) WithAttributeDatatype(dt Datatype) Datatype {
-	d.AttributeDatatype = &dt
+func (d Datatype) WithNullable(dt Datatype) Datatype {
+	d.NullableAttributeDatatype = &dt
 	return d
 }
 

@@ -44,7 +44,7 @@ func Type(typename string) mtx.Datatype {
 
 var (
 	BYTES  = register("BYTES", mtx.BYTES)
-	STRING = register("STRING", mtx.STRING)
+	STRING = register("STRING", mtx.STRING.WithNullable(Type("bigquery.NullString")))
 )
 
 func MaxBytes(max int64) mtx.Datatype {

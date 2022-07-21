@@ -21,19 +21,25 @@ func Source(e *mtx.Entity, options ...Option) string {
 	}
 	fmt.Fprintf(buf, "type %s struct {\n", e.Name)
 	for _, each := range e.Attributes {
-		fmt.Fprintf(buf, "\t%s %s `json:\"%s,omitempty\" `// %s\n", goFieldName(each), goTypeSource(each), each.Name, each.Documentation)
+		fmt.Fprintf(buf, "\t%s %s ", goFieldName(each), GoTypeSource(each))
+		// add tags
+		if len(each.Tags) > 0 {
+			fmt.Fprintf(buf, "`")
+			for _, tag := range each.Tags {
+				fmt.Fprintf(buf, "%s:\"%s\" ", tag.Name, tag.Value)
+			}
+			fmt.Fprintf(buf, "` ")
+		}
+		fmt.Fprintf(buf, "// %s\n", each.Documentation)
 	}
 	fmt.Fprintf(buf, "}")
 	return buf.String()
 }
 
 // TODO handle nullable
-func goTypeSource(a *mtx.Attribute) string {
+func GoTypeSource(a *mtx.Attribute) string {
 	if gt, ok := a.Get(mtx.GoTypeName); ok {
-		if a.IsNullable {
-			// TODO too simple
-			return "*" + gt.(string)
-		}
+		// if typename is overridden then it should have taken care of nullable
 		return gt.(string)
 	}
 	if a.AttributeType.Named == nil {

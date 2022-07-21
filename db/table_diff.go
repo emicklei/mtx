@@ -5,7 +5,10 @@ import "github.com/emicklei/mtx"
 type TableDiff struct {
 	ColumnAdditions []*Column
 	ColumnChanges   []*Column
-	ColumnRemovals  []*Column
+	// same size as ColumnChanges, each entry is a list of change aspects found
+	// such as name, description, type etc.
+	ChangeAspects  [][]string
+	ColumnRemovals []*Column
 }
 
 func (t *Table) Diff(other *Table) TableDiff {
@@ -16,18 +19,21 @@ func (t *Table) Diff(other *Table) TableDiff {
 		if !ok { // not in other
 			diff.ColumnRemovals = append(diff.ColumnRemovals, left)
 		} else {
+			aspects := []string{}
 			// also in other, may have changes
 			if left.ColumnType.Name != right.ColumnType.Name {
+				aspects = append(aspects, "name")
 				diff.ColumnChanges = append(diff.ColumnChanges, right)
-			} else {
-				if left.IsPrimary != left.IsPrimary {
-					diff.ColumnChanges = append(diff.ColumnChanges, right)
-				} else {
-					if left.IsNullable != left.IsNullable {
-						diff.ColumnChanges = append(diff.ColumnChanges, right)
-					}
-				}
 			}
+			if left.IsPrimary != left.IsPrimary {
+				aspects = append(aspects, "isprimary")
+				diff.ColumnChanges = append(diff.ColumnChanges, right)
+			}
+			if left.IsNullable != left.IsNullable {
+				aspects = append(aspects, "nullable")
+				diff.ColumnChanges = append(diff.ColumnChanges, right)
+			}
+			diff.ChangeAspects = append(diff.ChangeAspects, aspects)
 		}
 	}
 	// columns not in t

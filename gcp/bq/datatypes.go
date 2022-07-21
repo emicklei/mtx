@@ -44,7 +44,7 @@ func Type(typename string) mtx.Datatype {
 
 var (
 	BYTES  = register("BYTES", mtx.BYTES)
-	STRING = register("STRING", mtx.BYTES)
+	STRING = register("STRING", mtx.STRING)
 )
 
 func MaxBytes(max int64) mtx.Datatype {
@@ -72,7 +72,7 @@ var GEOGRAPHY = register("GEOGRAPHY", mtx.STRING)
 var INTERVAL = register("INTERVAL", mtx.UNKNOWN)
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_type
-var INT64 = mtx.Datatype{Named: mtx.N("bq.Datatype", "INT64")}
+var INT64 = register("INT64", mtx.INTEGER)
 var INT, SMALLINT, INTEGER, BIGINT, TINYINT, BYTEINT = INT64, INT64, INT64, INT64, INT64, INT64
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
@@ -102,3 +102,6 @@ func BigDecimal(precision, scale int) mtx.Datatype {
 		Named: mtx.N("bq.Datatype", fmt.Sprintf("BIGDECIMAL(%d,%d)", precision, scale)), Extensions: DatatypeExtensions{Scale: scale, Precision: precision},
 	}
 }
+
+// https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type
+var TIMESTAMP = register("TIMESTAMP", mtx.TIMESTAMP)

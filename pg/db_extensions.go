@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/emicklei/mtx"
 	"github.com/emicklei/mtx/db"
 )
 
@@ -40,6 +41,8 @@ type ColumnExtensions struct{}
 func (t ColumnExtensions) OwnerClass() string { return "pg.Column" }
 
 func (t ColumnExtensions) Datatype() db.ExtendsDatatype { return new(DatatypeExtensions) }
+
+func (t ColumnExtensions) ExtendAttribute(c *db.Column, a *mtx.Attribute) {}
 
 type DatatypeExtensions struct{}
 

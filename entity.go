@@ -8,8 +8,9 @@ import (
 const (
 	EntityClass          = "Entity"
 	EntityAttributeClass = "Attribute"
-	EntityName           = "Entity.Name" // property key to override Name of an Entity
-	GoTypeName           = "GoTypeName"  // property key to bypass mapping Name of a Attribute Type
+	EntityName           = "Entity.Name"    // property key to override Name of an Entity
+	AttributeName        = "Attribute.Name" // property key to override Name of an Entity Attribute
+	GoTypeName           = "GoTypeName"     // property key to bypass mapping Name of a Attribute Type
 )
 
 type Entity struct {
@@ -54,8 +55,9 @@ type Attribute struct {
 	*Named
 	AttributeType Datatype `json:"type"`
 	// IsNullable = true means the value can be NULL/nil
-	IsNullable bool `json:"is_nullable,omitempty"`
-	IsRequired bool `json:"required,omitempty"`
+	IsNullable bool  `json:"is_nullable,omitempty"`
+	IsRequired bool  `json:"required,omitempty"`
+	Tags       []Tag `json:"tags,omitempty"`
 }
 
 // func (a *Attribute) GetDatatype() Datatype {
@@ -80,4 +82,9 @@ func (a *Attribute) Optional() *Attribute {
 // SourceOn writes Go source to recreate the receiver.
 func (a *Attribute) SourceOn(w io.Writer) {
 	fmt.Fprintf(w, "ent.Attribute(\"%s\")", a.Name)
+}
+
+type Tag struct {
+	Name  string `json:"name,omitempty"`
+	Value string `json:"value,omitempty"`
 }

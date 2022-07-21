@@ -1,6 +1,10 @@
 package db
 
-import "io"
+import (
+	"io"
+
+	"github.com/emicklei/mtx"
+)
 
 type ExtendsDatabase interface {
 	Table() ExtendsTable
@@ -15,6 +19,7 @@ type ExtendsTable interface {
 type ExtendsColumn interface {
 	Datatype() ExtendsDatatype
 	OwnerClass() string
+	ExtendAttribute(*Column, *mtx.Attribute)
 }
 
 type ExtendsDatatype interface {

@@ -39,16 +39,16 @@ func (r *TypeRegistry) EncodeAs(at Datatype, dt Datatype) {
 	// check existing
 	_, ok := r.encodedTypes[at.Name]
 	if ok {
-		panic("duplicate encoded key:" + at.Name)
+		return
 	}
 	r.encodedTypes[at.Name] = dt
 }
 
 func (r *TypeRegistry) Add(d Datatype) Datatype {
 	// check existing
-	_, ok := r.knownTypes[d.GetName()]
+	dt, ok := r.knownTypes[d.GetName()]
 	if ok {
-		panic("duplicate known key:" + d.GetName())
+		return dt
 	}
 	r.knownTypes[d.GetName()] = d
 	return d

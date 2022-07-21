@@ -95,12 +95,15 @@ func (t *Table) ToEntity() *mtx.Entity {
 	for _, each := range t.Columns {
 		attr := m.Attribute(each.Name)
 		// see if property overrides this
-		if n, ok := each.Get(mtx.EntityName); ok {
+		if n, ok := each.Get(mtx.AttributeName); ok {
 			attr.Named.Name = n.(string)
 		}
+		// add json tags
+		attr.Tags = append(attr.Tags, mtx.Tag{Name: "json", Value: each.Name + ",omitempty"})
 		attr.AttributeType = *each.GetDatatype().AttributeDatatype
 		attr.IsNullable = each.IsNullable
 		attr.Doc(each.Documentation)
+		each.Extensions.ExtendAttribute(each, attr)
 	}
 	return m
 }

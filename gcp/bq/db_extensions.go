@@ -3,6 +3,7 @@ package bq
 import (
 	"io"
 
+	"github.com/emicklei/mtx"
 	"github.com/emicklei/mtx/db"
 )
 
@@ -29,6 +30,14 @@ type ColumnExtensions struct {
 func (t ColumnExtensions) Datatype() db.ExtendsDatatype { return new(DatatypeExtensions) }
 
 func (t ColumnExtensions) OwnerClass() string { return "bq.Column" }
+
+func (t ColumnExtensions) ExtendAttribute(c *db.Column, a *mtx.Attribute) {
+	// TEMP TODO
+	if c.IsNullable && a.AttributeType == mtx.STRING {
+		a.Set(mtx.GoTypeName, "bigquery.NullString")
+	}
+	a.Tags = append(a.Tags, mtx.Tag{Name: "bigquery", Value: c.Name})
+}
 
 type DatatypeExtensions struct {
 	Max       int64 `json:"max,omitempty"`

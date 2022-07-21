@@ -61,7 +61,7 @@ func (t ColumnExtensions) Datatype() db.ExtendsDatatype { return new(DatatypeExt
 
 func (t ColumnExtensions) OwnerClass() string { return "spanner.Column" }
 
-func (t ColumnExtensions) ExtendAttribute(c *db.Column, a *mtx.Attribute) {}
+func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *mtx.Attribute) {}
 
 var _ db.ExtendsDatatype = DatatypeExtensions{}
 

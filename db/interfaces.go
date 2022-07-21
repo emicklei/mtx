@@ -19,7 +19,7 @@ type ExtendsTable interface {
 type ExtendsColumn interface {
 	Datatype() ExtendsDatatype
 	OwnerClass() string
-	ExtendAttribute(*Column, *mtx.Attribute)
+	PostBuildAttribute(*Column, *mtx.Attribute)
 }
 
 type ExtendsDatatype interface {

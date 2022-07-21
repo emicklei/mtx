@@ -103,7 +103,7 @@ func (t *Table) ToEntity() *mtx.Entity {
 		attr.AttributeType = *each.GetDatatype().AttributeDatatype
 		attr.IsNullable = each.IsNullable
 		attr.Doc(each.Documentation)
-		each.Extensions.ExtendAttribute(each, attr)
+		each.Extensions.PostBuildAttribute(each, attr)
 	}
 	return m
 }

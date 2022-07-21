@@ -5,6 +5,7 @@ import (
 
 	"github.com/emicklei/mtx"
 	"github.com/emicklei/mtx/db"
+	"github.com/emicklei/mtx/golang"
 )
 
 type DatabaseExtensions struct{}
@@ -31,10 +32,11 @@ func (t ColumnExtensions) Datatype() db.ExtendsDatatype { return new(DatatypeExt
 
 func (t ColumnExtensions) OwnerClass() string { return "bq.Column" }
 
-func (t ColumnExtensions) ExtendAttribute(c *db.Column, a *mtx.Attribute) {
+// TODO this is very Go specific ; should not be here
+func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *mtx.Attribute) {
 	// TEMP TODO
 	if c.IsNullable && a.AttributeType == mtx.STRING {
-		a.Set(mtx.GoTypeName, "bigquery.NullString")
+		a.Set(golang.GoTypeName, "bigquery.NullString")
 	}
 	a.Tags = append(a.Tags, mtx.Tag{Name: "bigquery", Value: c.Name})
 }

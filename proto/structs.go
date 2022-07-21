@@ -55,11 +55,9 @@ func (m *Message) SourceOn(w io.Writer) {
 }
 
 func (m *Message) ToEntity() *mtx.Entity {
-	n := m.Name
-	if s, ok := m.Get(mtx.GoTypeName); ok {
-		n = s.(string)
-	}
-	e := mtx.NewEntity(n)
+	e := mtx.NewEntity(m.Name)
+	// share props
+	e.Properties = m.Properties
 	e.Doc(m.Documentation)
 	for _, each := range m.Fields {
 		e.A(each.Name, *each.FieldType.AttributeDatatype, each.Documentation)

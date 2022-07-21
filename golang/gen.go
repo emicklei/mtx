@@ -8,6 +8,11 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
+const (
+	GoTypeName         = "GoTypeName" // property key to bypass mapping Name of a Attribute Type
+	GoNullableTypeName = "GoNullableTypeName"
+)
+
 type Option struct {
 	Package string
 }
@@ -38,7 +43,7 @@ func Source(e *mtx.Entity, options ...Option) string {
 
 // TODO handle nullable
 func GoTypeSource(a *mtx.Attribute) string {
-	if gt, ok := a.Get(mtx.GoTypeName); ok {
+	if gt, ok := a.Get(GoTypeName); ok {
 		// if typename is overridden then it should have taken care of nullable
 		return gt.(string)
 	}

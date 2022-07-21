@@ -25,3 +25,13 @@ func TestBQStringMapsToGoString(t *testing.T) {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
 }
+
+func TestNullableBQStringBecomesNullString(t *testing.T) {
+	tab := bq.NewDataset("test").Table("test")
+	tab.C("s", bq.STRING, "").Nullable()
+	ent := tab.ToEntity()
+	s := ent.Attributes[0]
+	if got, want := s.AttributeType.Name, "string"; got != want {
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
+}

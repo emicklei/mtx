@@ -42,7 +42,7 @@ func (t ColumnExtensions) OwnerClass() string { return "pg.Column" }
 
 func (t ColumnExtensions) Datatype() db.ExtendsDatatype { return new(DatatypeExtensions) }
 
-func (t ColumnExtensions) ExtendAttribute(c *db.Column, a *mtx.Attribute) {}
+func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *mtx.Attribute) {}
 
 type DatatypeExtensions struct{}
 

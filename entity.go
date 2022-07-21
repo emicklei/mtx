@@ -10,7 +10,7 @@ const (
 	EntityAttributeClass = "Attribute"
 	EntityName           = "Entity.Name"    // property key to override Name of an Entity
 	AttributeName        = "Attribute.Name" // property key to override Name of an Entity Attribute
-	GoTypeName           = "GoTypeName"     // property key to bypass mapping Name of a Attribute Type
+
 )
 
 type Entity struct {

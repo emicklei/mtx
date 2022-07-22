@@ -101,6 +101,8 @@ func (t *Table) ToEntity() *mtx.Entity {
 		// add json tags
 		attr.Tags = append(attr.Tags, mtx.Tag{Name: "json", Value: each.Name + ",omitempty"})
 		attr.AttributeType = *each.GetDatatype().AttributeDatatype
+		// could be nil=nil
+		attr.AttributeType.NullableAttributeDatatype = each.GetDatatype().NullableAttributeDatatype
 		attr.IsNullable = each.IsNullable
 		attr.Doc(each.Documentation)
 		each.Extensions.PostBuildAttribute(each, attr)

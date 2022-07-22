@@ -1,6 +1,6 @@
 package mtx
 
-var registry = NewTypeRegistry("Datatype")
+var registry = NewTypeRegistry("mtx.Datatype")
 
 func register(typename string) Datatype {
 	return registry.Register(typename, false)
@@ -30,7 +30,7 @@ var (
 
 func Array(elementType Datatype) Datatype {
 	dt := Datatype{
-		Named:       N("Datatype", "array"),
+		Named:       N("mtx.Datatype", "array"),
 		ElementType: &elementType,
 	}
 	return registry.Add(dt)

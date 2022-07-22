@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/emicklei/mtx"
-	"github.com/emicklei/mtx/golang"
 )
 
 // BEGIN: copy from datatypes.go.template
@@ -45,7 +44,7 @@ func Type(typename string) mtx.Datatype {
 
 var (
 	BYTES  = register("BYTES", mtx.BYTES)
-	STRING = register("STRING", mtx.STRING).Set(golang.GoNullableTypeName, "bigquery.NullString")
+	STRING = register("STRING", mtx.STRING).WithNullable(mtx.Register("bigquery.NullString"))
 )
 
 func MaxBytes(max int64) mtx.Datatype {

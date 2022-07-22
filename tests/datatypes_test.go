@@ -1,4 +1,4 @@
-package crosspkg
+package tests
 
 import (
 	"testing"
@@ -6,6 +6,7 @@ import (
 	"github.com/emicklei/mtx"
 	"github.com/emicklei/mtx/gcp/bq"
 	"github.com/emicklei/mtx/gcp/spanner"
+	"github.com/emicklei/mtx/golang"
 	"github.com/emicklei/mtx/proto"
 )
 
@@ -33,6 +34,16 @@ func TestNullableBQStringEntityString(t *testing.T) {
 	s := ent.Attributes[0]
 	if got, want := s.AttributeType.Name, "string"; got != want {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
+	if got, want := s.IsNullable, true; got != want {
+		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
+	}
+	str := golang.ToStruct(ent)
+	if got, want := str.Fields[0].Name, "S"; got != want {
+		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
+	}
+	if got, want := str.Fields[0].FieldType.Name, "bigquery.NullString"; got != want {
+		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
 	}
 }
 

@@ -61,7 +61,7 @@ func init() {
 	INT64.Set("bits", "64")
 	// define encoding for remaining standard types
 	registry.EncodeAs(mtx.DURATION, STRING)
-	registry.EncodeAs(mtx.UUID, String(32))
+	registry.EncodeAs(mtx.UUID, String(36))
 	//registry.EncodeAs(mtx.DATERANGE, Array(DATE))
 }
 

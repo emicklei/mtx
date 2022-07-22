@@ -25,6 +25,7 @@ func (t TableExtensions) OwnerClass() string { return "spanner.Table" }
 func (t TableExtensions) Column() db.ExtendsColumn { return new(ColumnExtensions) }
 
 func (t TableExtensions) SQLOn(table *db.Table, w io.Writer) {
+	fmt.Fprintf(w, "-- %s\n", table.Documentation)
 	fmt.Fprintf(w, "CREATE TABLE %s (\n", table.Name)
 	prims := []string{}
 	for i, each := range table.Columns {

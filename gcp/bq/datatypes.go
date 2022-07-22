@@ -55,6 +55,11 @@ func MaxBytes(max int64) mtx.Datatype {
 	}
 }
 
+var (
+	// https://cloud.google.com/bigquery/docs/reference/standard-sql/json-data#sql
+	JSON = register("JSON", mtx.JSON)
+)
+
 // TODO look at civil package https://pkg.go.dev/cloud.google.com/go/bigquery#InferSchema
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type

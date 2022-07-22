@@ -43,6 +43,10 @@ func Source(e *mtx.Entity, options ...Option) string {
 
 // TODO handle nullable
 func GoTypeSource(a *mtx.Attribute) string {
+	// if a.IsNullable {
+	// 	return GoTypeSource(a.AttributeType.NullableAttributeDatatype)
+	// }
+
 	if gt, ok := a.Get(GoTypeName); ok {
 		// if typename is overridden then it should have taken care of nullable
 		return gt.(string)

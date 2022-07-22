@@ -35,9 +35,20 @@ func (t ColumnExtensions) OwnerClass() string { return "bq.Column" }
 // TODO this is very Go specific ; should not be here
 func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *mtx.Attribute) {
 	// TEMP TODO
+	if c.IsNullable && a.AttributeType == mtx.BYTES {
+		a.Set(golang.GoTypeName, "[]byte")
+	}
 	if c.IsNullable && a.AttributeType == mtx.STRING {
 		a.Set(golang.GoTypeName, "bigquery.NullString")
 	}
+	if a.AttributeType == mtx.JSON {
+		if c.IsNullable {
+			a.Set(golang.GoTypeName, "bigquery.NullString")
+		} else {
+			a.Set(golang.GoTypeName, "string")
+		}
+	}
+	// END TEMP
 	a.Tags = append(a.Tags, mtx.Tag{Name: "bigquery", Value: c.Name})
 }
 

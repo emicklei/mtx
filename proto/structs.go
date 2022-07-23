@@ -16,6 +16,14 @@ func NewPackage(name string) *Package {
 	return &Package{Named: mtx.N("proto.Package", name)}
 }
 
+func (p *Package) Validate(c *mtx.ErrorCollector) {
+	p.Named.Validate(c)
+	p.Named.CheckClass(c, "proto.Package")
+	for _, each := range p.Messages {
+		each.Validate(c)
+	}
+}
+
 func (p *Package) SourceOn(w io.Writer) {
 	fmt.Fprintf(w, "pkg := proto.NewPackage(\"%s\")", p.Name)
 	p.Named.SourceOn(w)
@@ -51,6 +59,14 @@ func (m *Message) SourceOn(w io.Writer) {
 	for _, each := range m.Fields {
 		fmt.Fprintln(w)
 		each.SourceOn(w)
+	}
+}
+
+func (m *Message) Validate(c *mtx.ErrorCollector) {
+	m.Named.Validate(c)
+	m.Named.CheckClass(c, "proto.Message")
+	for _, each := range m.Fields {
+		each.Validate(c)
 	}
 }
 
@@ -110,6 +126,12 @@ func (f *Field) SourceOn(w io.Writer) {
 	fmt.Fprintf(w, "msg.F(\"%s\",%d,", f.Name, f.SequenceNumber)
 	f.FieldType.SourceOn(w)
 	fmt.Fprintf(w, ",\"%s\")", f.Documentation)
+}
+
+func (f *Field) Validate(c *mtx.ErrorCollector) {
+	f.Named.Validate(c)
+	f.Named.CheckClass(c, "proto.Field")
+	f.FieldType.CheckClass(c, "proto.Datatype")
 }
 
 func (f *Field) Type(ft mtx.Datatype) *Field {

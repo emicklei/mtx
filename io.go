@@ -3,6 +3,7 @@ package mtx
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 )
 
@@ -22,4 +23,29 @@ func ToSource(what SourceWriteable) string {
 
 type SourceWriteable interface {
 	SourceOn(io.Writer)
+}
+
+func Validate(v Validates) bool {
+	c := new(ErrorCollector)
+	v.Validate(c)
+	c.Print()
+	return len(c.list) == 0
+}
+
+type ErrorCollector struct {
+	list []ErrorWithOrigin
+}
+
+type ErrorWithOrigin struct {
+	Origin *Named
+	Err    error
+}
+
+func (e *ErrorCollector) Print() {
+	for _, each := range e.list {
+		fmt.Println(each)
+	}
+}
+func (e *ErrorCollector) Add(who *Named, err error) {
+	e.list = append(e.list, ErrorWithOrigin{who, err})
 }

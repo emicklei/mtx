@@ -35,7 +35,7 @@ func (d Datatype) WithNullable(dt Datatype) Datatype {
 }
 
 func (d Datatype) String() string {
-	return fmt.Sprintf("%s (%s) : %T", d.Name, d.Class, d)
+	return fmt.Sprintf("%s (%s)", d.Name, d.Class)
 }
 
 func (d Datatype) SourceOn(w io.Writer) {

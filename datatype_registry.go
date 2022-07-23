@@ -20,6 +20,8 @@ func NewTypeRegistry(class string) *TypeRegistry {
 	}
 }
 
+func (r *TypeRegistry) Class() string { return r.class }
+
 // MappedAttributeType returns the best matching type.
 func (r *TypeRegistry) MappedAttributeType(at Datatype) Datatype {
 	for _, each := range r.knownTypes {
@@ -45,6 +47,9 @@ func (r *TypeRegistry) EncodeAs(at Datatype, dt Datatype) {
 }
 
 func (r *TypeRegistry) Add(d Datatype) Datatype {
+	if d.Class != r.class {
+		panic("wrong class")
+	}
 	r.knownTypes[d.GetName()] = d
 	return d
 }
@@ -58,6 +63,31 @@ func (r *TypeRegistry) Register(typename string, isUserDefined bool) Datatype {
 	dt := Datatype{
 		Named:         N(r.class, typename),
 		IsUserDefined: isUserDefined,
+	}
+	return r.Add(dt)
+}
+
+func (r *TypeRegistry) Type(typename string) Datatype {
+	dt, ok := r.TypeNamed(typename)
+	if ok {
+		return dt
+	}
+	return r.RegisterType(typename, UNKNOWN)
+}
+
+func (r *TypeRegistry) RegisterType(typename string, attrType Datatype) Datatype {
+	dt := Datatype{
+		Named:             N(r.class, typename),
+		AttributeDatatype: &attrType,
+		IsUserDefined:     true,
+	}
+	return r.Add(dt)
+}
+
+func (r *TypeRegistry) Standard(typename string, attrType Datatype) Datatype {
+	dt := Datatype{
+		Named:             N(r.class, typename),
+		AttributeDatatype: &attrType,
 	}
 	return r.Add(dt)
 }

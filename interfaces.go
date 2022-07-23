@@ -9,3 +9,7 @@ type TypedLabel interface {
 }
 
 type SQLWriter interface{ SQLOn(w io.Writer) }
+
+type Validates interface {
+	Validate(c *ErrorCollector)
+}

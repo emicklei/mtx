@@ -1,6 +1,7 @@
 package mtx
 
 import (
+	"errors"
 	"fmt"
 	"io"
 )
@@ -24,11 +25,23 @@ type Named struct {
 	Documentation string         `json:"documentation,omitempty"`
 }
 
-func (n Named) GetName() string {
+func (n *Named) Validate(c *ErrorCollector) {
+	if n.Name == "" {
+		c.Add(n, errors.New("empty name"))
+	}
+}
+
+func (n *Named) CheckClass(c *ErrorCollector, must string) {
+	if got, want := n.Class, must; got != want {
+		c.Add(n, fmt.Errorf("got %s want %s", n.Class, must))
+	}
+}
+
+func (n *Named) GetName() string {
 	return n.Name
 }
 
-func (n Named) SourceOn(w io.Writer) {
+func (n *Named) SourceOn(w io.Writer) {
 	if d := n.Documentation; d != "" {
 		fmt.Fprintf(w, ".Doc(\"%s\")", d)
 	}

@@ -26,10 +26,12 @@ func NewPackage(name string) *Package {
 	}
 }
 
+// T is short for Type.Doc
 func (p *Package) T(name string, doc string) *Struct {
 	return p.Type(name).Doc(doc)
 }
 
+// Type finds or create a Struct type
 func (p *Package) Type(name string) *Struct {
 	if t, ok := mtx.FindByName(p.Structs, name); ok {
 		return t
@@ -57,6 +59,7 @@ func (s *Struct) F(name string, dt mtx.Datatype, doc string) *Field {
 	return s.Field(name).Type(dt).Doc(doc)
 }
 
+// Field finds or creates a Field.
 func (s *Struct) Field(name string) *Field {
 	if f, ok := mtx.FindByName(s.Fields, name); ok {
 		return f
@@ -69,6 +72,7 @@ func (s *Struct) Field(name string) *Field {
 	return f
 }
 
+// Go returns the source in Go for defining this struct type.
 func (s *Struct) Go() string {
 	var buf bytes.Buffer
 	s.GoOn(&buf)
@@ -76,6 +80,7 @@ func (s *Struct) Go() string {
 }
 
 func (s *Struct) GoOn(w io.Writer) {
+	fmt.Fprintf(w, "// %s : %s\n", s.Name, s.Documentation)
 	fmt.Fprintf(w, "type %s struct {\n", s.Name)
 	for _, each := range s.Fields {
 		fmt.Fprintf(w, "\t%s %s ", each.Name, each.FieldType.Name)
@@ -116,11 +121,13 @@ func ToStruct(ent *mtx.Entity) *Struct {
 	str := &Struct{
 		Named: mtx.N("golang.Struct", n),
 	}
+	str.Documentation = ent.Documentation
 	for _, each := range ent.Attributes {
 		f := &Field{
 			Named:     mtx.N("golang.Field", goFieldName(each)),
 			FieldType: goDatatype(each),
 		}
+		f.Documentation = each.Documentation
 		str.Fields = append(str.Fields, f)
 	}
 	return str

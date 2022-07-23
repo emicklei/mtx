@@ -46,8 +46,12 @@ var (
 	FLOAT32 = register("float32", mtx.FLOAT)
 	FLOAT64 = register("float64", mtx.FLOAT)
 	INT     = register("int", mtx.INTEGER)
+
+	MAP_STRING_ANY = register("map[string]any", mtx.JSON)
 )
 
 func init() {
 	registry.EncodeAs(mtx.DATE, TIME)
+	registry.EncodeAs(mtx.TIMESTAMP, TIME)
+	registry.EncodeAs(mtx.DATETIME, TIME)
 }

@@ -64,7 +64,7 @@ func (r *Relation) Attribute(name string) *Attribute {
 		return attr
 	}
 	attr = &Attribute{
-		IsRequired: true, // required by default
+		IsNullable: false, // required by default
 	}
 	attr.Named = N(EntityAttributeClass, name)
 	r.Attributes = append(r.Attributes, attr)

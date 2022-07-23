@@ -10,7 +10,8 @@ import (
 func TestStructGoSource(t *testing.T) {
 	s := new(Struct)
 	s.Named = mtx.N("golang.Struct", "Test")
-	if got, want := s.Go(), `type Test struct {
+	if got, want := s.Go(), `// Test : 
+type Test struct {
 }
 `; got != want {
 		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
@@ -26,7 +27,8 @@ func TestStructWithFieldsGoSource(t *testing.T) {
 		FieldType: STRING,
 	})
 	// space after //
-	if got, want := s.Go(), `type Test struct {
+	if got, want := s.Go(), `// Test : 
+type Test struct {
 	Test string // 
 }
 `; got != want {
@@ -39,7 +41,8 @@ func TestStructFull(t *testing.T) {
 	p := NewPackage("test")
 	s := p.Type("Test")
 	s.F("Example", STRING, "some example")
-	if got, want := s.Go(), `type Test struct {
+	if got, want := s.Go(), `// Test : 
+type Test struct {
 	Example string // some example
 }
 `; got != want {

@@ -45,11 +45,6 @@ func (r *TypeRegistry) EncodeAs(at Datatype, dt Datatype) {
 }
 
 func (r *TypeRegistry) Add(d Datatype) Datatype {
-	// check existing
-	dt, ok := r.knownTypes[d.GetName()]
-	if ok {
-		return dt
-	}
 	r.knownTypes[d.GetName()] = d
 	return d
 }

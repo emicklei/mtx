@@ -38,7 +38,7 @@ func (e *Entity) Attribute(name string) *Attribute {
 		return attr
 	}
 	attr = &Attribute{
-		IsRequired: true, // required by default
+		IsNullable: false, // required by default
 	}
 	attr.Named = N(EntityAttributeClass, name)
 	e.Attributes = append(e.Attributes, attr)
@@ -56,7 +56,6 @@ type Attribute struct {
 	AttributeType Datatype `json:"type"`
 	// IsNullable = true means the value can be NULL/nil
 	IsNullable bool  `json:"is_nullable,omitempty"`
-	IsRequired bool  `json:"required,omitempty"`
 	Tags       []Tag `json:"tags,omitempty"`
 }
 
@@ -74,8 +73,8 @@ func (a *Attribute) Doc(d string) *Attribute {
 	return a
 }
 
-func (a *Attribute) Optional() *Attribute {
-	a.IsRequired = false
+func (a *Attribute) Nullable() *Attribute {
+	a.IsNullable = true
 	return a
 }
 

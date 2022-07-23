@@ -35,11 +35,3 @@ func Array(elementType Datatype) Datatype {
 	}
 	return registry.Add(dt)
 }
-
-func (a Datatype) Equals(o Datatype) bool {
-	if a.Name != o.Name {
-		return false
-	}
-	// TODO
-	return true
-}

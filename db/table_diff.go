@@ -25,11 +25,11 @@ func (t *Table) Diff(other *Table) TableDiff {
 				aspects = append(aspects, "name")
 				diff.ColumnChanges = append(diff.ColumnChanges, right)
 			}
-			if left.IsPrimary != left.IsPrimary {
+			if left.IsPrimary != right.IsPrimary {
 				aspects = append(aspects, "isprimary")
 				diff.ColumnChanges = append(diff.ColumnChanges, right)
 			}
-			if left.IsNullable != left.IsNullable {
+			if left.IsNullable != right.IsNullable {
 				aspects = append(aspects, "nullable")
 				diff.ColumnChanges = append(diff.ColumnChanges, right)
 			}

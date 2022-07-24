@@ -11,11 +11,11 @@ Models in different technologies:
 - gcp/spanner database
 - protocolbuffers
 - golang struct
+- good old csv
 - entity–relationship
  
 Each model is using its own types and datatypes.
 Transformations to and from a selection of model combinations.
-
 
 Example Postgres (pg) Database table.
 

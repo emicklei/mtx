@@ -37,13 +37,16 @@ func TestFixture(t *testing.T) {
 		//t.Log(record)
 	}
 	//t.Log("\n", mtx.ToJSON(s))
-	if got, want := tab.Columns[0].ColumnType, NUMBER; got != want {
+	if got, want := tab.Columns[0].ColumnType, BOOLEAN; got != want {
 		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
 	}
-	if got, want := tab.Columns[1].ColumnType, STRING; got != want {
+	if got, want := tab.Columns[1].ColumnType, NUMBER; got != want {
 		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
 	}
-	if got, want := tab.Columns[4].ColumnType, NUMBER; got != want {
+	if got, want := tab.Columns[2].ColumnType, STRING; got != want {
+		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
+	}
+	if got, want := tab.Columns[5].ColumnType, NUMBER; got != want {
 		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
 	}
 }

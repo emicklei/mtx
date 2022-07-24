@@ -21,11 +21,7 @@ func (t TableExtensions) Column() db.ExtendsColumn { return new(ColumnExtensions
 func (t TableExtensions) SQLOn(tab *db.Table, w io.Writer) {
 	// we know its actual type
 	fmt.Fprintf(w, "CREATE TABLE %s (\n", tab.Name)
-	prims := []string{}
 	for i, each := range tab.Columns {
-		if each.IsPrimary {
-			prims = append(prims, each.Name)
-		}
 		if i > 0 {
 			fmt.Fprintf(w, ",\t")
 		} else {

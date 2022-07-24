@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	EntityClass          = "Entity"
-	EntityAttributeClass = "Attribute"
+	EntityClass          = "mtx.Entity"
+	EntityAttributeClass = "mtx.Attribute"
 	EntityName           = "Entity.Name"    // property key to override Name of an Entity
 	AttributeName        = "Attribute.Name" // property key to override Name of an Entity Attribute
 

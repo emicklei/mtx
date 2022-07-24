@@ -22,7 +22,7 @@ type Named struct {
 	Name          string         `json:"name"`
 	Class         string         `json:"class"`
 	Properties    map[string]any `json:"properties,omitempty"`
-	Documentation string         `json:"documentation,omitempty"`
+	Documentation string         `json:"doc,omitempty"`
 }
 
 func (n *Named) Validate(c *ErrorCollector) {

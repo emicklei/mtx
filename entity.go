@@ -61,6 +61,7 @@ func (e *Entity) SourceOn(w io.Writer) {
 
 type Attribute struct {
 	*Named
+	Category      string   `json:"category,omitempty"`
 	AttributeType Datatype `json:"type"`
 	// IsNullable = true means the value can be NULL/nil
 	IsNullable bool  `json:"is_nullable,omitempty"`

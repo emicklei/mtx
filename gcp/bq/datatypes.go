@@ -14,8 +14,9 @@ var (
 )
 
 var (
-	BYTES  = registry.Standard("BYTES", mtx.BYTES)
-	STRING = registry.Standard("STRING", mtx.STRING).WithNullable(mtx.Register("bigquery.NullString"))
+	UNKNOWN = registry.Standard("any", mtx.UNKNOWN)
+	BYTES   = registry.Standard("BYTES", mtx.BYTES)
+	STRING  = registry.Standard("STRING", mtx.STRING).WithNullable(mtx.Register("bigquery.NullString"))
 )
 
 func MaxBytes(max int64) mtx.Datatype {

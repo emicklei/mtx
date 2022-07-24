@@ -122,6 +122,7 @@ var _ mtx.TypedLabel = new(Column)
 
 type Column struct {
 	*mtx.Named
+	Category   string       `json:"category,omitempty"`
 	ColumnType mtx.Datatype `json:"type"`
 	IsPrimary  bool         `json:"is_primary"`
 	// IsNotNull = true means the value is never NULL
@@ -172,7 +173,11 @@ func (c *Column) SQLOn(buf io.Writer) {
 
 func (c *Column) Validate(e *mtx.ErrorCollector) {
 	c.Named.Validate(e)
-	if c.ColumnType == mtx.UNKNOWN {
+	if c.ColumnType.Named == nil {
+		e.Add(c.Named, errors.New("has no type"))
+		return
+	}
+	if c.ColumnType.Name == mtx.UNKNOWN.Name { // we don't know the class so check against name
 		e.Add(c.Named, errors.New("has unknown type"))
 		return
 	}

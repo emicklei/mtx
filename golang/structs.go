@@ -99,6 +99,7 @@ func (s *Struct) GoOn(w io.Writer) {
 
 type Field struct {
 	*mtx.Named
+	Category  string `json:"category,omitempty"`
 	FieldType mtx.Datatype
 	Tags      []mtx.Tag
 }

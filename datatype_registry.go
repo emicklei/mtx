@@ -22,19 +22,19 @@ func NewTypeRegistry(class string) *TypeRegistry {
 
 func (r *TypeRegistry) Class() string { return r.class }
 
-// MappedAttributeType returns the best matching type.
-func (r *TypeRegistry) MappedAttributeType(at Datatype) Datatype {
+// MappedAttributeType returns the best matching known or encodede type.
+func (r *TypeRegistry) MappedAttributeType(attrType Datatype) Datatype {
 	for _, each := range r.knownTypes {
-		if dt := each.AttributeDatatype; dt != nil && dt.Name == at.Name {
+		if dt := each.AttributeDatatype; dt != nil && dt.Name == attrType.Name {
 			return each
 		}
 	}
 	// check encoded types
-	et, ok := r.encodedTypes[at.Name]
+	et, ok := r.encodedTypes[attrType.Name]
 	if ok {
 		return et
 	}
-	return r.knownTypes["any"] // TODO return the unknown
+	return r.knownTypes["any"]
 }
 
 func (r *TypeRegistry) EncodeAs(at Datatype, dt Datatype) {

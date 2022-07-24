@@ -1,6 +1,7 @@
 package csv
 
 import (
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -15,11 +16,14 @@ var (
 )
 
 var (
-	UNKNOWN = registry.Standard("any", mtx.UNKNOWN)
-	BOOLEAN = registry.Standard("boolean", mtx.BOOLEAN)
-	NUMBER  = registry.Standard("number", mtx.DECIMAL)
-	STRING  = registry.Standard("string", mtx.STRING)
+	UNKNOWN   = registry.Standard("any", mtx.UNKNOWN)
+	BOOLEAN   = registry.Standard("boolean", mtx.BOOLEAN)
+	NUMBER    = registry.Standard("number", mtx.DECIMAL)
+	STRING    = registry.Standard("string", mtx.STRING)
+	TIMESTAMP = registry.Standard("timestamp", mtx.TIMESTAMP)
 )
+
+var timestampRegEx = regexp.MustCompile("[0-9][0-9][0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9].*")
 
 func DetectType(content string) mtx.Datatype {
 	if len(content) == 0 {
@@ -40,6 +44,10 @@ func DetectType(content string) mtx.Datatype {
 	_, err := strconv.Atoi(content)
 	if err == nil {
 		return NUMBER
+	}
+	// it is a Time? yyyy-mm-ddThh:mm:...
+	if timestampRegEx.MatchString(content) {
+		return TIMESTAMP
 	}
 	return STRING
 }

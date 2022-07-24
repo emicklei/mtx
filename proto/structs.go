@@ -114,6 +114,7 @@ var _ mtx.TypedLabel = new(Field)
 
 type Field struct {
 	*mtx.Named
+	Category       string       `json:"category,omitempty"`
 	FieldType      mtx.Datatype `json:"type"`
 	Repeated       bool         `json:"repeated,omitempty"`
 	Optional       bool         `json:"optional,omitempty"`

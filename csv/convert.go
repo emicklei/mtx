@@ -3,11 +3,8 @@ package csv
 import (
 	std "encoding/csv"
 	"errors"
-	"fmt"
 	"io"
 	"os"
-
-	"github.com/emicklei/mtx"
 )
 
 func ScanSheet(filename string) (*Sheet, error) {
@@ -56,22 +53,4 @@ func ScanSheet(filename string) (*Sheet, error) {
 		//t.Log(record)
 	}
 	return s, nil
-}
-
-type Option interface{}
-
-func (s *Sheet) ToEntity(options ...Option) *mtx.Entity {
-	tab := s.Tabs[0]
-	pkg := mtx.NewPackage("sheet")
-	ent := pkg.Entity(tab.Name)
-	for _, each := range tab.Columns {
-		mt := *each.ColumnType.AttributeDatatype
-		a := ent.A(each.Name, mt, each.Documentation)
-		if mt == mtx.UNKNOWN {
-			// TODO helper func?
-			a.Set("maperror", fmt.Sprintf("%s:%s", each.Name, each.ColumnType.Name))
-		}
-		a.IsNullable = each.IsNullable
-	}
-	return ent
 }

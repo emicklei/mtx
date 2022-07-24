@@ -35,6 +35,9 @@ func (d Datatype) WithNullable(dt Datatype) Datatype {
 }
 
 func (d Datatype) String() string {
+	if d.Named == nil {
+		return "*unnamed* Datatype"
+	}
 	return fmt.Sprintf("%s (%s)", d.Name, d.Class)
 }
 
@@ -51,4 +54,8 @@ func (d Datatype) SourceOn(w io.Writer) {
 func (d Datatype) Set(key string, value any) Datatype {
 	d.Named.Set(key, value)
 	return d
+}
+
+func (d Datatype) Validate(c *ErrorCollector) {
+	d.Named.Validate(c)
 }

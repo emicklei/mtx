@@ -41,7 +41,7 @@ var DATE = registry.Standard("DATE", mtx.Register("civil.Date"))
 var DATETIME = registry.Standard("DATETIME", mtx.DATETIME)
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#geography_type
-var GEOGRAPHY = registry.Standard("GEOGRAPHY", mtx.STRING)
+var GEOGRAPHY = registry.Standard("GEOGRAPHY", mtx.UNKNOWN)
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#interval_type
 // [sign]Y-M [sign]D [sign]H:M:S[.F]

@@ -1,42 +1,15 @@
 package csv
 
 import (
-	std "encoding/csv"
-	"io"
-	"os"
 	"testing"
 )
 
 func TestFixture(t *testing.T) {
-	s := NewSheet("test")
-	tab := s.Tab("test")
-
-	f, _ := os.Open("fixture.csv")
-	defer f.Close()
-	r := std.NewReader(f)
-	gotNames := false
-	for {
-		record, err := r.Read()
-		if err == io.EOF {
-			break
-		}
-		if !gotNames {
-			for _, each := range record {
-				tab.Column(each).Type(UNKNOWN)
-			}
-			gotNames = true
-		} else {
-			// resolve unknown type
-			for i, each := range record {
-				typ := tab.Columns[i]
-				if typ.GetDatatype() == UNKNOWN {
-					typ.Type(DetectType(each))
-				}
-			}
-		}
-		//t.Log(record)
+	s, err := ScanSheet("fixture.csv")
+	if err != nil {
+		t.Fatal(err)
 	}
-	//t.Log("\n", mtx.ToJSON(s))
+	tab := s.Tab("main")
 	if got, want := tab.Columns[0].ColumnType, BOOLEAN; got != want {
 		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
 	}

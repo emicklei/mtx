@@ -33,6 +33,7 @@ func Validate(v Validates) bool {
 }
 
 type ErrorCollector struct {
+	ns   string
 	list []ErrorWithOrigin
 }
 
@@ -43,7 +44,7 @@ type ErrorWithOrigin struct {
 
 func (e *ErrorCollector) Print() {
 	for _, each := range e.list {
-		fmt.Println(each)
+		fmt.Println(each.Origin.Name, each.Err)
 	}
 }
 func (e *ErrorCollector) Add(who *Named, err error) {

@@ -30,3 +30,12 @@ func (s *Sheet) Tab(name string) *db.Table {
 	s.Tabs = append(s.Tabs, t)
 	return t
 }
+
+func (s *Sheet) Validate(c *mtx.ErrorCollector) {
+	s.Named.Validate(c)
+	s.Named.CheckClass(c, "csv.Sheet")
+	for _, each := range s.Tabs {
+		each.CheckClass(c, "csv.Tab")
+		each.Validate(c)
+	}
+}

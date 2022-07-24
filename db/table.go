@@ -2,6 +2,7 @@ package db
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 
@@ -83,6 +84,13 @@ func (t *Table) PrimaryKeyColumns() (list []*Column) {
 	return
 }
 
+func (t *Table) Validate(c *mtx.ErrorCollector) {
+	t.Named.Validate(c)
+	for _, each := range t.Columns {
+		each.Validate(c)
+	}
+}
+
 // ToEntity creates a new Entity that represents a Row in this table data.
 // TODO how to handle name mapping?  type mapping?
 func (t *Table) ToEntity() *mtx.Entity {
@@ -160,4 +168,15 @@ func (c *Column) SQLOn(buf io.Writer) {
 		fmt.Fprint(buf, " NOT NULL")
 	}
 	fmt.Fprintf(buf, " -- %s\n", c.Documentation)
+}
+
+func (c *Column) Validate(e *mtx.ErrorCollector) {
+	c.Named.Validate(e)
+	if c.ColumnType == mtx.UNKNOWN {
+		e.Add(c.Named, errors.New("has unknown type"))
+		return
+	}
+	if c.ColumnType.AttributeDatatype == nil {
+		e.Add(c.Named, errors.New("has unknown attribute type for "+c.ColumnType.String()))
+	}
 }

@@ -13,7 +13,7 @@ var (
 
 // https://www.postgresql.org/docs/current/datatype.html
 var (
-	UNKNOWN          = registry.Standard("ANY", mtx.UNKNOWN)
+	UNKNOWN          = registry.Standard("any", mtx.UNKNOWN)
 	BIGINT           = registry.Standard("bigint", mtx.INTEGER)
 	BOOLEAN          = registry.Standard("boolean", mtx.BOOLEAN)
 	BYTEA            = registry.Standard("bytea", mtx.BYTES)

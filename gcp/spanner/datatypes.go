@@ -36,7 +36,7 @@ func init() {
 	//registry.EncodeAs(mtx.DATERANGE, Array(DATE))
 }
 
-var UNKNOWN = registry.Register("ANY", true)
+var UNKNOWN = registry.Register("any", true)
 
 var BigInteger = mtx.Datatype{
 	Named:      mtx.N(registry.Class(), "BIGINT"),

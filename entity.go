@@ -45,6 +45,14 @@ func (e *Entity) Attribute(name string) *Attribute {
 	return attr
 }
 
+func (e *Entity) Validate(c *ErrorCollector) {
+	e.Named.Validate(c)
+	e.Named.CheckClass(c, "mtx.Entity")
+	for _, each := range e.Attributes {
+		each.Validate(c)
+	}
+}
+
 // SourceOn writes Go source to recreate the receiver.
 func (e *Entity) SourceOn(w io.Writer) {
 }
@@ -81,6 +89,13 @@ func (a *Attribute) Nullable() *Attribute {
 // SourceOn writes Go source to recreate the receiver.
 func (a *Attribute) SourceOn(w io.Writer) {
 	fmt.Fprintf(w, "ent.Attribute(\"%s\")", a.Name)
+}
+
+func (a *Attribute) Validate(c *ErrorCollector) {
+	a.Named.Validate(c)
+	a.Named.CheckClass(c, "mtx.Attribute")
+	a.AttributeType.Validate(c)
+	a.AttributeType.Named.CheckClass(c, "mtx.Datatype")
 }
 
 type Tag struct {

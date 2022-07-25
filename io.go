@@ -25,11 +25,10 @@ type SourceWriteable interface {
 	SourceOn(io.Writer)
 }
 
-func Validate(v Validates) bool {
+func Validate(v Validates) (*ErrorCollector, bool) {
 	c := new(ErrorCollector)
 	v.Validate(c)
-	c.Print()
-	return len(c.list) == 0
+	return c, len(c.list) > 0
 }
 
 type ErrorCollector struct {

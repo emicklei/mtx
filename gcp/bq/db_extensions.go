@@ -26,6 +26,24 @@ func (t TableExtensions) SQLOn(table *db.Table, w io.Writer) {
 func (t TableExtensions) Column() db.ExtendsColumn { return new(ColumnExtensions) }
 
 type ColumnExtensions struct {
+	NestedColumns []*db.Column
+}
+
+func Extensions(c *db.Column) *ColumnExtensions {
+	return c.Extensions.(*ColumnExtensions)
+}
+
+func (e *ColumnExtensions) Column(name string) *db.Column {
+	if c, ok := mtx.FindByName(e.NestedColumns, name); ok {
+		return c
+	}
+	c := &db.Column{
+		Named:      mtx.N("bq.Column", name),
+		ColumnType: UNKNOWN,
+		Extensions: new(ColumnExtensions),
+	}
+	e.NestedColumns = append(e.NestedColumns, c)
+	return c
 }
 
 func (t ColumnExtensions) Datatype() db.ExtendsDatatype { return new(DatatypeExtensions) }

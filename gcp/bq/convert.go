@@ -19,6 +19,21 @@ func ToJSONSchema(tab *db.Table) string {
 		if !each.IsNullable {
 			col.Mode = "REQUIRED"
 		}
+		if each.ColumnType.Name == "RECORD" && len(Extensions(each).NestedColumns) > 0 {
+			for _, other := range Extensions(each).NestedColumns {
+				// TODO recurs
+				nestedcol := JSONSchemaColumn{
+					Description: other.Documentation,
+					Name:        other.Name,
+					Type:        other.ColumnType.Name,
+					Mode:        "NULLABLE",
+				}
+				if !other.IsNullable {
+					nestedcol.Mode = "REQUIRED"
+				}
+				col.Fields = append(col.Fields, nestedcol)
+			}
+		}
 		cols = append(cols, col)
 	}
 	data, _ := json.MarshalIndent(cols, "", "  ")
@@ -29,7 +44,9 @@ type JSONSchemaColumn struct {
 	Description string `json:"description"`
 	Name        string `json:"name"`
 	Type        string `json:"type"`
-	Mode        string `json:"mode"`
+	// for record
+	Fields []JSONSchemaColumn `json:"fields,omitempty"`
+	Mode   string             `json:"mode"`
 }
 
 func ToTable(ent *mtx.Entity) *db.Table {

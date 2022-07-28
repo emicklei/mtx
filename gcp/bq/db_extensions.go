@@ -2,6 +2,7 @@ package bq
 
 import (
 	"io"
+	"strings"
 
 	"github.com/emicklei/mtx"
 	"github.com/emicklei/mtx/db"
@@ -33,6 +34,22 @@ func Extensions(c *db.Column) *ColumnExtensions {
 	return c.Extensions.(*ColumnExtensions)
 }
 
+// e.g identity/TimeInterval
+func NestedColumn(t *db.Table, path string, separator string) (*db.Column, bool) {
+	tokens := strings.Split(path, separator)
+	here := t.Columns
+	var found *db.Column
+	for _, each := range tokens {
+		if c, ok := mtx.FindByName(here, each); ok {
+			here = c.Extensions.(*ColumnExtensions).NestedColumns
+			found = c
+		} else {
+			return nil, false
+		}
+	}
+	return found, true
+}
+
 func (e *ColumnExtensions) Column(name string) *db.Column {
 	if c, ok := mtx.FindByName(e.NestedColumns, name); ok {
 		return c
@@ -58,6 +75,10 @@ func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *mtx.Attribute) {
 	}
 	if c.IsNullable && a.AttributeType == mtx.STRING {
 		a.Set(golang.GoTypeName, "bigquery.NullString")
+	}
+	// TODO
+	if c.ColumnType == RECORD {
+		a.Set(golang.GoTypeName, c.Name+"Type")
 	}
 	if a.AttributeType == mtx.JSON {
 		if c.IsNullable {

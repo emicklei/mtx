@@ -10,6 +10,7 @@ var (
 )
 
 var (
+	ANY     = registry.Standard("any", mtx.UNKNOWN)
 	STRING  = registry.Standard("string", mtx.STRING)
 	BOOL    = registry.Standard("bool", mtx.BOOLEAN)
 	BYTES   = registry.Standard("[]byte", mtx.BYTES)

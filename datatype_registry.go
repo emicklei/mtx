@@ -34,7 +34,11 @@ func (r *TypeRegistry) MappedAttributeType(attrType Datatype) Datatype {
 	if ok {
 		return et
 	}
-	return r.knownTypes["any"]
+	a, ok := r.knownTypes["any"] // must have an any
+	if !ok {
+		panic("warning: missing any in " + r.class)
+	}
+	return a
 }
 
 func (r *TypeRegistry) EncodeAs(at Datatype, dt Datatype) {

@@ -1,8 +1,13 @@
 # mtx
 
-> **M**odels and **T**ransformations, e**X**pressed
+Other name? 
+- lom (language of models)
+- lomat (language of models and transformations)
+- mi5 (models inside ag5)
 
-
+Renames?
+- db.Table -> TableSchema
+- db.Column -> Field
 
 Models in different technologies:
 

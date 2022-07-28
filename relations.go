@@ -23,8 +23,9 @@ func (p *Package) OneToMany(one, many *Entity) *Relation {
 
 func (p *Package) ManyToMany(left, right *Entity) *Relation {
 	rel := &Relation{
-		Named:    N("mtx.Relation", fmt.Sprintf("%s_link_%s", strings.ToLower(left.Name), strings.ToLower(right.Name))),
-		pkg:      p,
+		Named: N("mtx.Relation", fmt.Sprintf("%s_link_%s", strings.ToLower(left.Name), strings.ToLower(right.Name))),
+		pkg:   p,
+		// assume all in same package
 		LeftRef:  EntityRef{PackageName: p.Name, EntityName: left.Name},
 		RightRef: EntityRef{PackageName: p.Name, EntityName: right.Name},
 	}

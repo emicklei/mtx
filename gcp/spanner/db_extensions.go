@@ -25,7 +25,8 @@ func (t TableExtensions) OwnerClass() string { return "spanner.Table" }
 func (t TableExtensions) Column() db.ExtendsColumn { return new(ColumnExtensions) }
 
 func (t TableExtensions) SQLOn(table *db.Table, w io.Writer) {
-	fmt.Fprintf(w, "-- %s\n", table.Documentation)
+	// Spanner DDL does not take commments
+	// fmt.Fprintf(w, "-- %s\n", table.Documentation)
 	fmt.Fprintf(w, "CREATE TABLE %s (\n", table.Name)
 	prims := []string{}
 	for i, each := range table.Columns {
@@ -37,7 +38,13 @@ func (t TableExtensions) SQLOn(table *db.Table, w io.Writer) {
 		} else {
 			fmt.Fprintf(w, " \t")
 		}
-		each.SQLOn(w)
+		// TODO how to handle extension driven comment writing
+		// Cloud Spanner itself does not accept these as a part of a DDL-statement.
+		fmt.Fprintf(w, "%s %s", each.Name, each.ColumnType.Name)
+		if !each.IsNullable {
+			fmt.Fprint(w, " NOT NULL")
+		}
+		fmt.Fprintln(w)
 	}
 	fmt.Fprint(w, ") PRIMARY KEY (\n")
 	for i, each := range prims {

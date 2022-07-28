@@ -168,7 +168,9 @@ func (c *Column) SQLOn(buf io.Writer) {
 	if !c.IsNullable {
 		fmt.Fprint(buf, " NOT NULL")
 	}
-	fmt.Fprintf(buf, " -- %s\n", c.Documentation)
+	if len(c.Documentation) > 0 {
+		fmt.Fprintf(buf, " -- %s\n", c.Documentation)
+	}
 }
 
 func (c *Column) Validate(e *mtx.ErrorCollector) {

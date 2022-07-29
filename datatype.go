@@ -19,6 +19,12 @@ type Datatype struct {
 	Extensions                ExtendsDatatype `json:"ext,omitempty"`
 }
 
+func NewAttributeType(name string) Datatype {
+	return Datatype{
+		Named: N("mtx.Datatype", name),
+	}
+}
+
 func (d Datatype) EncodedFrom(at Datatype) Datatype {
 	d.AttributeDatatype = &at
 	return d
@@ -32,6 +38,11 @@ func (d Datatype) WithAttributeDatatype(dt Datatype) Datatype {
 func (d Datatype) WithNullable(dt Datatype) Datatype {
 	d.NullableAttributeDatatype = &dt
 	return d
+}
+
+// Equal matches only name and class
+func (d Datatype) Equal(o Datatype) bool {
+	return d.Name == o.Name && d.Class == o.Class
 }
 
 func (d Datatype) String() string {

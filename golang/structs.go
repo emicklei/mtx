@@ -115,7 +115,7 @@ func (f *Field) Type(dt mtx.Datatype) *Field {
 }
 
 func ToStruct(ent *mtx.Entity) *Struct {
-	n := ent.Name
+	n := strcase.ToCamel(ent.Name)
 	if v, ok := ent.Get(GoTypeName); ok {
 		n = v.(string)
 	}
@@ -127,6 +127,7 @@ func ToStruct(ent *mtx.Entity) *Struct {
 		f := &Field{
 			Named:     mtx.N("golang.Field", goFieldName(each)),
 			FieldType: goDatatype(each),
+			Tags:      each.Tags,
 		}
 		f.Documentation = each.Documentation
 		str.Fields = append(str.Fields, f)
@@ -140,6 +141,9 @@ func goFieldName(a *mtx.Attribute) string {
 }
 
 func goDatatype(a *mtx.Attribute) mtx.Datatype {
+	if n, ok := a.Get(GoTypeName); ok {
+		return mtx.NewAttributeType(n.(string))
+	}
 	if a.IsNullable {
 		if null := a.AttributeType.NullableAttributeDatatype; null != nil {
 			return *null

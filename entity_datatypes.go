@@ -1,31 +1,32 @@
 package mtx
 
-var registry = NewTypeRegistry("mtx.Datatype")
-
-func register(typename string) Datatype {
-	return registry.Register(typename, false)
-}
+var (
+	registry            = NewTypeRegistry("mtx.Datatype")
+	Type                = registry.Type
+	RegisterType        = registry.RegisterType
+	MappedAttributeType = registry.MappedAttributeType
+)
 
 func Register(typename string) Datatype {
 	return registry.Register(typename, true)
 }
 
 var (
-	UNKNOWN   = register("any")
-	BOOLEAN   = register("boolean")
-	STRING    = register("string")
-	INTEGER   = register("integer")
-	ID        = register("identifier")
-	DATE      = register("date")      // yyyy mm dd
-	DATETIME  = register("datetime")  // yyyy mm dd hh mm ss
-	TIMESTAMP = register("timestamp") // yyyy mm dd hh mm ss + zone
-	BYTES     = register("bytes")
-	FLOAT     = register("float")
-	DOUBLE    = register("double")
-	DECIMAL   = register("decimal")
-	JSON      = register("json")
-	DURATION  = register("duration") // y,m,d,h,m,s
-	UUID      = register("uuid")
+	UNKNOWN   = registry.Add(NewAttributeType("any"))
+	BOOLEAN   = registry.Add(NewAttributeType("boolean"))
+	STRING    = registry.Add(NewAttributeType("string"))
+	INTEGER   = registry.Add(NewAttributeType("integer"))
+	ID        = registry.Add(NewAttributeType("identifier"))
+	DATE      = registry.Add(NewAttributeType("date"))      // yyyy mm dd
+	DATETIME  = registry.Add(NewAttributeType("datetime"))  // yyyy mm dd hh mm ss
+	TIMESTAMP = registry.Add(NewAttributeType("timestamp")) // yyyy mm dd hh mm ss + zone
+	BYTES     = registry.Add(NewAttributeType("bytes"))
+	FLOAT     = registry.Add(NewAttributeType("float"))
+	DOUBLE    = registry.Add(NewAttributeType("double"))
+	DECIMAL   = registry.Add(NewAttributeType("decimal"))
+	JSON      = registry.Add(NewAttributeType("json"))
+	DURATION  = registry.Add(NewAttributeType("duration")) // y,m,d,h,m,s
+	UUID      = registry.Add(NewAttributeType("uuid"))
 )
 
 func Array(elementType Datatype) Datatype {

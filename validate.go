@@ -4,7 +4,8 @@ import (
 	"fmt"
 )
 
-// Returns nil if valid
+// Validate performs checks on the complete datastructure of v.
+// Returns nil if valid, an ErrorCollector with errors otherwise.
 func Validate(v Validates) *ErrorCollector {
 	c := new(ErrorCollector)
 	v.Validate(c)

@@ -21,6 +21,8 @@ func (d *Database) Doc(doc string) *Database {
 	return d
 }
 
+// Table is a descriptor or schema of a database table.
+// If not exits then create an empty.
 func (d *Database) Table(name string) *Table {
 	if t, ok := mtx.FindByName(d.Tables, name); ok {
 		return t
@@ -65,6 +67,8 @@ func (t *Table) PrimaryKey(name string) *Column {
 	return t.Column(name).Primary()
 }
 
+// Column is a descriptor of database table schema column.
+// If not exits then create an empty.
 func (t *Table) Column(name string) *Column {
 	if c, ok := mtx.FindByName(t.Columns, name); ok {
 		return c
@@ -120,6 +124,7 @@ func (t *Table) ToEntity() *mtx.Entity {
 
 var _ mtx.TypedLabel = new(Column)
 
+// Column is a descriptor of database table schema column.
 type Column struct {
 	*mtx.Named
 	Category   string       `json:"category,omitempty"`

@@ -1,13 +1,6 @@
 # mtx
 
-Other name? 
-- lom (language of models)
-- lomat (language of models and transformations)
-- mi5 (models inside ag5)
-
-Renames?
-- db.Table -> TableSchema
-- db.Column -> Field
+>   **M**odels and **T**ransformations, E**x**pressed
 
 Models in different technologies:
 
@@ -21,6 +14,11 @@ Models in different technologies:
  
 Each model is using its own types and datatypes.
 Transformations to and from a selection of model combinations.
+
+
+With relational databases, "Table" and "Column" are the building blocks that exist in DDL 
+and it's best to just use those terms and avoid "field" which isn't used, nor clearly defined.
+
 
 Example Postgres (pg) Database table.
 

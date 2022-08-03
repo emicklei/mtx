@@ -7,7 +7,7 @@ import (
 	"github.com/emicklei/mtx/pg"
 )
 
-func TestPostgresTable(t *testing.T) {
+func TestGoRowStructFromPostgresTable(t *testing.T) {
 	db := pg.NewDatabase("all")
 	tab := db.Table("all")
 	tab.C("ctext", pg.TEXT, "ctext")
@@ -17,7 +17,6 @@ func TestPostgresTable(t *testing.T) {
 	e := tab.ToEntity()
 	s := golang.ToStruct(e)
 	if got, want := s.Field("CdateN").FieldType.Name, "*time.Time"; got != want {
-		t.Log(s.Fields[3].Name)
 		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
 	}
 }

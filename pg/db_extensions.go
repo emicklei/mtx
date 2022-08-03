@@ -10,13 +10,13 @@ import (
 
 type DatabaseExtensions struct{}
 
-func (d *DatabaseExtensions) Table() db.ExtendsTable { return new(TableExtensions) }
+func (d *DatabaseExtensions) TableExtensions() db.ExtendsTable { return new(TableExtensions) }
 
 type TableExtensions struct{}
 
 func (t TableExtensions) OwnerClass() string { return "pg.Table" }
 
-func (t TableExtensions) Column() db.ExtendsColumn { return new(ColumnExtensions) }
+func (t TableExtensions) ColumnExtensions() db.ExtendsColumn { return new(ColumnExtensions) }
 
 func (t TableExtensions) SQLOn(tab *db.Table, w io.Writer) {
 	// we know its actual type

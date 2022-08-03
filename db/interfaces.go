@@ -7,12 +7,12 @@ import (
 )
 
 type ExtendsDatabase interface {
-	Table() ExtendsTable
+	TableExtensions() ExtendsTable
 }
 
 type ExtendsTable interface {
 	OwnerClass() string
-	Column() ExtendsColumn
+	ColumnExtensions() ExtendsColumn
 	SQLOn(table *Table, w io.Writer)
 }
 

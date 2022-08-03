@@ -25,7 +25,7 @@ func (d *Database) Table(name string) *Table {
 	if t, ok := mtx.FindByName(d.Tables, name); ok {
 		return t
 	}
-	ext := d.Extensions.Table()
+	ext := d.Extensions.TableExtensions()
 	t := &Table{
 		Named:      mtx.N(ext.OwnerClass(), name),
 		Extensions: ext,
@@ -69,7 +69,7 @@ func (t *Table) Column(name string) *Column {
 	if c, ok := mtx.FindByName(t.Columns, name); ok {
 		return c
 	}
-	ext := t.Extensions.Column()
+	ext := t.Extensions.ColumnExtensions()
 	c := &Column{Named: mtx.N(ext.OwnerClass(), name), Extensions: ext}
 	t.Columns = append(t.Columns, c)
 	return c
@@ -138,6 +138,9 @@ func (c *Column) Set(key string, value any) *Column {
 }
 
 func (c *Column) Type(d mtx.Datatype) *Column {
+	if c.Namespace() != d.Namespace() {
+		panic(fmt.Sprintf("cannot set datatype of namespace %s, expected %s", d.Namespace(), c.Namespace()))
+	}
 	c.ColumnType = d
 	return c
 }

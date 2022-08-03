@@ -11,7 +11,7 @@ import (
 
 type DatabaseExtensions struct{}
 
-func (d *DatabaseExtensions) Table() db.ExtendsTable { return new(TableExtensions) }
+func (d *DatabaseExtensions) TableExtensions() db.ExtendsTable { return new(TableExtensions) }
 
 func (d DatabaseExtensions) TableClass() string { return "spanner.Table" }
 
@@ -23,7 +23,7 @@ type TableExtensions struct {
 
 func (t TableExtensions) OwnerClass() string { return "spanner.Table" }
 
-func (t TableExtensions) Column() db.ExtendsColumn { return new(ColumnExtensions) }
+func (t TableExtensions) ColumnExtensions() db.ExtendsColumn { return new(ColumnExtensions) }
 
 func (t TableExtensions) SQLOn(table *db.Table, w io.Writer) {
 	// Spanner DDL does not take commments

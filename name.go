@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"strings"
 )
 
 type HasName interface{ GetName() string }
@@ -23,6 +24,10 @@ type Named struct {
 	Class         string         `json:"class"`
 	Properties    map[string]any `json:"properties,omitempty"`
 	Documentation string         `json:"doc,omitempty"`
+}
+
+func (n *Named) Namespace() string {
+	return n.Class[0:strings.LastIndex(n.Class, ".")]
 }
 
 func (n *Named) Validate(c *ErrorCollector) {

@@ -68,10 +68,6 @@ type Attribute struct {
 	Tags       []Tag `json:"tags,omitempty"`
 }
 
-// func (a *Attribute) GetDatatype() Datatype {
-// 	return Datatype{Named: a.Named, AttributeType: a.AttributeType}
-// }
-
 func (a *Attribute) Type(t Datatype) *Attribute {
 	a.AttributeType = t
 	return a

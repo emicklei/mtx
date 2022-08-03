@@ -1,11 +1,5 @@
 package mtx
 
-const (
-	// TODO why is this needed?
-	StandardType    = false
-	UserDefinedType = true
-)
-
 type TypeRegistry struct {
 	class        string
 	knownTypes   map[string]Datatype
@@ -58,11 +52,6 @@ func (r *TypeRegistry) Add(d Datatype) Datatype {
 	return d
 }
 
-func (r *TypeRegistry) TypeNamed(name string) (Datatype, bool) {
-	e, ok := r.knownTypes[name]
-	return e, ok
-}
-
 func (r *TypeRegistry) Register(typename string, isUserDefined bool) Datatype {
 	dt := Datatype{
 		Named:         N(r.class, typename),
@@ -72,7 +61,7 @@ func (r *TypeRegistry) Register(typename string, isUserDefined bool) Datatype {
 }
 
 func (r *TypeRegistry) Type(typename string) Datatype {
-	dt, ok := r.TypeNamed(typename)
+	dt, ok := r.knownTypes[typename]
 	if ok {
 		return dt
 	}

@@ -8,3 +8,9 @@ func TestNamedSourceOn(t *testing.T) {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
 }
+
+func TestNamesspace(t *testing.T) {
+	if got, want := STRING.Namespace(), "mtx"; got != want {
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
+}

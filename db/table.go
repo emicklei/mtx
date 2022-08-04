@@ -113,7 +113,7 @@ func (t *Table) ToEntity() *mtx.Entity {
 		// add json tags
 		attr.Tags = append(attr.Tags, mtx.Tag{Name: "json", Value: each.Name + ",omitempty"})
 		if at := each.GetDatatype().AttributeDatatype; at != nil {
-			attr.AttributeType = *&attr.AttributeType
+			attr.AttributeType = *at
 		}
 		// could be nil=nil
 		attr.AttributeType.NullableAttributeDatatype = each.GetDatatype().NullableAttributeDatatype

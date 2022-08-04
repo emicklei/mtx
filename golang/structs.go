@@ -66,7 +66,7 @@ func (s *Struct) Field(name string) *Field {
 	}
 	f := &Field{
 		Named:     mtx.N("golang.Field", name),
-		FieldType: mtx.UNKNOWN,
+		FieldType: mtx.Unknown,
 	}
 	s.Fields = append(s.Fields, f)
 	return f

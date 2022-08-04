@@ -19,7 +19,7 @@ func TestDefaultDataType(t *testing.T) {
 
 func TestBQStringMapsToGoString(t *testing.T) {
 	tab := bq.NewDataset("test").Table("test")
-	tab.C("s", bq.STRING, "")
+	tab.C("s", bq.String, "")
 	ent := tab.ToEntity()
 	s := ent.Attributes[0]
 	if got, want := s.AttributeType.Name, "string"; got != want {
@@ -29,7 +29,7 @@ func TestBQStringMapsToGoString(t *testing.T) {
 
 func TestNullableBQStringEntityString(t *testing.T) {
 	tab := bq.NewDataset("test").Table("test")
-	tab.C("s", bq.STRING, "").Nullable()
+	tab.C("s", bq.String, "").Nullable()
 	ent := tab.ToEntity()
 	str := golang.ToStruct(ent)
 	if got, want := str.Fields[0].Name, "S"; got != want {
@@ -41,13 +41,13 @@ func TestNullableBQStringEntityString(t *testing.T) {
 }
 
 func TestProtoEncodedBytesForSpanner(t *testing.T) {
-	et := proto.BYTES.EncodedFrom(mtx.JSON)
+	et := proto.Bytes.EncodedFrom(mtx.JSON)
 	st := spanner.MappedAttributeType(*et.AttributeDatatype)
 	if got, want := st, spanner.JSON; got != want {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
 	{
-		st := spanner.MappedAttributeType(mtx.DURATION)
+		st := spanner.MappedAttributeType(mtx.Duration)
 		if got, want := st, spanner.Type("STRING(MAX)"); got != want {
 			t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 		}

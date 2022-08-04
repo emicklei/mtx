@@ -7,6 +7,7 @@ import (
 	"github.com/emicklei/mtx"
 	"github.com/emicklei/mtx/db"
 	"github.com/emicklei/mtx/golang"
+	"github.com/iancoleman/strcase"
 )
 
 type DatabaseExtensions struct{}
@@ -56,7 +57,7 @@ func (e *ColumnExtensions) Column(name string) *db.Column {
 	}
 	c := &db.Column{
 		Named:      mtx.N("bq.Column", name),
-		ColumnType: UNKNOWN,
+		ColumnType: Unknown,
 		Extensions: new(ColumnExtensions),
 	}
 	e.NestedColumns = append(e.NestedColumns, c)
@@ -70,15 +71,15 @@ func (t ColumnExtensions) OwnerClass() string { return "bq.Column" }
 // TODO this is very Go specific ; should not be here
 func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *mtx.Attribute) {
 	// TEMP TODO
-	if c.IsNullable && a.AttributeType == mtx.BYTES {
+	if c.IsNullable && a.AttributeType == mtx.Bytes {
 		a.Set(golang.GoTypeName, "[]byte")
 	}
-	if c.IsNullable && a.AttributeType == mtx.STRING {
+	if c.IsNullable && a.AttributeType == mtx.String {
 		a.Set(golang.GoTypeName, "bigquery.NullString")
 	}
 	// TODO
-	if c.ColumnType == RECORD {
-		a.Set(golang.GoTypeName, c.Name+"Type")
+	if c.ColumnType == Record {
+		a.Set(golang.GoTypeName, strcase.ToCamel(c.Name))
 	}
 	if a.AttributeType == mtx.JSON {
 		if c.IsNullable {

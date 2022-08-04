@@ -17,22 +17,22 @@ var (
 
 // these are documented available types
 var (
-	BOOL      = registry.Standard("BOOL", mtx.BOOLEAN)
-	BYTES     = registry.Standard("BYTES(MAX)", mtx.BYTES)
-	DATE      = registry.Standard("DATE", mtx.DATE)
+	Bool      = registry.Standard("BOOL", mtx.Boolean)
+	Bytes     = registry.Standard("BYTES(MAX)", mtx.Bytes)
+	Date      = registry.Standard("DATE", mtx.Date)
 	JSON      = registry.Standard("JSON", mtx.JSON)
-	TIMESTAMP = registry.Standard("TIMESTAMP", mtx.TIMESTAMP)
-	INT64     = registry.Standard("INT64", mtx.INTEGER)
-	FLOAT64   = registry.Standard("FLOAT64", mtx.FLOAT)
-	NUMERIC   = registry.Standard("NUMERIC", mtx.DECIMAL) // suitable for financial calculations
-	STRING    = registry.Standard("STRING(MAX)", mtx.STRING)
+	Timestamp = registry.Standard("TIMESTAMP", mtx.Timestamp)
+	Int64     = registry.Standard("INT64", mtx.Integer)
+	Float64   = registry.Standard("FLOAT64", mtx.Float)
+	Numeric   = registry.Standard("NUMERIC", mtx.Decimal) // suitable for financial calculations
+	String    = registry.Standard("STRING(MAX)", mtx.String)
 )
 
 func init() {
-	INT64.Set("bits", "64")
+	Int64.Set("bits", "64")
 	// define encoding for remaining standard types
-	registry.EncodeAs(mtx.DURATION, STRING)
-	registry.EncodeAs(mtx.UUID, String(36))
+	registry.EncodeAs(mtx.Duration, String)
+	registry.EncodeAs(mtx.UUID, StringMax(36))
 	//registry.EncodeAs(mtx.DATERANGE, Array(DATE))
 }
 
@@ -41,13 +41,13 @@ var UNKNOWN = registry.Register("any", true)
 var BigInteger = mtx.Datatype{
 	Named:      mtx.N(registry.Class(), "BIGINT"),
 	Extensions: DatatypeExtensions{Max: 1024},
-}.WithAttributeDatatype(mtx.INTEGER)
+}.WithAttributeDatatype(mtx.Integer)
 
-func String(max int) mtx.Datatype {
+func StringMax(max int) mtx.Datatype {
 	return mtx.Datatype{
 		Named:      mtx.N(registry.Class(), fmt.Sprintf("STRING(%d)", max)),
 		Extensions: DatatypeExtensions{Max: int64(max)},
-	}.WithAttributeDatatype(mtx.STRING)
+	}.WithAttributeDatatype(mtx.String)
 }
 
 func Array(elementType mtx.Datatype) mtx.Datatype {

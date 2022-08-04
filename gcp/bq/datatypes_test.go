@@ -4,7 +4,7 @@ import "testing"
 
 func TestNullableBQStringEntityString(t *testing.T) {
 	tab := NewDataset("test").Table("test")
-	tab.C("s", STRING, "").Nullable()
+	tab.C("s", String, "").Nullable()
 	ent := tab.ToEntity()
 	s := ent.Attributes[0]
 	if got, want := s.AttributeType.Name, "string"; got != want {

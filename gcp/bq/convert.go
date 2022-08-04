@@ -56,7 +56,7 @@ func ToTable(ent *mtx.Entity) *db.Table {
 	for _, each := range ent.Attributes {
 		mt := MappedAttributeType(each.AttributeType)
 		c := tab.C(each.Name, mt, each.Documentation)
-		if mt == mtx.UNKNOWN {
+		if mt == mtx.Unknown {
 			c.Set("maperror", each.AttributeType.Name)
 		}
 		c.IsNullable = each.IsNullable

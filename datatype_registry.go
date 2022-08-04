@@ -18,6 +18,9 @@ func (r *TypeRegistry) Class() string { return r.class }
 
 // MappedAttributeType returns the best matching known or encodede type.
 func (r *TypeRegistry) MappedAttributeType(attrType Datatype) Datatype {
+	if !attrType.HasName() {
+		return r.knownTypes["any"]
+	}
 	for _, each := range r.knownTypes {
 		if dt := each.AttributeDatatype; dt != nil && dt.Name == attrType.Name {
 			return each
@@ -65,7 +68,7 @@ func (r *TypeRegistry) Type(typename string) Datatype {
 	if ok {
 		return dt
 	}
-	return r.RegisterType(typename, UNKNOWN)
+	return r.RegisterType(typename, Unknown)
 }
 
 func (r *TypeRegistry) RegisterType(typename string, attrType Datatype) Datatype {

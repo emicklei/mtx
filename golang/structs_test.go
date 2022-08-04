@@ -24,7 +24,7 @@ func TestStructWithFieldsGoSource(t *testing.T) {
 	s.Named = mtx.N("golang.Struct", "Test")
 	s.Fields = append(s.Fields, &Field{
 		Named:     mtx.N("golang.Field", "Test"),
-		FieldType: STRING,
+		FieldType: String,
 	})
 	// space after //
 	if got, want := s.Go(), `// Test : 
@@ -40,7 +40,7 @@ type Test struct {
 func TestStructFull(t *testing.T) {
 	p := NewPackage("test")
 	s := p.Type("Test")
-	s.F("Example", STRING, "some example")
+	s.F("Example", String, "some example")
 	if got, want := s.Go(), `// Test : 
 type Test struct {
 	Example string // some example

@@ -19,7 +19,7 @@ func ScanSheet(filename string) (*Sheet, error) {
 		if gotNames {
 			done := true
 			for _, each := range tab.Columns {
-				if each.ColumnType == UNKNOWN {
+				if each.ColumnType == Unknown {
 					done = false
 				}
 			}
@@ -37,14 +37,14 @@ func ScanSheet(filename string) (*Sheet, error) {
 		}
 		if !gotNames {
 			for _, each := range record {
-				tab.Column(each).Type(UNKNOWN)
+				tab.Column(each).Type(Unknown)
 			}
 			gotNames = true
 		} else {
 			// resolve unknown type
 			for i, each := range record {
 				typ := tab.Columns[i]
-				if typ.GetDatatype() == UNKNOWN {
+				if typ.GetDatatype() == Unknown {
 					// TODO can we detect nullable?
 					typ.Type(DetectType(each))
 				}

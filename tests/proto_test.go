@@ -10,7 +10,7 @@ import (
 func TestGoStructFromPackageMessage(t *testing.T) {
 	pkg := proto.NewPackage("my_pkg")
 	msg := pkg.Message("MyMessage").Doc("Sample proto Message")
-	msg.F("id", 1, proto.STRING, "id of the message")
+	msg.F("id", 1, proto.String, "id of the message")
 
 	// create entity from proto message
 	e := msg.ToEntity()

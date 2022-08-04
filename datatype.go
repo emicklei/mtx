@@ -25,6 +25,8 @@ func NewAttributeType(name string) Datatype {
 	}
 }
 
+func (d Datatype) HasName() bool { return d.Named != nil && d.Name != "" }
+
 func (d Datatype) EncodedFrom(at Datatype) Datatype {
 	d.AttributeDatatype = &at
 	return d

@@ -13,7 +13,7 @@ import (
 func TestSpannerTable(t *testing.T) {
 	db := spanner.NewDatabase("testdb")
 	tab := db.Table("my_table").Doc("Awesome table")
-	tab.C("id", spanner.INT64, "identifier of a row").Primary()
+	tab.C("id", spanner.Int64, "identifier of a row").Primary()
 	mtx.ToJSON(tab)
 
 	// create SQL to create table

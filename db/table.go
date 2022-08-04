@@ -112,7 +112,9 @@ func (t *Table) ToEntity() *mtx.Entity {
 		}
 		// add json tags
 		attr.Tags = append(attr.Tags, mtx.Tag{Name: "json", Value: each.Name + ",omitempty"})
-		attr.AttributeType = *each.GetDatatype().AttributeDatatype
+		if at := each.GetDatatype().AttributeDatatype; at != nil {
+			attr.AttributeType = *&attr.AttributeType
+		}
 		// could be nil=nil
 		attr.AttributeType.NullableAttributeDatatype = each.GetDatatype().NullableAttributeDatatype
 		attr.IsNullable = each.IsNullable
@@ -187,7 +189,7 @@ func (c *Column) Validate(e *mtx.ErrorCollector) {
 		e.Add(c.Named, errors.New("has no type"))
 		return
 	}
-	if c.ColumnType.Name == mtx.UNKNOWN.Name { // we don't know the class so check against name
+	if c.ColumnType.Name == mtx.Unknown.Name { // we don't know the class so check against name
 		e.Add(c.Named, errors.New("has unknown type"))
 		return
 	}

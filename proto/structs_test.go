@@ -9,7 +9,7 @@ import (
 func TestPackageSourceOn(t *testing.T) {
 	pkg := NewPackage("pkg").Doc("pkg-doc")
 	msg := pkg.Message("MSG").Doc("msg-doc")
-	msg.F("field", 1, INT32, "field-doc")
+	msg.F("field", 1, Int32, "field-doc")
 
 	mtx.MustBeValid(pkg)
 

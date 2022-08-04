@@ -16,38 +16,38 @@ var (
 )
 
 var (
-	UNKNOWN   = registry.Standard("any", mtx.UNKNOWN)
-	BOOLEAN   = registry.Standard("boolean", mtx.BOOLEAN)
-	NUMBER    = registry.Standard("number", mtx.DECIMAL)
-	STRING    = registry.Standard("string", mtx.STRING)
-	TIMESTAMP = registry.Standard("timestamp", mtx.TIMESTAMP)
+	Unknown   = registry.Standard("any", mtx.Unknown)
+	Boolean   = registry.Standard("boolean", mtx.Boolean)
+	Number    = registry.Standard("number", mtx.Decimal)
+	String    = registry.Standard("string", mtx.String)
+	Timestamp = registry.Standard("timestamp", mtx.Timestamp)
 )
 
 var timestampRegEx = regexp.MustCompile("[0-9][0-9][0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9].*")
 
 func DetectType(content string) mtx.Datatype {
 	if len(content) == 0 {
-		return UNKNOWN
+		return Unknown
 	}
 	// is it a boolean
 	if low := strings.ToLower(content); low == "true" || low == "false" { // language is english!
-		return BOOLEAN
+		return Boolean
 	}
 	// is it a decimal
 	if strings.Contains(content, ".") {
 		_, err := strconv.ParseFloat(content, 64)
 		if err == nil {
-			return NUMBER
+			return Number
 		}
 	}
 	// is it an int?
 	_, err := strconv.Atoi(content)
 	if err == nil {
-		return NUMBER
+		return Number
 	}
 	// it is a Time? yyyy-mm-ddThh:mm:...
 	if timestampRegEx.MatchString(content) {
-		return TIMESTAMP
+		return Timestamp
 	}
-	return STRING
+	return String
 }

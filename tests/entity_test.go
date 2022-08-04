@@ -11,7 +11,7 @@ import (
 func ExampleEntity() {
 	p := mtx.NewPackage("persons")
 	e := p.Entity("Person").Doc("A human")
-	e.A("firstName", mtx.STRING, "calling name")
+	e.A("firstName", mtx.String, "calling name")
 
 	// create Go struct source from entity
 	fmt.Println(golang.ToStruct(e).Go())
@@ -34,8 +34,8 @@ func TestMAP_STRING_ANY(t *testing.T) {
 
 func TestTIMESTAMP_TIME(t *testing.T) {
 	e := mtx.NewEntity("Test")
-	e.A("t", mtx.TIMESTAMP, "")
-	e.A("t_n", mtx.TIMESTAMP, "").Nullable()
+	e.A("t", mtx.Timestamp, "")
+	e.A("t_n", mtx.Timestamp, "").Nullable()
 	s := golang.ToStruct(e)
 	f := s.Fields[0]
 	if got, want := f.FieldType.Name, "time.Time"; got != want {
@@ -49,11 +49,11 @@ func TestTIMESTAMP_TIME(t *testing.T) {
 
 func TestCustomTypeCivilDate(t *testing.T) {
 	t.Skip() // changes global which breaks others
-	golang.RegisterType("civil.Date", mtx.DATE)
+	golang.RegisterType("civil.Date", mtx.Date)
 
 	e := mtx.NewEntity("Test")
-	e.A("c", mtx.DATE, "")
-	e.A("c_n", mtx.DATE, "").Nullable()
+	e.A("c", mtx.Date, "")
+	e.A("c_n", mtx.Date, "").Nullable()
 	s := golang.ToStruct(e)
 	f := s.Fields[0]
 	if got, want := f.FieldType.Name, "civil.Date"; got != want {

@@ -31,7 +31,7 @@ func TestNullableBQStringEntityString(t *testing.T) {
 	tab := bq.NewDataset("test").Table("test")
 	tab.C("s", bq.String, "").Nullable()
 	ent := tab.ToEntity()
-	str := golang.ToStruct(ent)
+	str := golang.ToStruct(ent, golang.WithBigQueryTypeMapper)
 	if got, want := str.Fields[0].Name, "S"; got != want {
 		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
 	}

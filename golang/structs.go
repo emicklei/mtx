@@ -114,30 +114,66 @@ func (f *Field) Type(dt mtx.Datatype) *Field {
 	return f
 }
 
-func ToStruct(ent *mtx.Entity) *Struct {
-	n := strcase.ToCamel(ent.Name)
-	if v, ok := ent.Get(GoTypeName); ok {
+type StructBuilder struct {
+	entity     *mtx.Entity
+	typeMapper TypeMapper
+	result     *Struct
+}
+
+func NewStructBuilder(e *mtx.Entity) *StructBuilder {
+	return &StructBuilder{
+		entity:     e,
+		typeMapper: StandardTypeMapper,
+		result:     new(Struct)}
+}
+
+func (b *StructBuilder) WithTypeMapper(m TypeMapper) *StructBuilder {
+	b.typeMapper = m
+	return b
+}
+
+func (b *StructBuilder) Build() *Struct {
+	// set name
+	n := strcase.ToCamel(b.entity.Name)
+	if v, ok := b.entity.Get(GoTypeName); ok {
 		n = v.(string)
 	}
-	str := &Struct{
-		Named: mtx.N("golang.Struct", n),
-	}
-	str.Documentation = ent.Documentation
-	for _, each := range ent.Attributes {
+	b.result.Named = mtx.N("golang.Struct", n)
+	// set doc
+	b.result.Documentation = b.entity.Documentation
+	// set fields
+	for _, each := range b.entity.Attributes {
 		f := &Field{
-			Named:     mtx.N("golang.Field", goFieldName(each)),
-			FieldType: goDatatype(each),
+			Named:     mtx.N("golang.Field", b.goFieldName(each)),
+			FieldType: b.typeMapper(each.AttributeType, each.IsNullable),
 			Tags:      each.Tags,
 		}
 		f.Documentation = each.Documentation
-		str.Fields = append(str.Fields, f)
+		b.result.Fields = append(b.result.Fields, f)
 	}
-	return str
+	return b.result
 }
 
-func goFieldName(a *mtx.Attribute) string {
+func (b *StructBuilder) goFieldName(a *mtx.Attribute) string {
 	// TODO check override
 	return strcase.ToCamel(a.Name)
+}
+
+type Option func(b *StructBuilder) *StructBuilder
+
+func WithTypeMapper(tm TypeMapper) Option {
+	return func(b *StructBuilder) *StructBuilder {
+		return b.WithTypeMapper(tm)
+	}
+}
+
+// TODO add variadic Option
+func ToStruct(ent *mtx.Entity, options ...Option) *Struct {
+	b := NewStructBuilder(ent)
+	for _, each := range options {
+		b = each(b)
+	}
+	return b.Build()
 }
 
 func goDatatype(a *mtx.Attribute) mtx.Datatype {

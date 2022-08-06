@@ -7,10 +7,15 @@ import (
 type TypeMapper func(at mtx.Datatype, nullable bool) mtx.Datatype
 
 var StandardTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
-	if nullable {
-		return Type("*" + at.Name)
+	dt := registry.MappedAttributeType(at)
+	if !nullable {
+		return dt
 	}
-	return at
+	// is nullable
+	if nt := dt.NullableAttributeDatatype; nt != nil {
+		return *nt
+	}
+	return Type("*" + dt.Name)
 }
 
 var WithBigQueryTypeMapper = func(b *StructBuilder) *StructBuilder {

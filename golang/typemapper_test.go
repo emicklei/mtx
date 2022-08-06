@@ -22,4 +22,16 @@ func TestStandardTypeMapper(t *testing.T) {
 	if got, want := dt.Name, MapStringAny.Name; got != want {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
+	dt = StandardTypeMapper(mtx.String, false)
+	if got, want := dt.Name, "string"; got != want {
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
+	dt = StandardTypeMapper(mtx.String, true)
+	if got, want := dt.Name, "*string"; got != want {
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
+	dt = StandardTypeMapper(mtx.Bytes, true)
+	if got, want := dt.Name, "*[]byte"; got != want {
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
 }

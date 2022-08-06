@@ -66,11 +66,27 @@ func TestStructBuilder(t *testing.T) {
 	t.Log("\n", s.Go())
 }
 
+func TestStructBuilderWithTaggers(t *testing.T) {
+	p := mtx.NewPackage("test")
+	e := p.Entity("test")
+	e.A("name", mtx.String, "nameless")
+	s := ToStruct(e, WithJSONTagger, WithBigQueryTagger, WithSpannerTagger)
+	if got, want := s.Go(), strings.ReplaceAll(`// Test : 
+type Test struct {
+	Name string !json:"name,omitempty" bigquery:"name,omitempty" spanner:"name,omitempty" ! // nameless
+}
+`, "!", "`"); got != want {
+
+		t.Log(flatten(got))
+		t.Log(flatten(want))
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
+}
+
 func TestStructBuilderWithBigQueryNullString(t *testing.T) {
 	p := mtx.NewPackage("test")
 	e := p.Entity("test").Doc("test doc")
 	e.A("name", mtx.String, "nameless").Nullable()
-	b := NewStructBuilder(e).WithTypeMapper(BigQueryTypeMapper)
-	s := b.Build()
+	s := ToStruct(e, WithBigQueryTypeMapper)
 	t.Log("\n", s.Go())
 }

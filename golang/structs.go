@@ -100,7 +100,7 @@ type Field struct {
 	*mtx.Named
 	Category  string `json:"category,omitempty"`
 	FieldType mtx.Datatype
-	Tags      []mtx.Tag
+	Tags      []Tag
 }
 
 func (f *Field) Doc(doc string) *Field {

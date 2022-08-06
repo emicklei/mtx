@@ -6,9 +6,10 @@ import (
 )
 
 type StructBuilder struct {
-	entity     *mtx.Entity
-	typeMapper TypeMapper
-	result     *Struct
+	entity       *mtx.Entity
+	typeMapper   TypeMapper
+	result       *Struct
+	fieldTaggers []FieldTagger
 }
 
 func NewStructBuilder(e *mtx.Entity) *StructBuilder {
@@ -45,7 +46,10 @@ func (b *StructBuilder) Build() *Struct {
 		f := &Field{
 			Named:     mtx.N("golang.Field", b.goFieldName(each)),
 			FieldType: fieldType,
-			Tags:      each.Tags,
+		}
+		// add tags
+		for _, tagger := range b.fieldTaggers {
+			tagger(each, f)
 		}
 		f.Documentation = each.Documentation
 		b.result.Fields = append(b.result.Fields, f)

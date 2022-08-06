@@ -110,8 +110,6 @@ func (t *Table) ToEntity() *mtx.Entity {
 		if n, ok := each.Get(mtx.AttributeName); ok {
 			attr.Named.Name = n.(string)
 		}
-		// add json tags
-		attr.Tags = append(attr.Tags, mtx.Tag{Name: "json", Value: each.Name + ",omitempty"})
 		if at := each.GetDatatype().AttributeDatatype; at != nil {
 			attr.AttributeType = *at
 		}

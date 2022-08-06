@@ -64,8 +64,7 @@ type Attribute struct {
 	Category      string   `json:"category,omitempty"`
 	AttributeType Datatype `json:"type"`
 	// IsNullable = true means the value can be NULL/nil
-	IsNullable bool  `json:"is_nullable,omitempty"`
-	Tags       []Tag `json:"tags,omitempty"`
+	IsNullable bool `json:"is_nullable,omitempty"`
 }
 
 func (a *Attribute) Type(t Datatype) *Attribute {
@@ -93,9 +92,4 @@ func (a *Attribute) Validate(c *ErrorCollector) {
 	a.Named.CheckClass(c, "mtx.Attribute")
 	a.AttributeType.Validate(c)
 	a.AttributeType.Named.CheckClass(c, "mtx.Datatype")
-}
-
-type Tag struct {
-	Name  string `json:"name,omitempty"`
-	Value string `json:"value,omitempty"`
 }

@@ -33,8 +33,8 @@ var SpannerTagger = func(attr *mtx.Attribute, field *Field) {
 	})
 }
 
-// WithSpannerTagger is an Option that adds "spanner" tags to Go struct fields.
-var WithSpannerTagger = func(b *StructBuilder) *StructBuilder {
+// WithSpannerTags is an Option that adds "spanner" tags to Go struct fields.
+var WithSpannerTags = func(b *StructBuilder) *StructBuilder {
 	b.fieldTaggers = append(b.fieldTaggers, SpannerTagger)
 	return b
 }

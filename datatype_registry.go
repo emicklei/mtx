@@ -4,6 +4,7 @@ type TypeRegistry struct {
 	class        string
 	knownTypes   map[string]Datatype
 	encodedTypes map[string]Datatype
+	trace        bool
 }
 
 func NewTypeRegistry(class string) *TypeRegistry {
@@ -14,11 +15,15 @@ func NewTypeRegistry(class string) *TypeRegistry {
 	}
 }
 
+func (r *TypeRegistry) Trace()        { r.trace = true }
 func (r *TypeRegistry) Class() string { return r.class }
 
 // MappedAttributeType returns the best matching known or encodede type.
 func (r *TypeRegistry) MappedAttributeType(attrType Datatype) Datatype {
 	if !attrType.HasName() {
+		if r.trace {
+			trace("registry", r.class, "attrType", attrType, "msg", "no name")
+		}
 		return r.knownTypes["any"]
 	}
 	for _, each := range r.knownTypes {
@@ -29,11 +34,17 @@ func (r *TypeRegistry) MappedAttributeType(attrType Datatype) Datatype {
 	// check encoded types
 	et, ok := r.encodedTypes[attrType.Name]
 	if ok {
+		if r.trace {
+			trace("registry", r.class, "attrType", attrType, "encodedType", et)
+		}
 		return et
 	}
 	a, ok := r.knownTypes["any"] // must have an any
 	if !ok {
 		panic("warning: missing any in " + r.class)
+	}
+	if r.trace {
+		trace("registry", r.class, "attrType", attrType, "fallback to", a)
 	}
 	return a
 }

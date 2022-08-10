@@ -57,6 +57,7 @@ func (b *StructBuilder) Build() *Struct {
 	return b.result
 }
 
+// TODO create a FieldNamer interface/func
 func (b *StructBuilder) goFieldName(a *mtx.Attribute) string {
 	// TODO check override
 	return strcase.ToCamel(a.Name)
@@ -70,6 +71,7 @@ func WithTypeMapper(tm TypeMapper) Option {
 	}
 }
 
+// ToStruct builds a Struct. Option control build strategies.
 func ToStruct(ent *mtx.Entity, options ...Option) *Struct {
 	b := NewStructBuilder(ent)
 	for _, each := range options {

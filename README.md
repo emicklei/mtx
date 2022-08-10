@@ -24,7 +24,9 @@ Example Postgres (pg) Database table.
 
     db := pg.Database("example")
     tab := db.Table("persons")
-    col := tab.Column("name").Datatype(pg.TEXT)
+    col := tab.Column("name").Datatype(pg.Text).Doc("what people call you")
+    // or the short version
+    col = tab.C("name",pg.Text,"what people call you")
 
 Transforming this table to SQL creation statement
 
@@ -34,13 +36,13 @@ Transforming this table to an Entity representing a row.
 
     ent := tab.ToEntity()
 
-The entity `ent` will have an Attribute "name" with Datatype mtx.STRING
+The entity `ent` will have an Attribute `name` with Datatype `mtx.String`
 
 Transforming this entity to a Go struct
 
     str := golang.ToStruct(ent)
 
-The struct `str` will have a Field "name" with Datatype golang.STRING
+The struct `str` will have a Field `name` with Datatype `golang.String`
 
 Transform this struct to Go source
 

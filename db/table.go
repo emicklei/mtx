@@ -127,7 +127,6 @@ var _ mtx.TypedLabel = new(Column)
 // Column is a descriptor of database table schema column.
 type Column struct {
 	*mtx.Named
-	Category   string       `json:"category,omitempty"`
 	ColumnType mtx.Datatype `json:"type"`
 	IsPrimary  bool         `json:"is_primary"`
 	// IsNotNull = true means the value is never NULL
@@ -152,11 +151,6 @@ func (c *Column) Type(d mtx.Datatype) *Column {
 
 func (c *Column) Primary() *Column {
 	c.IsPrimary = true
-	return c
-}
-
-func (c *Column) NotNull() *Column {
-	c.IsNullable = false
 	return c
 }
 

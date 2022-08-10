@@ -3,6 +3,7 @@ package mtx
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 )
 
@@ -22,4 +23,9 @@ func ToSource(what SourceWriteable) string {
 
 type SourceWriteable interface {
 	SourceOn(io.Writer)
+}
+
+func trace(params ...any) {
+	fmt.Print("[trace] ")
+	fmt.Println(params...)
 }

@@ -20,8 +20,8 @@ type Tag struct {
 	Value string `json:"value,omitempty"`
 }
 
-// WithJSONTagger is an Option that adds "json" tags to Go struct fields.
-var WithJSONTagger = func(b *StructBuilder) *StructBuilder {
+// WithJSONTags is an Option that adds "json" tags to Go struct fields.
+var WithJSONTags = func(b *StructBuilder) *StructBuilder {
 	b.fieldTaggers = append(b.fieldTaggers, JSONTagger)
 	return b
 }

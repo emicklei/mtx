@@ -63,14 +63,20 @@ func TestStructBuilder(t *testing.T) {
 	e.A("name", mtx.String, "nameless")
 	b := NewStructBuilder(e)
 	s := b.Build()
-	t.Log("\n", s.Go())
+	if got, want := s.Go(), `// Test : 
+type Test struct {
+	Name string // nameless
+}
+`; got != want {
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
 }
 
 func TestStructBuilderWithTaggers(t *testing.T) {
 	p := mtx.NewPackage("test")
 	e := p.Entity("test")
 	e.A("name", mtx.String, "nameless")
-	s := ToStruct(e, WithJSONTagger, WithBigQueryTagger, WithSpannerTagger)
+	s := ToStruct(e, WithJSONTags, WithBigQueryTags, WithSpannerTags)
 	if got, want := s.Go(), strings.ReplaceAll(`// Test : 
 type Test struct {
 	Name string !json:"name,omitempty" bigquery:"name,omitempty" spanner:"name,omitempty" ! // nameless
@@ -88,5 +94,11 @@ func TestStructBuilderWithBigQueryNullString(t *testing.T) {
 	e := p.Entity("test").Doc("test doc")
 	e.A("name", mtx.String, "nameless").Nullable()
 	s := ToStruct(e, WithBigQueryTypeMapper)
-	t.Log("\n", s.Go())
+	if got, want := s.Go(), `// Test : test doc
+type Test struct {
+	Name bigquery.NullString // nameless
+}
+`; got != want {
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
 }

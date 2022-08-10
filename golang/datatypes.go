@@ -19,6 +19,7 @@ var (
 	Float64 = registry.Standard("float64", mtx.Float)
 	Int     = registry.Standard("int", mtx.Integer)
 
+	BigRat       = registry.Standard("*big.Rat", mtx.Decimal)
 	MapStringAny = registry.Standard("map[string]any", mtx.JSON)
 )
 
@@ -26,4 +27,6 @@ func init() {
 	registry.EncodeAs(mtx.Date, Time)
 	registry.EncodeAs(mtx.Timestamp, Time)
 	registry.EncodeAs(mtx.DateTime, Time)
+	// TODO
+	//registry.Trace()
 }

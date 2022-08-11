@@ -6,10 +6,11 @@ import (
 )
 
 type StructBuilder struct {
-	entity       *mtx.Entity
-	typeMapper   TypeMapper
-	result       *Struct
-	fieldTaggers []FieldTagger
+	entity         *mtx.Entity
+	typeMapper     TypeMapper
+	result         *Struct
+	fieldTaggers   []FieldTagger
+	methodBuilders []MethodBuilder
 }
 
 func NewStructBuilder(e *mtx.Entity) *StructBuilder {
@@ -53,6 +54,9 @@ func (b *StructBuilder) Build() *Struct {
 		}
 		f.Documentation = each.Documentation
 		b.result.Fields = append(b.result.Fields, f)
+	}
+	for _, each := range b.methodBuilders {
+		each(b.result)
 	}
 	return b.result
 }

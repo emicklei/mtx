@@ -102,3 +102,25 @@ type Test struct {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
 }
+
+func TestStructWithCSVPopulate(t *testing.T) {
+	p := mtx.NewPackage("test")
+	e := p.Entity("test")
+	e.A("name", mtx.String, "nameless").Nullable()
+	s := ToStruct(e, WithCSVPopulate)
+	if got, want := s.Go(), `// Test : 
+type Test struct {
+	Name *string // nameless
+}
+
+func (r Test) CSVPopulate(record []string) (Test, error) {
+	if v := record[0]; v != "" {
+		r.Name = bigquery.NullString{StringVal: v, Valid: true}
+	}
+	return r, nil
+}
+
+`; got != want {
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
+}

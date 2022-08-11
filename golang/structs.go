@@ -46,6 +46,7 @@ type Struct struct {
 	*mtx.Named
 	Package *Package
 	Fields  []*Field
+	Methods []*Method
 }
 
 func (s *Struct) Doc(doc string) *Struct {
@@ -94,11 +95,14 @@ func (s *Struct) GoOn(w io.Writer) {
 		fmt.Fprintf(w, "// %s\n", each.Documentation)
 	}
 	fmt.Fprint(w, "}\n")
+	for _, each := range s.Methods {
+		fmt.Fprintln(w)
+		fmt.Fprintln(w, each.Source)
+	}
 }
 
 type Field struct {
 	*mtx.Named
-	Category  string `json:"category,omitempty"`
 	FieldType mtx.Datatype
 	Tags      []Tag
 }
@@ -111,4 +115,9 @@ func (f *Field) Doc(doc string) *Field {
 func (f *Field) Type(dt mtx.Datatype) *Field {
 	f.FieldType = dt
 	return f
+}
+
+type Method struct {
+	*mtx.Named
+	Source string // full source of method, without documentation, typically created from a template
 }

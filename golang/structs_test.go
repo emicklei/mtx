@@ -106,21 +106,30 @@ type Test struct {
 func TestStructWithCSVPopulate(t *testing.T) {
 	p := mtx.NewPackage("test")
 	e := p.Entity("test")
-	e.A("name", mtx.String, "nameless").Nullable()
+	e.A("name", mtx.String, "required name")
+	e.A("null_name", mtx.String, "nullable name").Nullable()
 	s := ToStruct(e, WithCSVPopulate)
 	if got, want := s.Go(), `// Test : 
 type Test struct {
-	Name *string // nameless
+	Name string // required name
+    NullName *string // nullable name
 }
 
 func (r Test) CSVPopulate(record []string) (Test, error) {
 	if v := record[0]; v != "" {
 		r.Name = bigquery.NullString{StringVal: v, Valid: true}
 	}
+	if v := record[1]; v != "" {
+		r.NullName = bigquery.NullString{StringVal: v, Valid: true}
+	}	
 	return r, nil
 }
 
-`; got != want {
+`; stripped(got) != stripped(want) {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
+}
+
+func stripped(s string) string {
+	return strings.TrimSpace(strings.ReplaceAll(strings.ReplaceAll(s, "\n", ""), "\t", ""))
 }

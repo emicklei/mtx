@@ -96,7 +96,6 @@ func (t *Table) Validate(c *mtx.ErrorCollector) {
 }
 
 // ToEntity creates a new Entity that represents a Row in this table data.
-// TODO how to handle name mapping?  type mapping?
 func (t *Table) ToEntity() *mtx.Entity {
 	m := mtx.NewEntity(t.Name)
 	// see if property overrides this
@@ -117,6 +116,8 @@ func (t *Table) ToEntity() *mtx.Entity {
 		attr.AttributeType.NullableAttributeDatatype = each.GetDatatype().NullableAttributeDatatype
 		attr.IsNullable = each.IsNullable
 		attr.Doc(each.Documentation)
+		// copy all
+		attr.CopyPropertiesFrom(each.Named)
 		each.Extensions.PostBuildAttribute(each, attr)
 	}
 	return m

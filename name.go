@@ -78,6 +78,35 @@ func (n *Named) Get(key string) (any, bool) {
 	return v, ok
 }
 
+func (n *Named) GetInt(key string, absent int) int {
+	if n.Properties == nil {
+		return absent
+	}
+	v, ok := n.Properties[key]
+	if !ok {
+		return absent
+	}
+	i, ok := v.(int)
+	if !ok {
+		return absent
+	}
+	return i
+}
+
+func (n *Named) CopyPropertiesFrom(n2 *Named) {
+	if n2.Properties == nil {
+		return
+	}
+	if n.Properties == nil {
+		n.Properties = n2.Properties
+		return
+	}
+	for k, v := range n2.Properties {
+		// detect override?
+		n.Set(k, v)
+	}
+}
+
 func (n *Named) Doc(d string) *Named {
 	n.Documentation = d
 	return n

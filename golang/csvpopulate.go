@@ -17,20 +17,37 @@ var WithCSVPopulate = func(b *StructBuilder) *StructBuilder {
 type CSVPopulateMethodGenerator struct {
 }
 
+/**
+if v, err := r.Identity.CSVPopulate(record); err == nil {
+	r.Identity = v
+} else {
+	return r, err
+}
+**/
+
 func (g *CSVPopulateMethodGenerator) Build(s *Struct) {
 	buf := new(strings.Builder)
-	buf.WriteString(fmt.Sprintf("func (r %s) CSVPopulate(record []string) (%s, error) {\n", s.Name, s.Name))
-	for i, each := range s.Fields {
-		fmt.Println("string -> ", each.FieldType.Name)
-
-		buf.WriteString(fmt.Sprintf(`	if v := record[%d]; v != "" {
+	buf.WriteString(fmt.Sprintf("func (r %s) CSVPopulate(record []string,offset int) (%s, error) {\n", s.Name, s.Name))
+	offset := 0
+	for _, each := range s.Fields {
+		if _, ok := each.Get("IsEntity"); ok { // TODO
+			buf.WriteString(fmt.Sprintf(`	if v, err := r.%s.CSVPopulate(record,%d); err == nil {
+		r.%s = v
+	} else {
+		return r, err
+	}`, each.Name, offset, each.Name))
+			offset += each.GetInt("AttributeCount", -1)
+		} else {
+			buf.WriteString(fmt.Sprintf(`	if v := record[offset+%d]; v != "" {
 		r.%s = %s
-	}`, i, each.Name, fromStringConvertFuncName(each.FieldType)))
+	}`, offset, each.Name, fromStringConvertFuncName(each.FieldType)))
+			offset++
+		}
 		buf.WriteString("\n")
 	}
 	buf.WriteString("	return r, nil\n}\n")
 	s.Methods = append(s.Methods, &Method{
-		Named:  mtx.N("Test", "golang.Method"),
+		Named:  mtx.N("CSVPopulate", "golang.Method"),
 		Source: buf.String(),
 	})
 }
@@ -44,15 +61,3 @@ func fromStringConvertFuncName(dt mtx.Datatype) string {
 	}
 	return fmt.Sprintf("StringTo%s(v)", strcase.ToCamel(dt.Name))
 }
-
-/**
-func (r Identity) CSVPopulate(record []string) (Identity, error) {
-	if v := record[0]; v != "" {
-		r.LineItemId = bigquery.NullString{StringVal: v, Valid: true}
-	}
-	if v := record[1]; v != "" {
-		r.TimeInterval = bigquery.NullString{StringVal: v, Valid: true}
-	}
-	return r, nil
-}
-**/

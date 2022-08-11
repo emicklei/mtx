@@ -1,6 +1,7 @@
 package golang
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -46,15 +47,9 @@ type Test struct {
 	Example string // some example
 }
 `; got != want {
-		t.Log(flatten(got))
-		t.Log(flatten(want))
+		tokenCompare(got, want)
 		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
 	}
-}
-
-// reaplce tabs and newlines and spaces
-func flatten(s string) string {
-	return strings.Replace((strings.Replace(s, "\n", "(n)", -1)), "\t", "(t)", -1)
 }
 
 func TestStructBuilder(t *testing.T) {
@@ -83,8 +78,7 @@ type Test struct {
 }
 `, "!", "`"); got != want {
 
-		t.Log(flatten(got))
-		t.Log(flatten(want))
+		tokenCompare(got, want)
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
 }
@@ -112,24 +106,32 @@ func TestStructWithCSVPopulate(t *testing.T) {
 	if got, want := s.Go(), `// Test : 
 type Test struct {
 	Name string // required name
-    NullName *string // nullable name
+	NullName *string // nullable name
 }
 
-func (r Test) CSVPopulate(record []string) (Test, error) {
-	if v := record[0]; v != "" {
-		r.Name = bigquery.NullString{StringVal: v, Valid: true}
+func (r Test) CSVPopulate(record []string,offset int) (Test, error) {
+	if v := record[offset+0]; v != "" {
+		r.Name = v
 	}
-	if v := record[1]; v != "" {
-		r.NullName = bigquery.NullString{StringVal: v, Valid: true}
-	}	
+	if v := record[offset+1]; v != "" {
+		r.NullName = StringToPtrString(v)
+	}
 	return r, nil
 }
 
-`; stripped(got) != stripped(want) {
+`; got != want {
+		tokenCompare(got, want)
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
 }
 
-func stripped(s string) string {
-	return strings.TrimSpace(strings.ReplaceAll(strings.ReplaceAll(s, "\n", ""), "\t", ""))
+func tokenCompare(l, r string) {
+	left := strings.Split(l, "\n")
+	right := strings.Split(r, "\n")
+	for i := 0; i < len(left) && i < len(right); i++ {
+		ls, rs := left[i], right[i]
+		if ls != rs {
+			fmt.Printf("%d:[%s][%s]\n", i, ls, rs)
+		}
+	}
 }

@@ -73,6 +73,8 @@ func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *mtx.Attribute) {
 	// TODO
 	if c.ColumnType == Record {
 		a.Set(golang.GoTypeName, strcase.ToCamel(c.Name))
+		a.Set("IsEntity", true)                       // TODO constant?
+		a.Set("AttributeCount", len(t.NestedColumns)) // TODO constant?
 	}
 }
 

@@ -7,7 +7,7 @@ import (
 )
 
 var WithSpannerTypeMapper = func(b *StructBuilder) *StructBuilder {
-	return b.WithTypeMapper(BigQueryTypeMapper)
+	return b.WithTypeMapper(bigQueryTypeMapper)
 }
 
 // spannerTypeMapper maps Attribute types to Go types from the Google spanner Go package
@@ -26,7 +26,7 @@ var spannerTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
 	}
 }
 
-var SpannerTagger = func(attr *mtx.Attribute, field *Field) {
+var spannerTagger = func(attr *mtx.Attribute, field *Field) {
 	field.Tags = append(field.Tags, Tag{
 		Name:  "spanner",
 		Value: fmt.Sprintf("%s,omitempty", attr.Name),
@@ -35,6 +35,6 @@ var SpannerTagger = func(attr *mtx.Attribute, field *Field) {
 
 // WithSpannerTags is an Option that adds "spanner" tags to Go struct fields.
 var WithSpannerTags = func(b *StructBuilder) *StructBuilder {
-	b.fieldTaggers = append(b.fieldTaggers, SpannerTagger)
+	b.fieldTaggers = append(b.fieldTaggers, spannerTagger)
 	return b
 }

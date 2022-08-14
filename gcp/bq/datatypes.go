@@ -72,10 +72,10 @@ func Decimal(p, s int) mtx.Datatype {
 }
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
-func BigNumeric(p, s int) mtx.Datatype {
+func BigNumeric(precision, scale int) mtx.Datatype {
 	return mtx.Datatype{
-		Named:             mtx.N("bq.Datatype", "BIGNUMERIC"),
-		Extensions:        DatatypeExtensions{Scale: s, Precision: p},
+		Named:             mtx.N("bq.Datatype", fmt.Sprintf("BIGNUMERIC(%d,%d)", precision, scale)),
+		Extensions:        DatatypeExtensions{Scale: scale, Precision: precision},
 		AttributeDatatype: &mtx.Decimal,
 	}
 }

@@ -30,7 +30,7 @@ Example Postgres (pg) Database table.
 
 Transforming this table to SQL creation statement
 
-    sql := tab.SQL()
+    sql := tab.ToSQL()
 
 Transforming this table to an Entity representing a row.
 
@@ -46,7 +46,7 @@ The struct `str` will have a Field `name` with Datatype `golang.String`
 
 Transform this struct to Go source
 
-    src := str.Go()
+    src := str.ToGo(
 
 ### use case: Compose Proto messages from shared fields
 

@@ -11,7 +11,7 @@ import (
 func TestStructGoSource(t *testing.T) {
 	s := new(Struct)
 	s.Named = mtx.N("golang.Struct", "Test")
-	if got, want := s.Go(), `// Test : 
+	if got, want := s.ToGo(), `// Test : 
 type Test struct {
 }
 `; got != want {
@@ -28,7 +28,7 @@ func TestStructWithFieldsGoSource(t *testing.T) {
 		FieldType: String,
 	})
 	// space after //
-	if got, want := s.Go(), `// Test : 
+	if got, want := s.ToGo(), `// Test : 
 type Test struct {
 	Test string // 
 }
@@ -42,7 +42,7 @@ func TestStructFull(t *testing.T) {
 	p := NewPackage("test")
 	s := p.Type("Test")
 	s.F("Example", String, "some example")
-	if got, want := s.Go(), `// Test : 
+	if got, want := s.ToGo(), `// Test : 
 type Test struct {
 	Example string // some example
 }
@@ -58,7 +58,7 @@ func TestStructBuilder(t *testing.T) {
 	e.A("name", mtx.String, "nameless")
 	b := NewStructBuilder(e)
 	s := b.Build()
-	if got, want := s.Go(), `// Test : 
+	if got, want := s.ToGo(), `// Test : 
 type Test struct {
 	Name string // nameless
 }
@@ -72,9 +72,9 @@ func TestStructBuilderWithTaggers(t *testing.T) {
 	e := p.Entity("test")
 	e.A("name", mtx.String, "nameless")
 	s := ToStruct(e, WithJSONTags, WithBigQueryTags, WithSpannerTags)
-	if got, want := s.Go(), strings.ReplaceAll(`// Test : 
+	if got, want := s.ToGo(), strings.ReplaceAll(`// Test : 
 type Test struct {
-	Name string !json:"name,omitempty" bigquery:"name,omitempty" spanner:"name,omitempty" ! // nameless
+	Name string !json:"name,omitempty" bigquery:"name" spanner:"name,omitempty" ! // nameless
 }
 `, "!", "`"); got != want {
 
@@ -88,7 +88,7 @@ func TestStructBuilderWithBigQueryNullString(t *testing.T) {
 	e := p.Entity("test").Doc("test doc")
 	e.A("name", mtx.String, "nameless").Nullable()
 	s := ToStruct(e, WithBigQueryTypeMapper)
-	if got, want := s.Go(), `// Test : test doc
+	if got, want := s.ToGo(), `// Test : test doc
 type Test struct {
 	Name bigquery.NullString // nameless
 }
@@ -103,7 +103,7 @@ func TestStructWithCSVPopulate(t *testing.T) {
 	e.A("name", mtx.String, "required name")
 	e.A("null_name", mtx.String, "nullable name").Nullable()
 	s := ToStruct(e, WithCSVPopulate)
-	if got, want := s.Go(), `// Test : 
+	if got, want := s.ToGo(), `// Test : 
 type Test struct {
 	Name string // required name
 	NullName *string // nullable name

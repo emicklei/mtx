@@ -17,14 +17,14 @@ func TestSpannerTable(t *testing.T) {
 	mtx.ToJSON(tab)
 
 	// create SQL to create table
-	tab.SQL()
+	tab.ToSQL()
 
 	// create entity from spanner table
 	e := tab.ToEntity()
 	mtx.ToJSON(e)
 
 	// create Go struct source from entity
-	golang.ToStruct(e).Go()
+	golang.ToStruct(e).ToGo()
 
 	// write to file, read it back
 	js := mtx.ToJSON(db)

@@ -7,11 +7,15 @@ import (
 )
 
 var WithBigQueryTypeMapper = func(b *StructBuilder) *StructBuilder {
-	return b.WithTypeMapper(BigQueryTypeMapper)
+	return b.WithTypeMapper(bigQueryTypeMapper)
 }
 
-// BigQueryTypeMapper maps Attribute types to Go types from the Google bigquery Go package
-var BigQueryTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
+// bigQueryTypeMapper maps Attribute types to Go types from the Google bigquery Go package
+var bigQueryTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
+	if at.Name == mtx.Decimal.Name {
+		// for both nullable and not
+		return Type("*big.Rat")
+	}
 	if !nullable {
 		return StandardTypeMapper(at, nullable)
 	}
@@ -34,22 +38,20 @@ var BigQueryTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
 		return Type("bigquery.NullInt64")
 	case mtx.Float.Name, mtx.Double.Name:
 		return Type("bigquery.NullFloat64")
-	case mtx.Decimal.Name:
-		return Type("*big.Rat")
 	default:
 		return StandardTypeMapper(at, nullable)
 	}
 }
 
-var BigQueryTagger = func(attr *mtx.Attribute, field *Field) {
+var bigQueryTagger = func(attr *mtx.Attribute, field *Field) {
 	field.Tags = append(field.Tags, Tag{
 		Name:  "bigquery",
-		Value: fmt.Sprintf("%s,omitempty", attr.Name),
+		Value: fmt.Sprintf("%s", attr.Name),
 	})
 }
 
 // WithBigQueryTags is an Option that adds "bigquery" tags to Go struct fields.
 var WithBigQueryTags = func(b *StructBuilder) *StructBuilder {
-	b.fieldTaggers = append(b.fieldTaggers, BigQueryTagger)
+	b.fieldTaggers = append(b.fieldTaggers, bigQueryTagger)
 	return b
 }

@@ -52,7 +52,7 @@ func (t *Table) Set(key string, value any) *Table {
 	return t
 }
 
-func (t *Table) SQL() string {
+func (t *Table) ToSQL() string {
 	buf := new(bytes.Buffer)
 	t.Extensions.SQLOn(t, buf)
 	return buf.String()

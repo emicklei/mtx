@@ -72,14 +72,14 @@ func (s *Struct) Field(name string) *Field {
 	return f
 }
 
-// Go returns the source in Go for defining this struct type.
-func (s *Struct) Go() string {
+// ToGo returns the source in Go for defining this struct type.
+func (s *Struct) ToGo() string {
 	var buf bytes.Buffer
-	s.GoOn(&buf)
+	s.WriteGoOn(&buf)
 	return buf.String()
 }
 
-func (s *Struct) GoOn(w io.Writer) {
+func (s *Struct) WriteGoOn(w io.Writer) {
 	fmt.Fprintf(w, "// %s : %s\n", s.Name, s.Documentation)
 	fmt.Fprintf(w, "type %s struct {\n", s.Name)
 	for _, each := range s.Fields {

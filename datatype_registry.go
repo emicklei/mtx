@@ -19,6 +19,7 @@ func (r *TypeRegistry) Trace()        { r.trace = true }
 func (r *TypeRegistry) Class() string { return r.class }
 
 // MappedAttributeType returns the best matching known or encodede type.
+// Properties set on the argument type are copied into the new result
 func (r *TypeRegistry) MappedAttributeType(attrType Datatype) Datatype {
 	if !attrType.HasName() {
 		if r.trace {
@@ -26,19 +27,21 @@ func (r *TypeRegistry) MappedAttributeType(attrType Datatype) Datatype {
 		}
 		return r.knownTypes["any"]
 	}
-	for _, each := range r.knownTypes {
-		if dt := each.AttributeDatatype; dt != nil && dt.Name == attrType.Name {
-			return each
-		}
-	}
 	// check encoded types
 	et, ok := r.encodedTypes[attrType.Name]
 	if ok {
 		if r.trace {
 			trace("registry", r.class, "attrType", attrType, "encodedType", et)
 		}
-		return et
+		return et.WithCopiedPropertiesFrom(attrType)
 	}
+	// check known types
+	for _, each := range r.knownTypes {
+		if dt := each.AttributeDatatype; dt != nil && dt.Name == attrType.Name {
+			return each.WithCopiedPropertiesFrom(attrType)
+		}
+	}
+	// fallback
 	a, ok := r.knownTypes["any"] // must have an any
 	if !ok {
 		panic("warning: missing any in " + r.class)
@@ -46,16 +49,11 @@ func (r *TypeRegistry) MappedAttributeType(attrType Datatype) Datatype {
 	if r.trace {
 		trace("registry", r.class, "attrType", attrType, "fallback to", a)
 	}
-	return a
+	return a.WithCopiedPropertiesFrom(attrType)
 }
 
-func (r *TypeRegistry) EncodeAs(at Datatype, dt Datatype) {
-	// check existing
-	_, ok := r.encodedTypes[at.Name]
-	if ok {
-		return
-	}
-	r.encodedTypes[at.Name] = dt
+func (r *TypeRegistry) EncodeAs(attrType Datatype, encodedType Datatype) {
+	r.encodedTypes[attrType.Name] = encodedType
 }
 
 func (r *TypeRegistry) Add(d Datatype) Datatype {

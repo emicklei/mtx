@@ -72,3 +72,16 @@ func (d Datatype) Set(key string, value any) Datatype {
 func (d Datatype) Validate(c *ErrorCollector) {
 	d.Named.Validate(c)
 }
+
+// Return a Datatype with all properties copied from the argument.
+// If no properties are in the argument then return a copy of the receiver.
+func (d Datatype) WithCopiedPropertiesFrom(o Datatype) Datatype {
+	if o.Properties == nil {
+		return d
+	}
+	if len(o.Properties) == 0 {
+		return d
+	}
+	d.CopyPropertiesFrom(o.Named)
+	return d
+}

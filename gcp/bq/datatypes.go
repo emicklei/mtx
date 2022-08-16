@@ -20,6 +20,10 @@ var (
 	Record  = registry.Standard("RECORD", mtx.Unknown)
 )
 
+func init() {
+	registry.EncodeAs(mtx.JSON, mtx.Bytes)
+}
+
 func MaxBytes(max int64) mtx.Datatype {
 	return mtx.Datatype{
 		Named:      mtx.N("bq.Datatype", "BYTES"),
@@ -50,7 +54,7 @@ var Geography = registry.Standard("GEOGRAPHY", mtx.Unknown)
 var Interval = registry.Standard("INTERVAL", mtx.Unknown)
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_type
-var Int64 = registry.Standard("INT64", mtx.Integer)
+var Int64 = registry.Standard("INT64", mtx.Integer).Set("bits", 64)
 var Int, SmallInt, Integer, BigInt, TinyInt, ByteInt = Int64, Int64, Int64, Int64, Int64, Int64
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type

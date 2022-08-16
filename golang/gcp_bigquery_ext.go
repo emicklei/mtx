@@ -17,6 +17,16 @@ var bigQueryTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
 		return Type("*big.Rat")
 	}
 	if !nullable {
+		if at.Name == mtx.Integer.Name {
+			// check bits
+			if at.GetInt("bits", 0) == 64 {
+				return Int64
+			}
+			return StandardTypeMapper(at, nullable)
+		}
+		if at.Name == mtx.JSON.Name {
+			return String
+		}
 		return StandardTypeMapper(at, nullable)
 	}
 	// nullable

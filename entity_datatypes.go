@@ -24,7 +24,7 @@ var (
 	Float     = registry.Add(NewAttributeType("float"))
 	Double    = registry.Add(NewAttributeType("double"))
 	Decimal   = registry.Add(NewAttributeType("decimal"))
-	JSON      = registry.Add(NewAttributeType("json"))
+	JSON      = registry.Add(NewAttributeType("JSON"))
 	Duration  = registry.Add(NewAttributeType("duration")) // y,m,d,h,m,s
 	UUID      = registry.Add(NewAttributeType("uuid"))
 )

@@ -18,6 +18,7 @@ var (
 	Float32 = registry.Standard("float32", mtx.Float)
 	Float64 = registry.Standard("float64", mtx.Float)
 	Int     = registry.Standard("int", mtx.Integer)
+	Int64   = registry.Standard("int64", mtx.Integer.Set("bits", 64))
 
 	BigRat       = registry.Standard("*big.Rat", mtx.Decimal)
 	MapStringAny = registry.Standard("map[string]any", mtx.JSON)

@@ -32,7 +32,7 @@ var bigQueryTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
 	// nullable
 	// https://pkg.go.dev/cloud.google.com/go/bigquery#pkg-types
 	switch at.Name {
-	case mtx.String.Name:
+	case mtx.String.Name, mtx.JSON.Name:
 		return Type("bigquery.NullString")
 	case mtx.Boolean.Name:
 		return Type("bigquery.NullBool")
@@ -48,6 +48,8 @@ var bigQueryTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
 		return Type("bigquery.NullInt64")
 	case mtx.Float.Name, mtx.Double.Name:
 		return Type("bigquery.NullFloat64")
+	case mtx.Bytes.Name:
+		return Bytes // empty bytes are considered null
 	default:
 		return StandardTypeMapper(at, nullable)
 	}

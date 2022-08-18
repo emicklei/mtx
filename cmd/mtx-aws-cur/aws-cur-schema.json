@@ -1,0 +1,1124 @@
+[
+  {
+    "description": "category:identity,name:LineItemId,type:String",
+    "name": "identity_LineItemId",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:identity,name:TimeInterval,type:Interval",
+    "name": "identity_TimeInterval",
+    "type": "INTERVAL",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:bill,name:InvoiceId,type:String",
+    "name": "bill_InvoiceId",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:bill,name:InvoicingEntity,type:String",
+    "name": "bill_InvoicingEntity",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:bill,name:BillingEntity,type:String",
+    "name": "bill_BillingEntity",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:bill,name:BillType,type:String",
+    "name": "bill_BillType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:bill,name:PayerAccountId,type:String",
+    "name": "bill_PayerAccountId",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:bill,name:BillingPeriodStartDate,type:DateTime",
+    "name": "bill_BillingPeriodStartDate",
+    "type": "DATETIME",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:bill,name:BillingPeriodEndDate,type:DateTime",
+    "name": "bill_BillingPeriodEndDate",
+    "type": "DATETIME",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:UsageAccountId,type:String",
+    "name": "lineItem_UsageAccountId",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:LineItemType,type:String",
+    "name": "lineItem_LineItemType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:UsageStartDate,type:DateTime",
+    "name": "lineItem_UsageStartDate",
+    "type": "DATETIME",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:UsageEndDate,type:DateTime",
+    "name": "lineItem_UsageEndDate",
+    "type": "DATETIME",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:ProductCode,type:String",
+    "name": "lineItem_ProductCode",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:UsageType,type:String",
+    "name": "lineItem_UsageType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:Operation,type:String",
+    "name": "lineItem_Operation",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:AvailabilityZone,type:String",
+    "name": "lineItem_AvailabilityZone",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:ResourceId,type:String",
+    "name": "lineItem_ResourceId",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:UsageAmount,type:BigDecimal",
+    "name": "lineItem_UsageAmount",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:NormalizationFactor,type:OptionalBigDecimal",
+    "name": "lineItem_NormalizationFactor",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:lineItem,name:NormalizedUsageAmount,type:OptionalBigDecimal",
+    "name": "lineItem_NormalizedUsageAmount",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:lineItem,name:CurrencyCode,type:String",
+    "name": "lineItem_CurrencyCode",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:UnblendedRate,type:String",
+    "name": "lineItem_UnblendedRate",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:UnblendedCost,type:BigDecimal",
+    "name": "lineItem_UnblendedCost",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:BlendedRate,type:String",
+    "name": "lineItem_BlendedRate",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:BlendedCost,type:BigDecimal",
+    "name": "lineItem_BlendedCost",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:LineItemDescription,type:String",
+    "name": "lineItem_LineItemDescription",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:TaxType,type:String",
+    "name": "lineItem_TaxType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:lineItem,name:LegalEntity,type:String",
+    "name": "lineItem_LegalEntity",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:ProductName,type:String",
+    "name": "product_ProductName",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:PurchaseOption,type:String",
+    "name": "product_PurchaseOption",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:accountAssistance,type:String",
+    "name": "product_accountAssistance",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:alarmType,type:String",
+    "name": "product_alarmType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:architecturalReview,type:String",
+    "name": "product_architecturalReview",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:architectureSupport,type:String",
+    "name": "product_architectureSupport",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:availability,type:String",
+    "name": "product_availability",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:availabilityZone,type:String",
+    "name": "product_availabilityZone",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:bestPractices,type:String",
+    "name": "product_bestPractices",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:cacheEngine,type:String",
+    "name": "product_cacheEngine",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:capacitystatus,type:String",
+    "name": "product_capacitystatus",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:caseSeverityresponseTimes,type:String",
+    "name": "product_caseSeverityresponseTimes",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:category,type:String",
+    "name": "product_category",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:ciType,type:String",
+    "name": "product_ciType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:classicnetworkingsupport,type:String",
+    "name": "product_classicnetworkingsupport",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:clockSpeed,type:String",
+    "name": "product_clockSpeed",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:computeFamily,type:String",
+    "name": "product_computeFamily",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:computeType,type:String",
+    "name": "product_computeType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:contentType,type:String",
+    "name": "product_contentType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:cputype,type:String",
+    "name": "product_cputype",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:currentGeneration,type:String",
+    "name": "product_currentGeneration",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:customerServiceAndCommunities,type:String",
+    "name": "product_customerServiceAndCommunities",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:databaseEngine,type:String",
+    "name": "product_databaseEngine",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:dedicatedEbsThroughput,type:String",
+    "name": "product_dedicatedEbsThroughput",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:deploymentOption,type:String",
+    "name": "product_deploymentOption",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:description,type:String",
+    "name": "product_description",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:durability,type:String",
+    "name": "product_durability",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:ecu,type:String",
+    "name": "product_ecu",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:endpointType,type:String",
+    "name": "product_endpointType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:engineCode,type:String",
+    "name": "product_engineCode",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:enhancedNetworkingSupported,type:String",
+    "name": "product_enhancedNetworkingSupported",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:eventType,type:String",
+    "name": "product_eventType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:freeUsageIncluded,type:String",
+    "name": "product_freeUsageIncluded",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:fromLocation,type:String",
+    "name": "product_fromLocation",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:fromLocationType,type:String",
+    "name": "product_fromLocationType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:fromRegionCode,type:String",
+    "name": "product_fromRegionCode",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:group,type:String",
+    "name": "product_group",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:groupDescription,type:String",
+    "name": "product_groupDescription",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:includedServices,type:String",
+    "name": "product_includedServices",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:instanceFamily,type:String",
+    "name": "product_instanceFamily",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:instanceType,type:String",
+    "name": "product_instanceType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:instanceTypeFamily,type:String",
+    "name": "product_instanceTypeFamily",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:intelAvx2Available,type:String",
+    "name": "product_intelAvx2Available",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:intelAvxAvailable,type:String",
+    "name": "product_intelAvxAvailable",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:intelTurboAvailable,type:String",
+    "name": "product_intelTurboAvailable",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:launchSupport,type:String",
+    "name": "product_launchSupport",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:licenseModel,type:String",
+    "name": "product_licenseModel",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:location,type:String",
+    "name": "product_location",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:locationType,type:String",
+    "name": "product_locationType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:logsDestination,type:String",
+    "name": "product_logsDestination",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:marketoption,type:String",
+    "name": "product_marketoption",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:maxIopsBurstPerformance,type:String",
+    "name": "product_maxIopsBurstPerformance",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:maxIopsvolume,type:String",
+    "name": "product_maxIopsvolume",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:maxThroughputvolume,type:String",
+    "name": "product_maxThroughputvolume",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:maxVolumeSize,type:String",
+    "name": "product_maxVolumeSize",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:memory,type:String",
+    "name": "product_memory",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:memorytype,type:String",
+    "name": "product_memorytype",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:messageDeliveryFrequency,type:String",
+    "name": "product_messageDeliveryFrequency",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:messageDeliveryOrder,type:String",
+    "name": "product_messageDeliveryOrder",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:meteringType,type:String",
+    "name": "product_meteringType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:minVolumeSize,type:String",
+    "name": "product_minVolumeSize",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:networkPerformance,type:String",
+    "name": "product_networkPerformance",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:normalizationSizeFactor,type:String",
+    "name": "product_normalizationSizeFactor",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:operatingSystem,type:String",
+    "name": "product_operatingSystem",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:operation,type:String",
+    "name": "product_operation",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:operationsSupport,type:String",
+    "name": "product_operationsSupport",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:origin,type:String",
+    "name": "product_origin",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:parameterType,type:String",
+    "name": "product_parameterType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:physicalProcessor,type:String",
+    "name": "product_physicalProcessor",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:platopricingtype,type:String",
+    "name": "product_platopricingtype",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:platostoragetype,type:String",
+    "name": "product_platostoragetype",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:platousagetype,type:String",
+    "name": "product_platousagetype",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:platovolumetype,type:String",
+    "name": "product_platovolumetype",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:preInstalledSw,type:String",
+    "name": "product_preInstalledSw",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:pricingUnit,type:String",
+    "name": "product_pricingUnit",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:proactiveGuidance,type:String",
+    "name": "product_proactiveGuidance",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:processorArchitecture,type:String",
+    "name": "product_processorArchitecture",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:processorFeatures,type:String",
+    "name": "product_processorFeatures",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:productFamily,type:String",
+    "name": "product_productFamily",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:programmaticCaseManagement,type:String",
+    "name": "product_programmaticCaseManagement",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:provisioned,type:String",
+    "name": "product_provisioned",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:purchaseterm,type:String",
+    "name": "product_purchaseterm",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:queueType,type:String",
+    "name": "product_queueType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:recipient,type:String",
+    "name": "product_recipient",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:region,type:String",
+    "name": "product_region",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:regionCode,type:String",
+    "name": "product_regionCode",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:requestDescription,type:String",
+    "name": "product_requestDescription",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:requestType,type:String",
+    "name": "product_requestType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:routingTarget,type:String",
+    "name": "product_routingTarget",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:routingType,type:String",
+    "name": "product_routingType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:servicecode,type:String",
+    "name": "product_servicecode",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:servicename,type:String",
+    "name": "product_servicename",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:sku,type:String",
+    "name": "product_sku",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:storage,type:String",
+    "name": "product_storage",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:storageClass,type:String",
+    "name": "product_storageClass",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:storageMedia,type:String",
+    "name": "product_storageMedia",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:storageType,type:String",
+    "name": "product_storageType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:technicalSupport,type:String",
+    "name": "product_technicalSupport",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:tenancy,type:String",
+    "name": "product_tenancy",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:thirdpartySoftwareSupport,type:String",
+    "name": "product_thirdpartySoftwareSupport",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:throughput,type:String",
+    "name": "product_throughput",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:toLocation,type:String",
+    "name": "product_toLocation",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:toLocationType,type:String",
+    "name": "product_toLocationType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:toRegionCode,type:String",
+    "name": "product_toRegionCode",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:training,type:String",
+    "name": "product_training",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:transferType,type:String",
+    "name": "product_transferType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:type,type:String",
+    "name": "product_type",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:usagetype,type:String",
+    "name": "product_usagetype",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:vcpu,type:String",
+    "name": "product_vcpu",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:version,type:String",
+    "name": "product_version",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:volumeApiName,type:String",
+    "name": "product_volumeApiName",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:volumeType,type:String",
+    "name": "product_volumeType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:vpcnetworkingsupport,type:String",
+    "name": "product_vpcnetworkingsupport",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:product,name:whoCanOpenCases,type:String",
+    "name": "product_whoCanOpenCases",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:pricing,name:LeaseContractLength,type:String",
+    "name": "pricing_LeaseContractLength",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:pricing,name:OfferingClass,type:String",
+    "name": "pricing_OfferingClass",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:pricing,name:PurchaseOption,type:String",
+    "name": "pricing_PurchaseOption",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:pricing,name:RateCode,type:String",
+    "name": "pricing_RateCode",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:pricing,name:RateId,type:String",
+    "name": "pricing_RateId",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:pricing,name:currency,type:String",
+    "name": "pricing_currency",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:pricing,name:publicOnDemandCost,type:BigDecimal",
+    "name": "pricing_publicOnDemandCost",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:pricing,name:publicOnDemandRate,type:String",
+    "name": "pricing_publicOnDemandRate",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:pricing,name:term,type:String",
+    "name": "pricing_term",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:pricing,name:unit,type:String",
+    "name": "pricing_unit",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:reservation,name:AmortizedUpfrontCostForUsage,type:OptionalBigDecimal",
+    "name": "reservation_AmortizedUpfrontCostForUsage",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:reservation,name:AmortizedUpfrontFeeForBillingPeriod,type:OptionalBigDecimal",
+    "name": "reservation_AmortizedUpfrontFeeForBillingPeriod",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:reservation,name:EffectiveCost,type:OptionalBigDecimal",
+    "name": "reservation_EffectiveCost",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:reservation,name:EndTime,type:OptionalString",
+    "name": "reservation_EndTime",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:reservation,name:ModificationStatus,type:OptionalString",
+    "name": "reservation_ModificationStatus",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:reservation,name:NormalizedUnitsPerReservation,type:String",
+    "name": "reservation_NormalizedUnitsPerReservation",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:reservation,name:NumberOfReservations,type:String",
+    "name": "reservation_NumberOfReservations",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:reservation,name:RecurringFeeForUsage,type:OptionalBigDecimal",
+    "name": "reservation_RecurringFeeForUsage",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:reservation,name:ReservationARN,type:String",
+    "name": "reservation_ReservationARN",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:reservation,name:StartTime,type:OptionalString",
+    "name": "reservation_StartTime",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:reservation,name:SubscriptionId,type:String",
+    "name": "reservation_SubscriptionId",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:reservation,name:TotalReservedNormalizedUnits,type:String",
+    "name": "reservation_TotalReservedNormalizedUnits",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:reservation,name:TotalReservedUnits,type:String",
+    "name": "reservation_TotalReservedUnits",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:reservation,name:UnitsPerReservation,type:String",
+    "name": "reservation_UnitsPerReservation",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:reservation,name:UnusedAmortizedUpfrontFeeForBillingPeriod,type:OptionalBigDecimal",
+    "name": "reservation_UnusedAmortizedUpfrontFeeForBillingPeriod",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:reservation,name:UnusedNormalizedUnitQuantity,type:OptionalBigDecimal",
+    "name": "reservation_UnusedNormalizedUnitQuantity",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:reservation,name:UnusedQuantity,type:OptionalBigDecimal",
+    "name": "reservation_UnusedQuantity",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:reservation,name:UnusedRecurringFee,type:OptionalBigDecimal",
+    "name": "reservation_UnusedRecurringFee",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:reservation,name:UpfrontValue,type:OptionalBigDecimal",
+    "name": "reservation_UpfrontValue",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:savingsPlan,name:TotalCommitmentToDate,type:OptionalBigDecimal",
+    "name": "savingsPlan_TotalCommitmentToDate",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:savingsPlan,name:SavingsPlanARN,type:OptionalString",
+    "name": "savingsPlan_SavingsPlanARN",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:savingsPlan,name:SavingsPlanRate,type:OptionalBigDecimal",
+    "name": "savingsPlan_SavingsPlanRate",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:savingsPlan,name:UsedCommitment,type:OptionalBigDecimal",
+    "name": "savingsPlan_UsedCommitment",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:savingsPlan,name:SavingsPlanEffectiveCost,type:OptionalBigDecimal",
+    "name": "savingsPlan_SavingsPlanEffectiveCost",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:savingsPlan,name:AmortizedUpfrontCommitmentForBillingPeriod,type:OptionalBigDecimal",
+    "name": "savingsPlan_AmortizedUpfrontCommitmentForBillingPeriod",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:savingsPlan,name:RecurringCommitmentForBillingPeriod,type:OptionalBigDecimal",
+    "name": "savingsPlan_RecurringCommitmentForBillingPeriod",
+    "type": "BIGDECIMAL(15,5)",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "category:savingsPlan,name:StartTime,type:String",
+    "name": "savingsPlan_StartTime",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:savingsPlan,name:EndTime,type:String",
+    "name": "savingsPlan_EndTime",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:savingsPlan,name:OfferingType,type:String",
+    "name": "savingsPlan_OfferingType",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:savingsPlan,name:PaymentOption,type:String",
+    "name": "savingsPlan_PaymentOption",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:savingsPlan,name:PurchaseTerm,type:String",
+    "name": "savingsPlan_PurchaseTerm",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:savingsPlan,name:Region,type:String",
+    "name": "savingsPlan_Region",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:resourceTags,name:user:Customer,type:String",
+    "name": "resourceTags_user:Customer",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "category:resourceTags,name:user:Product,type:String",
+    "name": "resourceTags_user:Product",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  }
+]

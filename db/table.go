@@ -111,6 +111,8 @@ func (t *Table) ToEntity() *mtx.Entity {
 		}
 		if at := each.GetDatatype().AttributeDatatype; at != nil {
 			attr.AttributeType = *at
+			// copy properties
+			attr.AttributeType.CopyPropertiesFrom(each.GetDatatype().Named)
 		}
 		// could be nil=nil
 		attr.AttributeType.NullableAttributeDatatype = each.GetDatatype().NullableAttributeDatatype

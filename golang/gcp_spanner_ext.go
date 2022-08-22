@@ -7,7 +7,7 @@ import (
 )
 
 var WithSpannerTypeMapper = func(b *StructBuilder) *StructBuilder {
-	return b.WithTypeMapper(bigQueryTypeMapper)
+	return b.WithTypeMapper(spannerTypeMapper)
 }
 
 // spannerTypeMapper maps Attribute types to Go types from the Google spanner Go package
@@ -19,7 +19,7 @@ var spannerTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
 	switch at.Name {
 	case mtx.String.Name:
 		return Type("spanner.NullString")
-	case mtx.JSON.NullableAttributeDatatype.Name:
+	case mtx.JSON.Name:
 		return Type("spanner.NullJSON")
 	default:
 		return StandardTypeMapper(at, nullable)

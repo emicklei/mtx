@@ -1,6 +1,7 @@
 package mtx
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"strings"
@@ -51,7 +52,11 @@ func (d Datatype) String() string {
 	if d.Named == nil {
 		return "*unnamed* Datatype"
 	}
-	return fmt.Sprintf("%s (%s)", d.Name, d.Class)
+	if d.Properties != nil {
+		doc, _ := json.Marshal(d.Properties)
+		return fmt.Sprintf("%s (%s) %s", d.Name, d.Class, string(doc))
+	}
+	return fmt.Sprintf("%s (%s) {}", d.Name, d.Class)
 }
 
 func (d Datatype) SourceOn(w io.Writer) {

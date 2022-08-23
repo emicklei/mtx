@@ -29,7 +29,7 @@ var spannerTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
 var spannerTagger = func(attr *mtx.Attribute, field *Field) {
 	field.Tags = append(field.Tags, Tag{
 		Name:  "spanner",
-		Value: fmt.Sprintf("%s,omitempty", attr.Name),
+		Value: fmt.Sprintf("%s", attr.Name),
 	})
 }
 

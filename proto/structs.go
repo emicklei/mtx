@@ -70,13 +70,21 @@ func (m *Message) Validate(c *mtx.ErrorCollector) {
 	}
 }
 
+func ToEntity(m *Message) *mtx.Entity {
+	// temp
+	return m.ToEntity()
+}
+
 func (m *Message) ToEntity() *mtx.Entity {
 	e := mtx.NewEntity(m.Name)
 	// share props
 	e.Properties = m.Properties
 	e.Doc(m.Documentation)
 	for _, each := range m.Fields {
-		e.A(each.Name, *each.FieldType.AttributeDatatype, each.Documentation)
+		attr := e.A(each.Name, *each.FieldType.AttributeDatatype, each.Documentation)
+		if each.IsOptional {
+			attr.Nullable()
+		}
 	}
 	return e
 }
@@ -116,8 +124,8 @@ type Field struct {
 	*mtx.Named
 	Category       string       `json:"category,omitempty"`
 	FieldType      mtx.Datatype `json:"type"`
-	Repeated       bool         `json:"repeated,omitempty"`
-	Optional       bool         `json:"optional,omitempty"`
+	IsRepeated     bool         `json:"repeated,omitempty"`
+	IsOptional     bool         `json:"optional,omitempty"`
 	SequenceNumber int          `json:"nr"` // zero means unknown
 }
 
@@ -142,6 +150,11 @@ func (f *Field) Type(ft mtx.Datatype) *Field {
 
 func (f *Field) Number(seq int) *Field {
 	f.SequenceNumber = seq
+	return f
+}
+
+func (f *Field) Optional() *Field {
+	f.IsOptional = true
 	return f
 }
 

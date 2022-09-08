@@ -42,5 +42,14 @@ func (v *visitor) handleMessage(m *proto.Message) {
 }
 
 func (v *visitor) handleNormalField(m *proto.NormalField) {
-	v.msg.F(m.Name, m.Sequence, protom.Type(m.Type), m.Comment.Message())
+	mc := m.Comment
+	msg := ""
+	if mc != nil {
+		msg = mc.Message()
+	}
+	ic := m.InlineComment
+	if ic != nil {
+		msg = ic.Message()
+	}
+	v.msg.F(m.Name, m.Sequence, protom.Type(m.Type), msg)
 }

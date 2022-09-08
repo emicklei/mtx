@@ -65,7 +65,7 @@ func (d Datatype) SourceOn(w io.Writer) {
 		fmt.Fprintf(w, "%s.Type(\"%s\")", pkg, d.Name)
 		return
 	}
-	fmt.Fprintf(w, "%s.%s", pkg, strings.ToUpper(d.Name))
+	fmt.Fprintf(w, "%s.%s", pkg, strings.Title(d.Name))
 }
 
 // Set overrides Named.Set to preserve return type

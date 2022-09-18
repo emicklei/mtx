@@ -37,10 +37,7 @@ func (e *Entity) Attribute(name string) *Attribute {
 	if ok {
 		return attr
 	}
-	attr = &Attribute{
-		IsNullable: false, // required by default
-	}
-	attr.Named = N(EntityAttributeClass, name)
+	attr = NewAttribute(name)
 	e.Attributes = append(e.Attributes, attr)
 	return attr
 }
@@ -51,6 +48,10 @@ func (e *Entity) Validate(c *ErrorCollector) {
 	for _, each := range e.Attributes {
 		each.Validate(c)
 	}
+}
+
+func (e *Entity) String() string {
+	return fmt.Sprintf("%s:%s", e.Name, e.Class)
 }
 
 // SourceOn writes Go source to recreate the receiver.
@@ -65,6 +66,14 @@ type Attribute struct {
 	AttributeType Datatype `json:"type"`
 	// IsNullable = true means the value can be NULL/nil
 	IsNullable bool `json:"is_nullable,omitempty"`
+}
+
+func NewAttribute(name string) *Attribute {
+	attr := &Attribute{
+		IsNullable: false, // required by default
+	}
+	attr.Named = N(EntityAttributeClass, name)
+	return attr
 }
 
 func (a *Attribute) Type(t Datatype) *Attribute {
@@ -92,4 +101,8 @@ func (a *Attribute) Validate(c *ErrorCollector) {
 	a.Named.CheckClass(c, "mtx.Attribute")
 	a.AttributeType.Validate(c)
 	a.AttributeType.Named.CheckClass(c, "mtx.Datatype")
+}
+
+func (a *Attribute) String() string {
+	return fmt.Sprintf("%s:%s:%s", a.Name, a.AttributeType.Name, a.Class)
 }

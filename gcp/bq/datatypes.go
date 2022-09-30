@@ -95,3 +95,5 @@ func BigDecimal(precision, scale int) mtx.Datatype {
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type
 var Timestamp = registry.Standard("TIMESTAMP", mtx.Timestamp)
+
+var Bool = registry.Standard("BOOL", mtx.Boolean)

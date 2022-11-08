@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 )
 
 var (
@@ -17,10 +18,10 @@ var (
 
 var (
 	Unknown   = registry.Standard("any", mtx.Unknown)
-	Boolean   = registry.Standard("boolean", mtx.Boolean)
-	Number    = registry.Standard("number", mtx.Decimal)
-	String    = registry.Standard("string", mtx.String)
-	Timestamp = registry.Standard("timestamp", mtx.Timestamp)
+	Boolean   = registry.Standard("boolean", basic.Boolean)
+	Number    = registry.Standard("number", basic.Decimal)
+	String    = registry.Standard("string", basic.String)
+	Timestamp = registry.Standard("timestamp", basic.Timestamp)
 )
 
 var timestampRegEx = regexp.MustCompile("[0-9][0-9][0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9].*")

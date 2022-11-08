@@ -2,6 +2,7 @@ package proto
 
 import (
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 )
 
 var (
@@ -13,11 +14,11 @@ var (
 
 var (
 	Unknown = registry.Standard("any", mtx.Unknown) // bytes is the fallback
-	Double  = registry.Standard("double", mtx.Double)
-	Float   = registry.Standard("float", mtx.Float)
-	String  = registry.Standard("string", mtx.String)
-	Int32   = registry.Standard("int32", mtx.Integer)
-	Int64   = registry.Standard("int64", mtx.Integer) //.Set("bits", 64))
-	Bool    = registry.Standard("bool", mtx.Boolean)
-	Bytes   = registry.Standard("bytes", mtx.Bytes)
+	Double  = registry.Standard("double", basic.Double)
+	Float   = registry.Standard("float", basic.Float)
+	String  = registry.Standard("string", basic.String)
+	Int32   = registry.Standard("int32", basic.Integer)
+	Int64   = registry.Standard("int64", basic.Integer) //.Set("bits", 64))
+	Bool    = registry.Standard("bool", basic.Boolean)
+	Bytes   = registry.Standard("bytes", basic.Bytes)
 )

@@ -1,15 +1,19 @@
-package mtx
+package m2m
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/emicklei/mtx/basic"
+)
 
 func TestFieldMap(t *testing.T) {
-	from := NewEntity("personapi")
-	from.A("id", String, "id")
+	from := basic.NewEntity("personapi")
+	from.A("id", basic.String, "id")
 
 	mapping := NewEntityMapping(from)
 	mapping.SetName("persondb")
 	mapping.SetAttributeName("id", "id2")
-	mapping.SetAttributeType("id", Integer)
+	mapping.SetAttributeType("id", basic.Integer)
 
 	to := mapping.ToEntity()
 

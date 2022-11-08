@@ -1,7 +1,9 @@
-package mtx
+package basic
 
 import (
 	"testing"
+
+	"github.com/emicklei/mtx"
 )
 
 func TestCreateEntity(t *testing.T) {
@@ -9,7 +11,7 @@ func TestCreateEntity(t *testing.T) {
 	m.Attribute("id").Type(String)
 	m.Attribute("age").Type(Integer)
 	m.Attribute("birthdate").Type(Date)
-	t.Log(ToJSON(m))
+	t.Log(mtx.ToJSON(m))
 }
 
 // func TestDatatypeMapping(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 	"github.com/emicklei/mtx/db"
 )
 
@@ -69,7 +69,7 @@ func (t ColumnExtensions) Datatype() db.ExtendsDatatype { return new(DatatypeExt
 
 func (t ColumnExtensions) OwnerClass() string { return "spanner.Column" }
 
-func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *mtx.Attribute) {
+func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *basic.Attribute) {
 
 }
 

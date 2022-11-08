@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 	"github.com/emicklei/mtx/db"
 	"github.com/emicklei/mtx/golang"
 	"github.com/iancoleman/strcase"
@@ -69,7 +70,7 @@ func (t ColumnExtensions) Datatype() db.ExtendsDatatype { return new(DatatypeExt
 func (t ColumnExtensions) OwnerClass() string { return "bq.Column" }
 
 // TODO this is very Go specific ; should not be here
-func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *mtx.Attribute) {
+func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *basic.Attribute) {
 	// TODO
 	if c.ColumnType == Record {
 		a.Set(golang.GoTypeName, strcase.ToCamel(c.Name))

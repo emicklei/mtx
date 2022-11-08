@@ -1,12 +1,17 @@
-package mtx
+package m2m
+
+import (
+	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
+)
 
 type FieldMapping struct {
-	From        *Attribute
+	From        *basic.Attribute
 	NameMapping func(m *FieldMapping) string
 	Type        *TypeMapping
 }
 
-func NewFieldMapping(attr *Attribute) *FieldMapping {
+func NewFieldMapping(attr *basic.Attribute) *FieldMapping {
 	return &FieldMapping{
 		From:        attr,
 		NameMapping: func(m *FieldMapping) string { return m.From.Name },
@@ -18,8 +23,8 @@ func (m *FieldMapping) RenameTo(newName string) *FieldMapping {
 	return m
 }
 
-func (m *FieldMapping) ToAttribute() *Attribute {
-	a := NewAttribute(m.NameMapping(m))
+func (m *FieldMapping) ToAttribute() *basic.Attribute {
+	a := basic.NewAttribute(m.NameMapping(m))
 	if m.Type != nil {
 		a.AttributeType = m.Type.To
 	}
@@ -27,12 +32,12 @@ func (m *FieldMapping) ToAttribute() *Attribute {
 }
 
 type EntityMapping struct {
-	From        *Entity
+	From        *basic.Entity
 	NameMapping func(m *EntityMapping) string
 	Fields      []*FieldMapping
 }
 
-func NewEntityMapping(from *Entity) *EntityMapping {
+func NewEntityMapping(from *basic.Entity) *EntityMapping {
 	fm := []*FieldMapping{}
 	for _, each := range from.Attributes {
 		fm = append(fm, NewFieldMapping(each))
@@ -49,7 +54,7 @@ func (m *EntityMapping) SetName(newName string) *EntityMapping {
 	return m
 }
 
-func (m *EntityMapping) SetAttributeType(fromAttrName string, typ Datatype) *EntityMapping {
+func (m *EntityMapping) SetAttributeType(fromAttrName string, typ mtx.Datatype) *EntityMapping {
 	var fm *FieldMapping
 	for _, each := range m.Fields {
 		if each.From.Name == fromAttrName {
@@ -82,8 +87,8 @@ func (m *EntityMapping) SetAttributeName(fromAttrName, newName string) *EntityMa
 	return m
 }
 
-func (m *EntityMapping) ToEntity() *Entity {
-	e := NewEntity(m.NameMapping(m))
+func (m *EntityMapping) ToEntity() *basic.Entity {
+	e := basic.NewEntity(m.NameMapping(m))
 	for _, each := range m.Fields { // my mappings
 		e.Attributes = append(e.Attributes, each.ToAttribute())
 	}
@@ -91,11 +96,11 @@ func (m *EntityMapping) ToEntity() *Entity {
 }
 
 type TypeMapping struct {
-	From Datatype
-	To   Datatype
+	From mtx.Datatype
+	To   mtx.Datatype
 }
 
-func NewTypeMapping(from Datatype) *TypeMapping {
+func NewTypeMapping(from mtx.Datatype) *TypeMapping {
 	return &TypeMapping{
 		From: from,
 		To:   from,

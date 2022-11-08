@@ -1,4 +1,4 @@
-package tests
+package spanner
 
 import (
 	"encoding/json"
@@ -6,14 +6,13 @@ import (
 	"testing"
 
 	"github.com/emicklei/mtx"
-	"github.com/emicklei/mtx/gcp/spanner"
 	"github.com/emicklei/mtx/golang"
 )
 
 func TestSpannerTable(t *testing.T) {
-	db := spanner.NewDatabase("testdb")
+	db := NewDatabase("testdb")
 	tab := db.Table("my_table").Doc("Awesome table")
-	tab.C("id", spanner.Int64, "identifier of a row").Primary()
+	tab.C("id", Int64, "identifier of a row").Primary()
 	mtx.ToJSON(tab)
 
 	// create SQL to create table
@@ -32,7 +31,7 @@ func TestSpannerTable(t *testing.T) {
 	os.WriteFile(fn, []byte(js), os.ModePerm)
 	defer os.Remove(fn)
 	data, _ := os.ReadFile(fn)
-	db2 := spanner.NewDatabase("testdb2")
+	db2 := NewDatabase("testdb2")
 	json.Unmarshal(data, db2)
 	t.Log("\n", mtx.ToJSON(db))
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 )
 
 var WithSpannerTypeMapper = func(b *StructBuilder) *StructBuilder {
@@ -17,16 +18,16 @@ var spannerTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
 	}
 	// nullable
 	switch at.Name {
-	case mtx.String.Name:
+	case basic.String.Name:
 		return Type("spanner.NullString")
-	case mtx.JSON.Name:
+	case basic.JSON.Name:
 		return Type("spanner.NullJSON")
 	default:
 		return StandardTypeMapper(at, nullable)
 	}
 }
 
-var spannerTagger = func(attr *mtx.Attribute, field *Field) {
+var spannerTagger = func(attr *basic.Attribute, field *Field) {
 	field.Tags = append(field.Tags, Tag{
 		Name:  "spanner",
 		Value: fmt.Sprintf("%s", attr.Name),

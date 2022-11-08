@@ -7,6 +7,7 @@ import (
 	"io"
 
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 )
 
 type Database struct {
@@ -96,17 +97,17 @@ func (t *Table) Validate(c *mtx.ErrorCollector) {
 }
 
 // ToEntity creates a new Entity that represents a Row in this table data.
-func (t *Table) ToEntity() *mtx.Entity {
-	m := mtx.NewEntity(t.Name)
+func (t *Table) ToEntity() *basic.Entity {
+	m := basic.NewEntity(t.Name)
 	// see if property overrides this
-	if n, ok := t.Get(mtx.EntityName); ok {
+	if n, ok := t.Get(basic.EntityName); ok {
 		m.Named.Name = n.(string)
 	}
 	m.Doc(t.Documentation)
 	for _, each := range t.Columns {
 		attr := m.Attribute(each.Name)
 		// see if property overrides this
-		if n, ok := each.Get(mtx.AttributeName); ok {
+		if n, ok := each.Get(basic.AttributeName); ok {
 			attr.Named.Name = n.(string)
 		}
 		if at := each.GetDatatype().AttributeDatatype; at != nil {

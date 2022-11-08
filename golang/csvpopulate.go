@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 	"github.com/iancoleman/strcase"
 )
 
@@ -53,7 +54,7 @@ func (g *CSVPopulateMethodGenerator) Build(s *Struct) {
 }
 
 func fromStringConvertFuncName(dt mtx.Datatype) string {
-	if dt.Name == mtx.String.Name {
+	if dt.Name == basic.String.Name {
 		// no conversion
 		return "v"
 	}

@@ -11,6 +11,8 @@ type ExtendsDatatype interface {
 	OwnerClass() string
 }
 
+var Unknown = NewAttributeType("Unknown")
+
 type Datatype struct {
 	*Named
 	AttributeDatatype         *Datatype       `json:"attribute_type,omitempty"`
@@ -89,4 +91,11 @@ func (d Datatype) WithCopiedPropertiesFrom(o Datatype) Datatype {
 	}
 	d.CopyPropertiesFrom(o.Named)
 	return d
+}
+
+func Array(elementType Datatype) Datatype {
+	return Datatype{
+		Named:       N("mtx.Datatype", "array"),
+		ElementType: &elementType,
+	}
 }

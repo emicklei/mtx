@@ -3,12 +3,12 @@ package golang
 import (
 	"fmt"
 
-	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 )
 
-type FieldTagger func(attr *mtx.Attribute, field *Field)
+type FieldTagger func(attr *basic.Attribute, field *Field)
 
-var JSONTagger = func(attr *mtx.Attribute, field *Field) {
+var JSONTagger = func(attr *basic.Attribute, field *Field) {
 	field.Tags = append(field.Tags, Tag{
 		Name:  "json",
 		Value: fmt.Sprintf("%s,omitempty", attr.Name),

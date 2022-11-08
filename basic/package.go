@@ -1,18 +1,20 @@
-package mtx
+package basic
 
 import (
 	"fmt"
+
+	"github.com/emicklei/mtx"
 )
 
 type Package struct {
-	*Named
+	*mtx.Named
 	Entities  []*Entity
 	Relations []any
 }
 
 func NewPackage(s string) *Package {
 	return &Package{
-		Named: N("mtx.Package", s),
+		Named: mtx.N("mtx.Package", s),
 	}
 }
 
@@ -24,7 +26,7 @@ func (p *Package) Entity(name string) *Entity {
 	}
 	e := new(Entity)
 	e.pkg = p
-	e.Named = N("mtx.Entity", name)
+	e.Named = mtx.N("basic.Entity", name)
 	p.Entities = append(p.Entities, e)
 	return e
 }

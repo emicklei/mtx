@@ -10,7 +10,7 @@ func TestNamedSourceOn(t *testing.T) {
 }
 
 func TestNamesspace(t *testing.T) {
-	if got, want := String.Namespace(), "mtx"; got != want {
+	if got, want := Unknown.Namespace(), "mtx"; got != want {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
 }

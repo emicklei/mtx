@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 )
 
 var (
@@ -15,13 +16,13 @@ var (
 
 var (
 	Unknown = registry.Standard("any", mtx.Unknown)
-	Bytes   = registry.Standard("BYTES", mtx.Bytes)
-	String  = registry.Standard("STRING", mtx.String).WithNullable(mtx.Register("bigquery.NullString"))
+	Bytes   = registry.Standard("BYTES", basic.Bytes)
+	String  = registry.Standard("STRING", basic.String).WithNullable(basic.Register("bigquery.NullString"))
 	Record  = registry.Standard("RECORD", mtx.Unknown)
 )
 
 func init() {
-	registry.EncodeAs(mtx.JSON, mtx.Bytes)
+	registry.EncodeAs(basic.JSON, basic.Bytes)
 }
 
 func MaxBytes(max int64) mtx.Datatype {
@@ -33,28 +34,28 @@ func MaxBytes(max int64) mtx.Datatype {
 
 var (
 	// https://cloud.google.com/bigquery/docs/reference/standard-sql/json-data#sql
-	JSON = registry.Standard("JSON", mtx.JSON)
+	JSON = registry.Standard("JSON", basic.JSON)
 )
 
 // TODO look at civil package https://pkg.go.dev/cloud.google.com/go/bigquery#InferSchema
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type
 // YYYY-[M]M-[D]D
-var Date = registry.Standard("DATE", mtx.Register("civil.Date"))
+var Date = registry.Standard("DATE", basic.Register("civil.Date"))
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type
 // YYYY-[M]M-[D]D[( |T)[H]H:[M]M:[S]S[.F]]
-var DateTime = registry.Standard("DATETIME", mtx.DateTime)
+var DateTime = registry.Standard("DATETIME", basic.DateTime)
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#geography_type
-var Geography = registry.Standard("GEOGRAPHY", mtx.Unknown)
+var Geography = registry.Standard("GEOGRAPHY", basic.Unknown)
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#interval_type
 // [sign]Y-M [sign]D [sign]H:M:S[.F]
-var Interval = registry.Standard("INTERVAL", mtx.Unknown)
+var Interval = registry.Standard("INTERVAL", basic.Unknown)
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_type
-var Int64 = registry.Standard("INT64", mtx.Integer).Set("bits", 64)
+var Int64 = registry.Standard("INT64", basic.Integer).Set("bits", 64)
 var Int, SmallInt, Integer, BigInt, TinyInt, ByteInt = Int64, Int64, Int64, Int64, Int64, Int64
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
@@ -62,7 +63,7 @@ func Numeric(p, s int) mtx.Datatype {
 	return mtx.Datatype{
 		Named:             mtx.N("bq.Datatype", "NUMERIC"),
 		Extensions:        DatatypeExtensions{Scale: s, Precision: p},
-		AttributeDatatype: &mtx.Decimal,
+		AttributeDatatype: &basic.Decimal,
 	}
 }
 
@@ -71,7 +72,7 @@ func Decimal(p, s int) mtx.Datatype {
 	return mtx.Datatype{
 		Named:             mtx.N("bq.Datatype", "DECIMAL"),
 		Extensions:        DatatypeExtensions{Scale: s, Precision: p},
-		AttributeDatatype: &mtx.Decimal,
+		AttributeDatatype: &basic.Decimal,
 	}
 }
 
@@ -80,7 +81,7 @@ func BigNumeric(precision, scale int) mtx.Datatype {
 	return mtx.Datatype{
 		Named:             mtx.N("bq.Datatype", fmt.Sprintf("BIGNUMERIC(%d,%d)", precision, scale)),
 		Extensions:        DatatypeExtensions{Scale: scale, Precision: precision},
-		AttributeDatatype: &mtx.Decimal,
+		AttributeDatatype: &basic.Decimal,
 	}
 }
 
@@ -89,11 +90,11 @@ func BigDecimal(precision, scale int) mtx.Datatype {
 	return mtx.Datatype{
 		Named:             mtx.N("bq.Datatype", fmt.Sprintf("BIGDECIMAL(%d,%d)", precision, scale)),
 		Extensions:        DatatypeExtensions{Scale: scale, Precision: precision},
-		AttributeDatatype: &mtx.Decimal,
+		AttributeDatatype: &basic.Decimal,
 	}
 }
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type
-var Timestamp = registry.Standard("TIMESTAMP", mtx.Timestamp)
+var Timestamp = registry.Standard("TIMESTAMP", basic.Timestamp)
 
-var Bool = registry.Standard("BOOL", mtx.Boolean)
+var Bool = registry.Standard("BOOL", basic.Boolean)

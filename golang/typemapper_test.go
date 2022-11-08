@@ -3,34 +3,34 @@ package golang
 import (
 	"testing"
 
-	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 )
 
 func TestBigQueryTypeMapper(t *testing.T) {
-	dt := bigQueryTypeMapper(mtx.String, true)
+	dt := bigQueryTypeMapper(basic.String, true)
 	if got, want := dt.Name, "bigquery.NullString"; got != want {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
-	dt = bigQueryTypeMapper(mtx.String, false)
+	dt = bigQueryTypeMapper(basic.String, false)
 	if got, want := dt.Name, "string"; got != want {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
 }
 
 func TestStandardTypeMapper(t *testing.T) {
-	dt := StandardTypeMapper(mtx.JSON, false)
+	dt := StandardTypeMapper(basic.JSON, false)
 	if got, want := dt.Name, MapStringAny.Name; got != want {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
-	dt = StandardTypeMapper(mtx.String, false)
+	dt = StandardTypeMapper(basic.String, false)
 	if got, want := dt.Name, "string"; got != want {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
-	dt = StandardTypeMapper(mtx.String, true)
+	dt = StandardTypeMapper(basic.String, true)
 	if got, want := dt.Name, "*string"; got != want {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
-	dt = StandardTypeMapper(mtx.Bytes, true)
+	dt = StandardTypeMapper(basic.Bytes, true)
 	if got, want := dt.Name, "*[]byte"; got != want {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}

@@ -2,18 +2,19 @@ package golang
 
 import (
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 	"github.com/iancoleman/strcase"
 )
 
 type StructBuilder struct {
-	entity         *mtx.Entity
+	entity         *basic.Entity
 	typeMapper     TypeMapper
 	result         *Struct
 	fieldTaggers   []FieldTagger
 	methodBuilders []MethodBuilder
 }
 
-func NewStructBuilder(e *mtx.Entity) *StructBuilder {
+func NewStructBuilder(e *basic.Entity) *StructBuilder {
 	return &StructBuilder{
 		entity:     e,
 		typeMapper: StandardTypeMapper,
@@ -63,7 +64,7 @@ func (b *StructBuilder) Build() *Struct {
 }
 
 // TODO create a FieldNamer interface/func
-func (b *StructBuilder) goFieldName(a *mtx.Attribute) string {
+func (b *StructBuilder) goFieldName(a *basic.Attribute) string {
 	// TODO check override
 	return strcase.ToCamel(a.Name)
 }
@@ -77,7 +78,7 @@ func WithTypeMapper(tm TypeMapper) Option {
 }
 
 // ToStruct builds a Struct. Option control build strategies.
-func ToStruct(ent *mtx.Entity, options ...Option) *Struct {
+func ToStruct(ent *basic.Entity, options ...Option) *Struct {
 	b := NewStructBuilder(ent)
 	for _, each := range options {
 		b = each(b)

@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 )
 
 func TestStructGoSource(t *testing.T) {
@@ -53,9 +54,9 @@ type Test struct {
 }
 
 func TestStructBuilder(t *testing.T) {
-	p := mtx.NewPackage("test")
+	p := basic.NewPackage("test")
 	e := p.Entity("test")
-	e.A("name", mtx.String, "nameless")
+	e.A("name", basic.String, "nameless")
 	b := NewStructBuilder(e)
 	s := b.Build()
 	if got, want := s.ToGo(), `// Test : 
@@ -68,13 +69,13 @@ type Test struct {
 }
 
 func TestStructBuilderWithTaggers(t *testing.T) {
-	p := mtx.NewPackage("test")
+	p := basic.NewPackage("test")
 	e := p.Entity("test")
-	e.A("name", mtx.String, "nameless")
+	e.A("name", basic.String, "nameless")
 	s := ToStruct(e, WithJSONTags, WithBigQueryTags, WithSpannerTags)
 	if got, want := s.ToGo(), strings.ReplaceAll(`// Test : 
 type Test struct {
-	Name string !json:"name,omitempty" bigquery:"name" spanner:"name,omitempty" ! // nameless
+	Name string !json:"name,omitempty" bigquery:"name" spanner:"name" ! // nameless
 }
 `, "!", "`"); got != want {
 
@@ -84,9 +85,9 @@ type Test struct {
 }
 
 func TestStructBuilderWithBigQueryNullString(t *testing.T) {
-	p := mtx.NewPackage("test")
+	p := basic.NewPackage("test")
 	e := p.Entity("test").Doc("test doc")
-	e.A("name", mtx.String, "nameless").Nullable()
+	e.A("name", basic.String, "nameless").Nullable()
 	s := ToStruct(e, WithBigQueryTypeMapper)
 	if got, want := s.ToGo(), `// Test : test doc
 type Test struct {
@@ -98,10 +99,10 @@ type Test struct {
 }
 
 func TestStructWithCSVPopulate(t *testing.T) {
-	p := mtx.NewPackage("test")
+	p := basic.NewPackage("test")
 	e := p.Entity("test")
-	e.A("name", mtx.String, "required name")
-	e.A("null_name", mtx.String, "nullable name").Nullable()
+	e.A("name", basic.String, "required name")
+	e.A("null_name", basic.String, "nullable name").Nullable()
 	s := ToStruct(e, WithCSVPopulate)
 	if got, want := s.ToGo(), `// Test : 
 type Test struct {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 	"github.com/emicklei/mtx/db"
 )
 
@@ -49,7 +50,7 @@ type JSONSchemaColumn struct {
 	Mode   string             `json:"mode"`
 }
 
-func ToTable(ent *mtx.Entity) *db.Table {
+func ToTable(ent *basic.Entity) *db.Table {
 	ds := NewDataset(ent.Name)
 	tab := ds.Table(ent.Name)
 	// TODO who is primary

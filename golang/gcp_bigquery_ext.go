@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 )
 
 var WithBigQueryTypeMapper = func(b *StructBuilder) *StructBuilder {
@@ -12,19 +13,19 @@ var WithBigQueryTypeMapper = func(b *StructBuilder) *StructBuilder {
 
 // bigQueryTypeMapper maps Attribute types to Go types from the Google bigquery Go package
 var bigQueryTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
-	if at.Name == mtx.Decimal.Name {
+	if at.Name == basic.Decimal.Name {
 		// for both nullable and not
 		return Type("*big.Rat")
 	}
 	if !nullable {
-		if at.Name == mtx.Integer.Name {
+		if at.Name == basic.Integer.Name {
 			// check bits
 			if at.GetInt("bits", 0) == 64 {
 				return Int64
 			}
 			return StandardTypeMapper(at, nullable)
 		}
-		if at.Name == mtx.JSON.Name {
+		if at.Name == basic.JSON.Name {
 			return String
 		}
 		return StandardTypeMapper(at, nullable)
@@ -32,30 +33,30 @@ var bigQueryTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
 	// nullable
 	// https://pkg.go.dev/cloud.google.com/go/bigquery#pkg-types
 	switch at.Name {
-	case mtx.String.Name, mtx.JSON.Name:
+	case basic.String.Name, basic.JSON.Name:
 		return Type("bigquery.NullString")
-	case mtx.Boolean.Name:
+	case basic.Boolean.Name:
 		return Type("bigquery.NullBool")
-	case mtx.Timestamp.Name:
+	case basic.Timestamp.Name:
 		return Type("bigquery.NullTime")
-	case mtx.Date.Name:
+	case basic.Date.Name:
 		return Type("bigquery.NullDate")
-	case mtx.DateTime.Name:
+	case basic.DateTime.Name:
 		return Type("bigquery.NullDateTime")
-	case mtx.Timestamp.Name:
+	case basic.Timestamp.Name:
 		return Type("bigquery.NullTimestamp")
-	case mtx.Integer.Name:
+	case basic.Integer.Name:
 		return Type("bigquery.NullInt64")
-	case mtx.Float.Name, mtx.Double.Name:
+	case basic.Float.Name, basic.Double.Name:
 		return Type("bigquery.NullFloat64")
-	case mtx.Bytes.Name:
+	case basic.Bytes.Name:
 		return Bytes // empty bytes are considered null
 	default:
 		return StandardTypeMapper(at, nullable)
 	}
 }
 
-var bigQueryTagger = func(attr *mtx.Attribute, field *Field) {
+var bigQueryTagger = func(attr *basic.Attribute, field *Field) {
 	field.Tags = append(field.Tags, Tag{
 		Name:  "bigquery",
 		Value: fmt.Sprintf("%s", attr.Name),

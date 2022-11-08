@@ -5,6 +5,7 @@ import (
 	"io"
 
 	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
 )
 
 type Package struct {
@@ -70,13 +71,13 @@ func (m *Message) Validate(c *mtx.ErrorCollector) {
 	}
 }
 
-func ToEntity(m *Message) *mtx.Entity {
+func ToEntity(m *Message) *basic.Entity {
 	// temp
 	return m.ToEntity()
 }
 
-func (m *Message) ToEntity() *mtx.Entity {
-	e := mtx.NewEntity(m.Name)
+func (m *Message) ToEntity() *basic.Entity {
+	e := basic.NewEntity(m.Name)
 	// share props
 	e.Properties = m.Properties
 	e.Doc(m.Documentation)

@@ -1,8 +1,10 @@
-package mtx
+package basic
 
 import (
 	"fmt"
 	"strings"
+
+	"github.com/emicklei/mtx"
 )
 
 type EntityRef struct {
@@ -12,7 +14,7 @@ type EntityRef struct {
 
 func (p *Package) OneToMany(one, many *Entity) *Relation {
 	rel := &Relation{
-		Named:    N("mtx.Relation", fmt.Sprintf("%s_link_%s", strings.ToLower(one.Name), strings.ToLower(many.Name))),
+		Named:    mtx.N("mtx.Relation", fmt.Sprintf("%s_link_%s", strings.ToLower(one.Name), strings.ToLower(many.Name))),
 		pkg:      p,
 		LeftRef:  EntityRef{PackageName: p.Name, EntityName: one.Name},
 		RightRef: EntityRef{PackageName: p.Name, EntityName: many.Name},
@@ -23,7 +25,7 @@ func (p *Package) OneToMany(one, many *Entity) *Relation {
 
 func (p *Package) ManyToMany(left, right *Entity) *Relation {
 	rel := &Relation{
-		Named: N("mtx.Relation", fmt.Sprintf("%s_link_%s", strings.ToLower(left.Name), strings.ToLower(right.Name))),
+		Named: mtx.N("mtx.Relation", fmt.Sprintf("%s_link_%s", strings.ToLower(left.Name), strings.ToLower(right.Name))),
 		pkg:   p,
 		// assume all in same package
 		LeftRef:  EntityRef{PackageName: p.Name, EntityName: left.Name},
@@ -34,7 +36,7 @@ func (p *Package) ManyToMany(left, right *Entity) *Relation {
 }
 
 type Relation struct {
-	*Named
+	*mtx.Named
 	pkg              *Package
 	LeftRef          EntityRef    `json:"left"`
 	LeftRole         string       `json:"left_role_name"`
@@ -55,19 +57,19 @@ func (r *Relation) Right(rightName string) *Relation {
 	return r
 }
 
-func (r *Relation) A(name string, typ Datatype, doc string) *Attribute {
+func (r *Relation) A(name string, typ mtx.Datatype, doc string) *Attribute {
 	return r.Attribute(name).Type(typ).Doc(doc)
 }
 
 func (r *Relation) Attribute(name string) *Attribute {
-	attr, ok := FindByName(r.Attributes, name)
+	attr, ok := mtx.FindByName(r.Attributes, name)
 	if ok {
 		return attr
 	}
 	attr = &Attribute{
 		IsNullable: false, // required by default
 	}
-	attr.Named = N(EntityAttributeClass, name)
+	attr.Named = mtx.N(EntityAttributeClass, name)
 	r.Attributes = append(r.Attributes, attr)
 	return attr
 }

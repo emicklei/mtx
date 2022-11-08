@@ -1,4 +1,4 @@
-package mtx
+package basic
 
 type Association struct {
 	One       *Entity

@@ -1,6 +1,9 @@
 package golang
 
-import "github.com/emicklei/mtx"
+import (
+	"github.com/emicklei/mtx"
+	"github.com/emicklei/mtx/basic"
+)
 
 var (
 	registry            = mtx.NewTypeRegistry("golang.Datatype")
@@ -10,24 +13,24 @@ var (
 )
 
 var (
-	Any     = registry.Standard("any", mtx.Unknown)
-	String  = registry.Standard("string", mtx.String)
-	Bool    = registry.Standard("bool", mtx.Boolean)
-	Bytes   = registry.Standard("[]byte", mtx.Bytes)
-	Time    = registry.Standard("time.Time", mtx.Timestamp)
-	Float32 = registry.Standard("float32", mtx.Float)
-	Float64 = registry.Standard("float64", mtx.Float)
-	Int     = registry.Standard("int", mtx.Integer)
-	Int64   = registry.Standard("int64", mtx.Integer.Set("bits", 64))
+	Any     = registry.Standard("any", basic.Unknown)
+	String  = registry.Standard("string", basic.String)
+	Bool    = registry.Standard("bool", basic.Boolean)
+	Bytes   = registry.Standard("[]byte", basic.Bytes)
+	Time    = registry.Standard("time.Time", basic.Timestamp)
+	Float32 = registry.Standard("float32", basic.Float)
+	Float64 = registry.Standard("float64", basic.Float)
+	Int     = registry.Standard("int", basic.Integer)
+	Int64   = registry.Standard("int64", basic.Integer.Set("bits", 64))
 
-	BigRat       = registry.Standard("*big.Rat", mtx.Decimal)
-	MapStringAny = registry.Standard("map[string]any", mtx.JSON)
+	BigRat       = registry.Standard("*big.Rat", basic.Decimal)
+	MapStringAny = registry.Standard("map[string]any", basic.JSON)
 )
 
 func init() {
-	registry.EncodeAs(mtx.Date, Time)
-	registry.EncodeAs(mtx.Timestamp, Time)
-	registry.EncodeAs(mtx.DateTime, Time)
+	registry.EncodeAs(basic.Date, Time)
+	registry.EncodeAs(basic.Timestamp, Time)
+	registry.EncodeAs(basic.DateTime, Time)
 	// TODO
 	//registry.Trace()
 }

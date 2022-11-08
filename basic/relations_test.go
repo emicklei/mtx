@@ -1,4 +1,4 @@
-package mtx
+package basic
 
 import "testing"
 

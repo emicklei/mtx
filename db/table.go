@@ -110,13 +110,11 @@ func (t *Table) ToEntity() *basic.Entity {
 		if n, ok := each.Get(basic.AttributeName); ok {
 			attr.Named.Name = n.(string)
 		}
-		if at := each.GetDatatype().AttributeDatatype; at != nil {
+		if at := each.GetDatatype().BasicDatatype; at != nil {
 			attr.AttributeType = *at
 			// copy properties
 			attr.AttributeType.CopyPropertiesFrom(each.GetDatatype().Named)
 		}
-		// could be nil=nil
-		attr.AttributeType.NullableAttributeDatatype = each.GetDatatype().NullableAttributeDatatype
 		attr.IsNullable = each.IsNullable
 		attr.Doc(each.Documentation)
 		// copy all
@@ -189,7 +187,7 @@ func (c *Column) Validate(e *mtx.ErrorCollector) {
 		e.Add(c.Named, errors.New("has unknown type"))
 		return
 	}
-	if c.ColumnType.AttributeDatatype == nil {
+	if c.ColumnType.BasicDatatype == nil {
 		e.Add(c.Named, errors.New("has unknown attribute type for "+c.ColumnType.String()))
 	}
 }

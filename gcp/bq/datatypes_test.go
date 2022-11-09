@@ -1,6 +1,10 @@
 package bq
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/emicklei/mtx"
+)
 
 func TestNullableBQStringEntityString(t *testing.T) {
 	tab := NewDataset("test").Table("test")
@@ -13,4 +17,5 @@ func TestNullableBQStringEntityString(t *testing.T) {
 	if got, want := s.IsNullable, true; got != want {
 		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
 	}
+	t.Log(mtx.ToJSON(tab))
 }

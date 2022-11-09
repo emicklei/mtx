@@ -15,10 +15,9 @@ var (
 )
 
 var (
-	Unknown = registry.Standard("any", mtx.Unknown)
-	Bytes   = registry.Standard("BYTES", basic.Bytes)
-	String  = registry.Standard("STRING", basic.String).WithNullable(basic.Register("bigquery.NullString"))
-	Record  = registry.Standard("RECORD", mtx.Unknown)
+	Bytes  = registry.Standard("BYTES", basic.Bytes)
+	String = registry.Standard("STRING", basic.String)
+	Record = registry.Standard("RECORD", mtx.Unknown)
 )
 
 func init() {
@@ -41,7 +40,7 @@ var (
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type
 // YYYY-[M]M-[D]D
-var Date = registry.Standard("DATE", basic.Register("civil.Date"))
+var Date = registry.Standard("DATE", basic.Date)
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type
 // YYYY-[M]M-[D]D[( |T)[H]H:[M]M:[S]S[.F]]
@@ -61,36 +60,36 @@ var Int, SmallInt, Integer, BigInt, TinyInt, ByteInt = Int64, Int64, Int64, Int6
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
 func Numeric(p, s int) mtx.Datatype {
 	return mtx.Datatype{
-		Named:             mtx.N("bq.Datatype", "NUMERIC"),
-		Extensions:        DatatypeExtensions{Scale: s, Precision: p},
-		AttributeDatatype: &basic.Decimal,
+		Named:         mtx.N("bq.Datatype", "NUMERIC"),
+		Extensions:    DatatypeExtensions{Scale: s, Precision: p},
+		BasicDatatype: &basic.Decimal,
 	}
 }
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
 func Decimal(p, s int) mtx.Datatype {
 	return mtx.Datatype{
-		Named:             mtx.N("bq.Datatype", "DECIMAL"),
-		Extensions:        DatatypeExtensions{Scale: s, Precision: p},
-		AttributeDatatype: &basic.Decimal,
+		Named:         mtx.N("bq.Datatype", "DECIMAL"),
+		Extensions:    DatatypeExtensions{Scale: s, Precision: p},
+		BasicDatatype: &basic.Decimal,
 	}
 }
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
 func BigNumeric(precision, scale int) mtx.Datatype {
 	return mtx.Datatype{
-		Named:             mtx.N("bq.Datatype", fmt.Sprintf("BIGNUMERIC(%d,%d)", precision, scale)),
-		Extensions:        DatatypeExtensions{Scale: scale, Precision: precision},
-		AttributeDatatype: &basic.Decimal,
+		Named:         mtx.N("bq.Datatype", fmt.Sprintf("BIGNUMERIC(%d,%d)", precision, scale)),
+		Extensions:    DatatypeExtensions{Scale: scale, Precision: precision},
+		BasicDatatype: &basic.Decimal,
 	}
 }
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
 func BigDecimal(precision, scale int) mtx.Datatype {
 	return mtx.Datatype{
-		Named:             mtx.N("bq.Datatype", fmt.Sprintf("BIGDECIMAL(%d,%d)", precision, scale)),
-		Extensions:        DatatypeExtensions{Scale: scale, Precision: precision},
-		AttributeDatatype: &basic.Decimal,
+		Named:         mtx.N("bq.Datatype", fmt.Sprintf("BIGDECIMAL(%d,%d)", precision, scale)),
+		Extensions:    DatatypeExtensions{Scale: scale, Precision: precision},
+		BasicDatatype: &basic.Decimal,
 	}
 }
 

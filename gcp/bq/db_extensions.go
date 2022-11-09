@@ -58,7 +58,7 @@ func (e *ColumnExtensions) Column(name string) *db.Column {
 	}
 	c := &db.Column{
 		Named:      mtx.N("bq.Column", name),
-		ColumnType: Unknown,
+		ColumnType: mtx.Unknown,
 		Extensions: new(ColumnExtensions),
 	}
 	e.NestedColumns = append(e.NestedColumns, c)

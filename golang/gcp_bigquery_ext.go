@@ -13,6 +13,8 @@ var WithBigQueryTypeMapper = func(b *StructBuilder) *StructBuilder {
 
 // bigQueryTypeMapper maps Attribute types to Go types from the Google bigquery Go package
 var bigQueryTypeMapper = func(at mtx.Datatype, nullable bool) mtx.Datatype {
+	// TODO Date -> basic.Register("civil.Date")
+
 	if at.Name == basic.Decimal.Name {
 		// for both nullable and not
 		return Type("*big.Rat")

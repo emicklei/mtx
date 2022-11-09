@@ -17,8 +17,8 @@ func TestInt64(t *testing.T) {
 
 func TestJSON(t *testing.T) {
 	bqJSON := mtx.Datatype{
-		Named:             mtx.N("test", "JSON"),
-		AttributeDatatype: &basic.JSON,
+		Named:         mtx.N("test", "JSON"),
+		BasicDatatype: &basic.JSON,
 	}
 	dt := bigQueryTypeMapper(bqJSON, false)
 	if got, want := dt.Name, "string"; got != want {

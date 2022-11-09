@@ -11,37 +11,43 @@ type ExtendsDatatype interface {
 	OwnerClass() string
 }
 
-var Unknown = NewAttributeType("Unknown")
+var Unknown = NewBasicType("Unknown")
 
 type Datatype struct {
 	*Named
-	AttributeDatatype         *Datatype       `json:"attribute_type,omitempty"`
-	NullableAttributeDatatype *Datatype       `json:"nullable_attribute_type,omitempty"`
-	IsUserDefined             bool            `json:"is_user_defined,omitempty"`
-	ElementType               *Datatype       `json:"element_type,omitempty"`
-	Extensions                ExtendsDatatype `json:"ext,omitempty"`
+	BasicDatatype *Datatype `json:"attribute_type,omitempty"`
+	IsNullable    bool      `json:"is_nullable"`
+	IsUserDefined bool      `json:"is_userdefined"`
+	// for arrays
+	ElementType *Datatype       `json:"element_type,omitempty"`
+	Extensions  ExtendsDatatype `json:"ext,omitempty"`
 }
 
-func NewAttributeType(name string) Datatype {
+func NewBasicType(name string) Datatype {
 	return Datatype{
-		Named: N("mtx.Datatype", name),
+		Named: N("basic.Datatype", name),
 	}
 }
 
 func (d Datatype) HasName() bool { return d.Named != nil && d.Name != "" }
 
+func (d Datatype) BasicType() Datatype {
+	return *d.BasicDatatype
+}
+
+// TODO needed?
 func (d Datatype) EncodedFrom(at Datatype) Datatype {
-	d.AttributeDatatype = &at
+	d.BasicDatatype = &at
 	return d
 }
 
-func (d Datatype) WithAttributeDatatype(dt Datatype) Datatype {
-	d.AttributeDatatype = &dt
+func (d Datatype) WithBasicDatatype(dt Datatype) Datatype {
+	d.BasicDatatype = &dt
 	return d
 }
 
-func (d Datatype) WithNullable(dt Datatype) Datatype {
-	d.NullableAttributeDatatype = &dt
+func (d Datatype) Nullable() Datatype {
+	d.IsNullable = true
 	return d
 }
 
@@ -58,7 +64,11 @@ func (d Datatype) String() string {
 		doc, _ := json.Marshal(d.Properties)
 		return fmt.Sprintf("%s (%s) %s", d.Name, d.Class, string(doc))
 	}
-	return fmt.Sprintf("%s (%s) {}", d.Name, d.Class)
+	required := " "
+	if d.IsNullable {
+		required = "? "
+	}
+	return fmt.Sprintf("%s%s(%s)", d.Name, required, d.Class)
 }
 
 func (d Datatype) SourceOn(w io.Writer) {

@@ -12,15 +12,18 @@ Models in different technologies:
 - good old csv
 - entity–relationship
  
+## how to transform one model to another
+
+A pg model (db.Table) first needs to be converted to an Entity model (basic.Entity).
+The Entity model can be converted to a Go model (golang.Struct).
+The Entity model can be modified to drive the convertion to the struct:
+- rename
+- change datatypes
+
 Each model is using its own types and datatypes.
 Transformations to and from a selection of model combinations.
 
-
-With relational databases, "Table" and "Column" are the building blocks that exist in DDL 
-and it's best to just use those terms and avoid "field" which isn't used, nor clearly defined.
-
-
-Example Postgres (pg) Database table.
+## example Postgres (pg) Database table.
 
     db := pg.Database("example")
     tab := db.Table("persons")
@@ -46,7 +49,7 @@ The struct `str` will have a Field `name` with Datatype `golang.String`
 
 Transform this struct to Go source
 
-    src := str.ToGo(
+    src := str.ToGo()
 
 ### use case: Compose Proto messages from shared fields
 

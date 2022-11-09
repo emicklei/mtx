@@ -37,7 +37,7 @@ func (r *TypeRegistry) MappedAttributeType(attrType Datatype) Datatype {
 	}
 	// check known types
 	for _, each := range r.knownTypes {
-		if dt := each.AttributeDatatype; dt != nil && dt.Name == attrType.Name {
+		if dt := each.BasicDatatype; dt != nil && dt.Name == attrType.Name {
 			return each.WithCopiedPropertiesFrom(attrType)
 		}
 	}
@@ -82,17 +82,17 @@ func (r *TypeRegistry) Type(typename string) Datatype {
 
 func (r *TypeRegistry) RegisterType(typename string, attrType Datatype) Datatype {
 	dt := Datatype{
-		Named:             N(r.class, typename),
-		AttributeDatatype: &attrType,
-		IsUserDefined:     true,
+		Named:         N(r.class, typename),
+		BasicDatatype: &attrType,
+		IsUserDefined: true,
 	}
 	return r.Add(dt)
 }
 
 func (r *TypeRegistry) Standard(typename string, attrType Datatype) Datatype {
 	dt := Datatype{
-		Named:             N(r.class, typename),
-		AttributeDatatype: &attrType,
+		Named:         N(r.class, typename),
+		BasicDatatype: &attrType,
 	}
 	return r.Add(dt)
 }

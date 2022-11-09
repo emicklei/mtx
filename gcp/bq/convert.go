@@ -8,6 +8,7 @@ import (
 	"github.com/emicklei/mtx/db"
 )
 
+// ToJSONSchema returns a BigQuery Schema in JSON string.
 func ToJSONSchema(tab *db.Table) string {
 	cols := []JSONSchemaColumn{}
 	for _, each := range tab.Columns {
@@ -63,4 +64,15 @@ func ToTable(ent *basic.Entity) *db.Table {
 		c.IsNullable = each.IsNullable
 	}
 	return tab
+}
+
+func ToBasicType(bqDatatype mtx.Datatype) mtx.Datatype {
+	if bqDatatype.Class != registry.Class() {
+		panic("wrong class")
+	}
+	if bqDatatype.IsNullable {
+		return bqDatatype.BasicDatatype.Nullable()
+	} else {
+		return *bqDatatype.BasicDatatype
+	}
 }

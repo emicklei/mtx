@@ -40,7 +40,7 @@ func (b *StructBuilder) Build() *Struct {
 		var fieldType mtx.Datatype
 		// see if type is overridden
 		if n, ok := each.Get(GoTypeName); ok {
-			fieldType = mtx.NewAttributeType(n.(string))
+			fieldType = mtx.NewBasicType(n.(string))
 		} else {
 			// use the mapper
 			fieldType = b.typeMapper(each.AttributeType, each.IsNullable)

@@ -42,17 +42,17 @@ var UNKNOWN = registry.Register("any", true)
 var BigInteger = mtx.Datatype{
 	Named:      mtx.N(registry.Class(), "BIGINT"),
 	Extensions: DatatypeExtensions{Max: 1024},
-}.WithAttributeDatatype(basic.Integer)
+}.WithBasicDatatype(basic.Integer)
 
 func StringMax(max int) mtx.Datatype {
 	return mtx.Datatype{
 		Named:      mtx.N(registry.Class(), fmt.Sprintf("STRING(%d)", max)),
 		Extensions: DatatypeExtensions{Max: int64(max)},
-	}.WithAttributeDatatype(basic.String)
+	}.WithBasicDatatype(basic.String)
 }
 
 func Array(elementType mtx.Datatype) mtx.Datatype {
 	return mtx.Datatype{
 		Named: mtx.N(registry.Class(), fmt.Sprintf("ARRAY(%s)", elementType.Name)),
-	}.WithAttributeDatatype(mtx.Array(*elementType.AttributeDatatype))
+	}.WithBasicDatatype(mtx.Array(*elementType.BasicDatatype))
 }

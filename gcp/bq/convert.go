@@ -6,6 +6,7 @@ import (
 	"github.com/emicklei/mtx"
 	"github.com/emicklei/mtx/basic"
 	"github.com/emicklei/mtx/db"
+	"github.com/emicklei/mtx/golang"
 )
 
 // ToJSONSchema returns a BigQuery Schema in JSON string.
@@ -70,6 +71,12 @@ func ToBasicType(bqDatatype mtx.Datatype) mtx.Datatype {
 	if bqDatatype.Class != registry.Class() {
 		panic("wrong class")
 	}
+	if bqDatatype.Equal(String) {
+		if bqDatatype.IsNullable {
+			return basic.String.Set(golang.GoNullableTypeName, "bigquery.NullString").Nullable()
+		}
+	}
+
 	if bqDatatype.IsNullable {
 		return bqDatatype.BasicDatatype.Nullable()
 	} else {

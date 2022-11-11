@@ -57,16 +57,16 @@ func (d Datatype) Equal(o Datatype) bool {
 }
 
 func (d Datatype) String() string {
+	required := " "
+	if d.IsNullable {
+		required = " ? "
+	}
 	if d.Named == nil {
-		return "*unnamed* Datatype"
+		return fmt.Sprintf("*unnamed*%sDatatype", required)
 	}
 	if d.Properties != nil {
 		doc, _ := json.Marshal(d.Properties)
-		return fmt.Sprintf("%s (%s) %s", d.Name, d.Class, string(doc))
-	}
-	required := " "
-	if d.IsNullable {
-		required = "? "
+		return fmt.Sprintf("%s%s(%s) %s", d.Name, required, d.Class, string(doc))
 	}
 	return fmt.Sprintf("%s%s(%s)", d.Name, required, d.Class)
 }

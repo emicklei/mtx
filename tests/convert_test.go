@@ -11,5 +11,7 @@ func TestNullableString(t *testing.T) {
 	bs := bq.String.Nullable()
 	es := bq.ToBasicType(bs)
 	gt := golang.Datatype(es)
-	t.Log(bs, es, gt)
+	t.Log(bs)
+	t.Log(es)
+	t.Log(gt)
 }

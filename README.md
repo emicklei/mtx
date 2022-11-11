@@ -39,7 +39,7 @@ Transforming this table to an Entity representing a row.
 
     ent := tab.ToEntity()
 
-The entity `ent` will have an Attribute `name` with Datatype `mtx.String`
+The entity `ent` will have an Attribute `name` with Datatype `basic.String`
 
 Transforming this entity to a Go struct
 

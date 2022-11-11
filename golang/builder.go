@@ -76,12 +76,3 @@ func WithTypeMapper(tm TypeMapper) Option {
 		return b.WithTypeMapper(tm)
 	}
 }
-
-// ToStruct builds a Struct. Option control build strategies.
-func ToStruct(ent *basic.Entity, options ...Option) *Struct {
-	b := NewStructBuilder(ent)
-	for _, each := range options {
-		b = each(b)
-	}
-	return b.Build()
-}

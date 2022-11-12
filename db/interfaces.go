@@ -20,6 +20,7 @@ type ExtendsColumn interface {
 	Datatype() ExtendsDatatype
 	OwnerClass() string
 	PostBuildAttribute(*Column, *basic.Attribute)
+	//ToBasicType(dt mtx.Datatype) mtx.Datatype
 }
 
 type ExtendsDatatype interface {

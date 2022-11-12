@@ -86,3 +86,7 @@ type DatatypeExtensions struct {
 }
 
 func (d DatatypeExtensions) OwnerClass() string { return "bq.Datatype" }
+
+func (d DatatypeExtensions) ToBasicType(dt mtx.Datatype) mtx.Datatype {
+	return dt
+}

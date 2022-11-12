@@ -67,19 +67,23 @@ func ToTable(ent *basic.Entity) *db.Table {
 	return tab
 }
 
-func ToBasicType(bqDatatype mtx.Datatype) mtx.Datatype {
-	if bqDatatype.Class != registry.Class() {
-		panic("wrong class")
-	}
-	if bqDatatype.Equal(String) {
-		if bqDatatype.IsNullable {
+// ToBasicType returns a mapped basic Datatype
+func ToBasicType(dt mtx.Datatype) mtx.Datatype {
+	mtx.CheckClass(dt, registry.Class())
+
+	if dt.Equal(String) {
+		if dt.IsNullable {
 			return basic.String.Set(golang.GoNullableTypeName, "bigquery.NullString").Nullable()
 		}
 	}
+	if dt.Name == "DECIMAL" {
+		// for both nullable and not
+		return basic.Decimal.Set(golang.GoName, "*big.Rat")
+	}
 
-	if bqDatatype.IsNullable {
-		return bqDatatype.BasicDatatype.Nullable()
+	if dt.IsNullable {
+		return dt.BasicDatatype.Nullable()
 	} else {
-		return *bqDatatype.BasicDatatype
+		return *dt.BasicDatatype
 	}
 }

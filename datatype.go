@@ -109,3 +109,9 @@ func Array(elementType Datatype) Datatype {
 		ElementType: &elementType,
 	}
 }
+
+func CheckClass(in Datatype, class string) {
+	if got, want := in.Class, class; got != want {
+		panic(fmt.Sprintf("got:%s want:%s", got, want))
+	}
+}

@@ -107,16 +107,14 @@ func (t *Table) ToEntity() *basic.Entity {
 		if n, ok := each.Get(basic.AttributeName); ok {
 			attr.Named.Name = n.(string)
 		}
-		if at := each.GetDatatype().BasicDatatype; at != nil {
-			attr.AttributeType = *at
-			// copy properties
-			attr.AttributeType.CopyPropertiesFrom(each.GetDatatype().Named)
-		}
+		//attr.AttributeType = each.Extensions.ToBasicType(each.GetDatatype())
+
 		attr.IsNullable = each.IsNullable
 		attr.Doc(each.Documentation)
 		// copy all
 		attr.CopyPropertiesFrom(each.Named)
-		each.Extensions.PostBuildAttribute(each, attr)
+		// needed? TODO
+		//each.Extensions.PostBuildAttribute(each, attr)
 	}
 	return m
 }

@@ -84,21 +84,6 @@ type Test struct {
 	}
 }
 
-func TestStructBuilderWithBigQueryNullString(t *testing.T) {
-	t.Skip()
-	p := basic.NewPackage("test")
-	e := p.Entity("test").Doc("test doc")
-	e.A("name", basic.String, "nameless")
-	s := ToStruct(e, WithBigQueryTypeMapper)
-	if got, want := s.ToGo(), `// Test : test doc
-type Test struct {
-	Name bigquery.NullString // nameless
-}
-`; got != want {
-		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
-	}
-}
-
 func TestStructWithCSVPopulate(t *testing.T) {
 	t.Skip()
 	p := basic.NewPackage("test")

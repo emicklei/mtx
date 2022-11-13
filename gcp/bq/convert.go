@@ -70,19 +70,39 @@ func ToTable(ent *basic.Entity) *db.Table {
 func ToBasicType(dt mtx.Datatype) mtx.Datatype {
 	mtx.CheckClass(dt, registry.Class())
 
-	if dt.Equal(String) {
-		if dt.IsNullable {
-			return basic.String.Set(golang.GoNullableTypeName, "bigquery.NullString").Nullable()
+	if !dt.IsNullable {
+		// expections
+		if dt.Name == "DECIMAL" {
+			return basic.Decimal.Set(golang.GoName, "*big.Rat")
 		}
-	}
-	if dt.Name == "DECIMAL" {
-		// for both nullable and not
-		return basic.Decimal.Set(golang.GoName, "*big.Rat")
-	}
-
-	if dt.IsNullable {
-		return dt.BasicDatatype.Nullable()
-	} else {
+		if dt.Name == Date.Name {
+			return basic.Date.Set(golang.GoName, "civil.Date")
+		}
+		if dt.Name == basic.JSON.Name {
+			return basic.String
+		}
 		return *dt.BasicDatatype
 	}
+	var bt mtx.Datatype
+	switch dt.Name {
+	case String.Name:
+		bt = basic.String.Set(golang.GoNullableTypeName, "bigquery.NullString")
+	case "DECIMAL":
+		bt = basic.Decimal.Set(golang.GoName, "*big.Rat").Nullable()
+	case Bool.Name:
+		bt = basic.Boolean.Set(golang.GoNullableTypeName, "bigquery.NullBool")
+	case Timestamp.Name:
+		bt = basic.Boolean.Set(golang.GoNullableTypeName, "bigquery.NullTimestamp")
+	case Date.Name:
+		bt = basic.Boolean.Set(golang.GoNullableTypeName, "bigquery.NullDate")
+	case DateTime.Name:
+		bt = basic.Boolean.Set(golang.GoNullableTypeName, "bigquery.NullDateTime")
+	case DateTime.Name:
+		bt = basic.Boolean.Set(golang.GoNullableTypeName, "bigquery.NullDateTime")
+	case Bytes.Name:
+		bt = basic.Bytes // empty bytes are considered null
+	default:
+		bt = basic.Unknown
+	}
+	return bt.Nullable()
 }

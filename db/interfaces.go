@@ -3,6 +3,7 @@ package db
 import (
 	"io"
 
+	"github.com/emicklei/mtx"
 	"github.com/emicklei/mtx/basic"
 )
 
@@ -20,7 +21,7 @@ type ExtendsColumn interface {
 	Datatype() ExtendsDatatype
 	OwnerClass() string
 	PostBuildAttribute(*Column, *basic.Attribute)
-	//ToBasicType(dt mtx.Datatype) mtx.Datatype
+	ToBasicType(dt mtx.Datatype) mtx.Datatype
 }
 
 type ExtendsDatatype interface {

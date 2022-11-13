@@ -65,6 +65,10 @@ func (e *ColumnExtensions) Column(name string) *db.Column {
 	return c
 }
 
+func (t ColumnExtensions) ToBasicType(bqt mtx.Datatype) mtx.Datatype {
+	return ToBasicType(bqt)
+}
+
 func (t ColumnExtensions) Datatype() db.ExtendsDatatype { return new(DatatypeExtensions) }
 
 func (t ColumnExtensions) OwnerClass() string { return "bq.Column" }

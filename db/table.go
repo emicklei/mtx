@@ -107,9 +107,14 @@ func (t *Table) ToEntity() *basic.Entity {
 		if n, ok := each.Get(basic.AttributeName); ok {
 			attr.Named.Name = n.(string)
 		}
-		//attr.AttributeType = each.Extensions.ToBasicType(each.GetDatatype())
-
-		attr.IsNullable = each.IsNullable
+		dt := each.GetDatatype()
+		// attr.IsNullable = each.IsNullable
+		// for conversion bring the nullable info into the datatype.
+		if each.IsNullable {
+			dt = dt.Nullable()
+		}
+		// convert
+		attr.AttributeType = each.Extensions.ToBasicType(dt)
 		attr.Doc(each.Documentation)
 		// copy all
 		attr.CopyPropertiesFrom(each.Named)

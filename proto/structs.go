@@ -82,10 +82,10 @@ func (m *Message) ToEntity() *basic.Entity {
 	e.Properties = m.Properties
 	e.Doc(m.Documentation)
 	for _, each := range m.Fields {
-		attr := e.A(each.Name, *each.FieldType.BasicDatatype, each.Documentation)
-		if each.IsOptional {
-			attr.Nullable()
-		}
+		_ = e.A(each.Name, *each.FieldType.BasicDatatype, each.Documentation)
+		// if each.IsOptional {
+		// 	attr.Nullable()
+		// }
 	}
 	return e
 }

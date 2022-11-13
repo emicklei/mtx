@@ -62,7 +62,6 @@ func ToTable(ent *basic.Entity) *db.Table {
 		if mt == mtx.Unknown {
 			c.Set("maperror", each.AttributeType.Name)
 		}
-		c.IsNullable = each.IsNullable
 	}
 	return tab
 }

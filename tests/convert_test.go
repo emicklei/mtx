@@ -48,6 +48,12 @@ func TestBigQueryTableToGolangStruct(t *testing.T) {
 	tab.C("name", bq.String, "test")
 	tab.C("nullname", bq.String, "test").Nullable()
 	e := tab.ToEntity()
+	if got, want := e.Attributes[1].AttributeType.Name, "string"; got != want {
+		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
+	}
+	if got, want := e.Attributes[1].AttributeType.IsNullable, true; got != want {
+		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
+	}
 	s := golang.ToStruct(e)
 	t.Log(s.ToGo())
 	if got, want := s.Name, "Test"; got != want {
@@ -56,10 +62,10 @@ func TestBigQueryTableToGolangStruct(t *testing.T) {
 	if got, want := s.Fields[0].Name, "Name"; got != want {
 		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
 	}
-	// if got, want := s.Fields[0].FieldType.Name, "string"; got != want {
-	// 	t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
-	// }
-	// if got, want := s.Fields[1].FieldType.Name, "bigquery.NullString"; got != want {
-	// 	t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
-	// }
+	if got, want := s.Fields[0].FieldType.Name, "string"; got != want {
+		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
+	}
+	if got, want := s.Fields[1].FieldType.Name, "bigquery.NullString"; got != want {
+		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
+	}
 }

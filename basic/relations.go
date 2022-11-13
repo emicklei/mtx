@@ -66,9 +66,7 @@ func (r *Relation) Attribute(name string) *Attribute {
 	if ok {
 		return attr
 	}
-	attr = &Attribute{
-		IsNullable: false, // required by default
-	}
+	attr = &Attribute{}
 	attr.Named = mtx.N(EntityAttributeClass, name)
 	r.Attributes = append(r.Attributes, attr)
 	return attr

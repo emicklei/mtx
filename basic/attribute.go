@@ -11,14 +11,10 @@ type Attribute struct {
 	*mtx.Named
 	Category      string       `json:"category,omitempty"`
 	AttributeType mtx.Datatype `json:"type"`
-	// IsNullable = true means the value can be NULL/nil
-	IsNullable bool `json:"is_nullable,omitempty"`
 }
 
 func NewAttribute(name string) *Attribute {
-	attr := &Attribute{
-		IsNullable: false, // required by default
-	}
+	attr := &Attribute{}
 	attr.Named = mtx.N(EntityAttributeClass, name)
 	return attr
 }
@@ -30,11 +26,6 @@ func (a *Attribute) Type(t mtx.Datatype) *Attribute {
 
 func (a *Attribute) Doc(d string) *Attribute {
 	a.Documentation = d
-	return a
-}
-
-func (a *Attribute) Nullable() *Attribute {
-	a.IsNullable = true
 	return a
 }
 

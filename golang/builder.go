@@ -42,8 +42,7 @@ func (b *StructBuilder) Build() *Struct {
 		if n, ok := each.Get(GoTypeName); ok {
 			fieldType = mtx.NewBasicType(n.(string))
 		} else {
-			// use the mapper
-			fieldType = b.typeMapper(each.AttributeType, each.IsNullable)
+			fieldType = FromBasicType(each.AttributeType)
 		}
 		f := &Field{
 			Named:     mtx.N("golang.Field", b.goFieldName(each)),

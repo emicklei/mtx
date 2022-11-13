@@ -22,3 +22,4 @@ func (e *Extensions) OwnerClass() string                               { return 
 func (e *Extensions) PostBuildAttribute(*Column, *basic.Attribute)     {}
 func (e *Extensions) SQLOn(tab *Table, w io.Writer)                    {}
 func (e *Extensions) ValidateTable(tab *Table, ec *mtx.ErrorCollector) {}
+func (e *Extensions) ToBasicType(dt mtx.Datatype) mtx.Datatype         { return dt }

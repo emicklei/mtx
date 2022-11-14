@@ -27,9 +27,6 @@ func FromBasicType(gt mtx.Datatype) mtx.Datatype {
 			return Type(n.(string))
 		}
 	}
-	if gt.Name == "string" {
-
-	}
 	switch gt.Name {
 	case "string":
 		if gt.IsNullable {
@@ -52,6 +49,8 @@ func FromBasicType(gt mtx.Datatype) mtx.Datatype {
 		return Bytes
 	case basic.JSON.Name:
 		return String
+	case basic.Boolean.Name:
+		return Bool
 	}
 	return mtx.Unknown
 }

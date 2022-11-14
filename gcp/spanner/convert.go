@@ -6,13 +6,15 @@ import (
 	"github.com/emicklei/mtx/golang"
 )
 
-func ToBasicType(dt mtx.Datatype) mtx.Datatype {
-	mtx.CheckClass(dt, registry.Class())
-	if dt.Equal(String) {
-		if dt.IsNullable {
-			return basic.String.Set(golang.GoNullableTypeName, "spanner.NullString").Nullable()
+func ToBasicType(st mtx.Datatype) mtx.Datatype {
+	mtx.CheckClass(st, registry.Class())
+	if st.IsNullable {
+		switch st.Name {
+		case String.Name:
+			basic.String.Set(golang.GoNullableTypeName, "spanner.NullString")
 		}
-		return basic.String
+		bt := *st.BasicDatatype
+		return bt.Nullable()
 	}
-	return mtx.Unknown
+	return *st.BasicDatatype
 }

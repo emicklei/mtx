@@ -20,27 +20,27 @@ func NewTypeRegistry(class string) *TypeRegistry {
 func (r *TypeRegistry) Trace()        { r.trace = true }
 func (r *TypeRegistry) Class() string { return r.class }
 
-// MappedAttributeType returns the best matching known or encodede type.
+// MappedAttributeType returns the best matching known or encoded type.
 // Properties set on the argument type are copied into the new result
-func (r *TypeRegistry) MappedAttributeType(attrType Datatype) Datatype {
-	if !attrType.HasName() {
+func (r *TypeRegistry) MappedAttributeType(basicType Datatype) Datatype {
+	if !basicType.HasName() {
 		if r.trace {
-			trace("registry", r.class, "attrType", attrType, "msg", "no name")
+			trace("registry", r.class, "basicType", basicType, "msg", "no name")
 		}
 		return r.knownTypes["any"]
 	}
 	// check encoded types
-	et, ok := r.encodedTypes[attrType.Name]
+	et, ok := r.encodedTypes[basicType.Name]
 	if ok {
 		if r.trace {
-			trace("registry", r.class, "attrType", attrType, "encodedType", et)
+			trace("registry", r.class, "basicType", basicType, "encodedType", et)
 		}
-		return et.WithCopiedPropertiesFrom(attrType)
+		return et.WithCopiedPropertiesFrom(basicType)
 	}
 	// check known types
 	for _, each := range r.knownTypes {
-		if dt := each.BasicDatatype; dt != nil && dt.Name == attrType.Name {
-			return each.WithCopiedPropertiesFrom(attrType)
+		if dt := each.BasicDatatype; dt != nil && dt.Name == basicType.Name {
+			return each.WithCopiedPropertiesFrom(basicType)
 		}
 	}
 	// fallback
@@ -49,9 +49,9 @@ func (r *TypeRegistry) MappedAttributeType(attrType Datatype) Datatype {
 		panic("warning: missing any in " + r.class)
 	}
 	if r.trace {
-		trace("registry", r.class, "attrType", attrType, "fallback to", a)
+		trace("registry", r.class, "basicType", basicType, "fallback to", a)
 	}
-	return a.WithCopiedPropertiesFrom(attrType)
+	return a.WithCopiedPropertiesFrom(basicType)
 }
 
 func (r *TypeRegistry) EncodeAs(attrType Datatype, encodedType Datatype) {

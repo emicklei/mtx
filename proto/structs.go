@@ -71,21 +71,13 @@ func (m *Message) Validate(c *mtx.ErrorCollector) {
 	}
 }
 
-func ToEntity(m *Message) *basic.Entity {
-	// temp
-	return m.ToEntity()
-}
-
 func (m *Message) ToEntity() *basic.Entity {
 	e := basic.NewEntity(m.Name)
 	// share props
 	e.Properties = m.Properties
 	e.Doc(m.Documentation)
 	for _, each := range m.Fields {
-		_ = e.A(each.Name, *each.FieldType.BasicDatatype, each.Documentation)
-		// if each.IsOptional {
-		// 	attr.Nullable()
-		// }
+		e.A(each.Name, ToBasicType(each.FieldType), each.Documentation)
 	}
 	return e
 }

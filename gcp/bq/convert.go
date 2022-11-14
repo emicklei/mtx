@@ -71,17 +71,14 @@ func ToBasicType(dt mtx.Datatype) mtx.Datatype {
 	mtx.CheckClass(dt, registry.Class())
 
 	if !dt.IsNullable {
-		// expections
-		if dt.Name == "DECIMAL" {
+		switch dt.Name {
+		case "DECIMAL":
 			return basic.Decimal.Set(golang.GoName, "*big.Rat")
-		}
-		if dt.Name == Date.Name {
+		case Date.Name:
 			return basic.Date.Set(golang.GoName, "civil.Date")
+		default:
+			return *dt.BasicDatatype
 		}
-		if dt.Name == basic.JSON.Name {
-			return basic.String
-		}
-		return *dt.BasicDatatype
 	}
 	var bt mtx.Datatype
 	switch dt.Name {
@@ -101,6 +98,8 @@ func ToBasicType(dt mtx.Datatype) mtx.Datatype {
 		bt = basic.Boolean.Set(golang.GoNullableTypeName, "bigquery.NullDateTime")
 	case Bytes.Name:
 		bt = basic.Bytes // empty bytes are considered null
+	case JSON.Name:
+		bt = basic.JSON
 	default:
 		bt = basic.Unknown
 	}

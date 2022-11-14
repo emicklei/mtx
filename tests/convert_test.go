@@ -3,6 +3,7 @@ package tests
 import (
 	"testing"
 
+	"github.com/emicklei/mtx/basic"
 	"github.com/emicklei/mtx/gcp/bq"
 	"github.com/emicklei/mtx/gcp/spanner"
 	"github.com/emicklei/mtx/golang"
@@ -36,8 +37,52 @@ func TestDecimal(t *testing.T) {
 	in := bq.Decimal(10, 2)
 	b := bq.ToBasicType(in)
 	gt := golang.FromBasicType(b)
-	t.Log(gt)
 	if got, want := gt.Name, "*big.Rat"; got != want {
+		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
+	}
+}
+
+func TestTime(t *testing.T) {
+	in := bq.Timestamp
+	b := bq.ToBasicType(in)
+	if got, want := b.Name, basic.Timestamp.Name; got != want {
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
+	gt := golang.FromBasicType(b)
+	if got, want := gt.Name, "time.Time"; got != want {
+		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
+	}
+}
+
+func TestBQ_JSON(t *testing.T) {
+	in := bq.JSON
+	b := bq.ToBasicType(in)
+	if got, want := b.Name, basic.JSON.Name; got != want {
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
+	gt := golang.FromBasicType(b)
+	if got, want := gt.Name, "string"; got != want {
+		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
+	}
+}
+
+func TestBQ_Bytes(t *testing.T) {
+	in := bq.Bytes
+	b := bq.ToBasicType(in)
+	if got, want := b.Name, basic.Bytes.Name; got != want {
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
+	gt := golang.FromBasicType(b)
+	if got, want := gt.Name, "[]byte"; got != want {
+		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
+	}
+	in = in.Nullable()
+	b = bq.ToBasicType(in)
+	if got, want := b.Name, basic.Bytes.Name; got != want {
+		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
+	}
+	gt = golang.FromBasicType(b)
+	if got, want := gt.Name, "[]byte"; got != want {
 		t.Errorf("got [%v:%T] want [%v:%T]", got, got, want, want)
 	}
 }

@@ -1,5 +1,7 @@
 package mtx
 
+import "fmt"
+
 type TypeRegistry struct {
 	class        string
 	knownTypes   map[string]Datatype
@@ -95,4 +97,9 @@ func (r *TypeRegistry) Standard(typename string, attrType Datatype) Datatype {
 		BasicDatatype: &attrType,
 	}
 	return r.Add(dt)
+}
+
+func trace(params ...any) {
+	fmt.Print("[trace] ")
+	fmt.Println(params...)
 }

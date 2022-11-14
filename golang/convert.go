@@ -27,15 +27,31 @@ func FromBasicType(gt mtx.Datatype) mtx.Datatype {
 			return Type(n.(string))
 		}
 	}
-
 	if gt.Name == "string" {
+
+	}
+	switch gt.Name {
+	case "string":
 		if gt.IsNullable {
 			return Type("*string")
 		}
 		return String
-	}
-	if gt.Name == "decimal" {
-
+	case basic.Integer.Name:
+		if v, ok := gt.Get("bits"); ok {
+			bits := v.(int)
+			switch bits {
+			case 64:
+				return Type("int64")
+			case 32:
+				return Type("int32")
+			}
+		}
+	case basic.Timestamp.Name:
+		return Time
+	case basic.Bytes.Name:
+		return Bytes
+	case basic.JSON.Name:
+		return String
 	}
 	return mtx.Unknown
 }

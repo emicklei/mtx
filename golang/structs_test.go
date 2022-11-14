@@ -68,22 +68,6 @@ type Test struct {
 	}
 }
 
-func TestStructBuilderWithTaggers(t *testing.T) {
-	p := basic.NewPackage("test")
-	e := p.Entity("test")
-	e.A("name", basic.String, "nameless")
-	s := ToStruct(e, WithJSONTags, WithBigQueryTags, WithSpannerTags)
-	if got, want := s.ToGo(), strings.ReplaceAll(`// Test : 
-type Test struct {
-	Name string !json:"name,omitempty" bigquery:"name" spanner:"name" ! // nameless
-}
-`, "!", "`"); got != want {
-
-		tokenCompare(got, want)
-		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
-	}
-}
-
 func TestStructWithCSVPopulate(t *testing.T) {
 	t.Skip()
 	p := basic.NewPackage("test")

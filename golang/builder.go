@@ -8,7 +8,6 @@ import (
 
 type StructBuilder struct {
 	entity         *basic.Entity
-	typeMapper     TypeMapper
 	result         *Struct
 	fieldTaggers   []FieldTagger
 	methodBuilders []MethodBuilder
@@ -16,14 +15,8 @@ type StructBuilder struct {
 
 func NewStructBuilder(e *basic.Entity) *StructBuilder {
 	return &StructBuilder{
-		entity:     e,
-		typeMapper: StandardTypeMapper,
-		result:     new(Struct)}
-}
-
-func (b *StructBuilder) WithTypeMapper(m TypeMapper) *StructBuilder {
-	b.typeMapper = m
-	return b
+		entity: e,
+		result: new(Struct)}
 }
 
 func (b *StructBuilder) Build() *Struct {
@@ -69,9 +62,3 @@ func (b *StructBuilder) goFieldName(a *basic.Attribute) string {
 }
 
 type Option func(b *StructBuilder) *StructBuilder
-
-func WithTypeMapper(tm TypeMapper) Option {
-	return func(b *StructBuilder) *StructBuilder {
-		return b.WithTypeMapper(tm)
-	}
-}

@@ -85,7 +85,7 @@ func ToBasicType(dt mtx.Datatype) mtx.Datatype {
 	case String.Name:
 		bt = basic.String.Set(golang.GoNullableTypeName, "bigquery.NullString")
 	case "DECIMAL":
-		bt = basic.Decimal.Set(golang.GoName, "*big.Rat").Nullable()
+		bt = basic.Decimal.Set(golang.GoNullableTypeName, "*big.Rat")
 	case Bool.Name:
 		bt = basic.Boolean.Set(golang.GoNullableTypeName, "bigquery.NullBool")
 	case Timestamp.Name:
@@ -99,7 +99,7 @@ func ToBasicType(dt mtx.Datatype) mtx.Datatype {
 	case Bytes.Name:
 		bt = basic.Bytes // empty bytes are considered null
 	case JSON.Name:
-		bt = basic.JSON
+		bt = basic.JSON.Set(golang.GoNullableTypeName, "bigquery.NullString")
 	default:
 		bt = basic.Unknown
 	}

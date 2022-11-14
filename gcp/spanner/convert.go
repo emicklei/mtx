@@ -12,6 +12,7 @@ func ToBasicType(dt mtx.Datatype) mtx.Datatype {
 		if dt.IsNullable {
 			return basic.String.Set(golang.GoNullableTypeName, "spanner.NullString").Nullable()
 		}
+		return basic.String
 	}
 	return mtx.Unknown
 }

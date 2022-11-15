@@ -8,12 +8,6 @@ import (
 	"github.com/emicklei/mtx"
 )
 
-const (
-	GoName             = "GoName"     // property key to bypass mapping Name
-	GoTypeName         = "GoTypeName" // property key to bypass mapping Name of a Attribute Type
-	GoNullableTypeName = "GoNullableTypeName"
-)
-
 type Package struct {
 	*mtx.Named
 	Structs []*Struct

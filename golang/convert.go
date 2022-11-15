@@ -18,12 +18,12 @@ func FromBasicType(gt mtx.Datatype) mtx.Datatype {
 	mtx.CheckClass(gt, basic.Boolean.Class)
 
 	if gt.IsNullable {
-		if typeName, ok := gt.Get(GoNullableTypeName); ok {
+		if typeName, ok := gt.Get(mtx.GoNullableTypeName); ok {
 			return Type(typeName.(string)) // no longer nullable
 		}
 	} else {
 		// If GoName set then return that type
-		if n, ok := gt.Get(GoName); ok {
+		if n, ok := gt.Get(mtx.GoName); ok {
 			return Type(n.(string))
 		}
 	}

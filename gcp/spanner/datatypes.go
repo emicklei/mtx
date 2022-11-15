@@ -18,7 +18,7 @@ var (
 
 // these are documented available types
 var (
-	Bool      = registry.Standard("BOOL", basic.Boolean)
+	Bool      = registry.Standard("BOOL", basic.Boolean, mtx.GoNullableTypeName, "spanner.NullBool")
 	Bytes     = registry.Standard("BYTES(MAX)", basic.Bytes)
 	Date      = registry.Standard("DATE", basic.Date)
 	JSON      = registry.Standard("JSON", basic.JSON)
@@ -26,7 +26,7 @@ var (
 	Int64     = registry.Standard("INT64", basic.Integer)
 	Float64   = registry.Standard("FLOAT64", basic.Float)
 	Numeric   = registry.Standard("NUMERIC", basic.Decimal) // suitable for financial calculations
-	String    = registry.Standard("STRING(MAX)", basic.String)
+	String    = registry.Standard("STRING(MAX)", basic.String, mtx.GoNullableTypeName, "spanner.NullString")
 )
 
 func init() {

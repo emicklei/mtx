@@ -22,7 +22,7 @@ func NewStructBuilder(e *basic.Entity) *StructBuilder {
 func (b *StructBuilder) Build() *Struct {
 	// set name
 	n := strcase.ToCamel(b.entity.Name)
-	if v, ok := b.entity.Get(GoTypeName); ok {
+	if v, ok := b.entity.Get(mtx.GoTypeName); ok {
 		n = v.(string)
 	}
 	b.result.Named = mtx.N("golang.Struct", n)
@@ -32,7 +32,7 @@ func (b *StructBuilder) Build() *Struct {
 	for _, each := range b.entity.Attributes {
 		var fieldType mtx.Datatype
 		// see if type is overridden
-		if n, ok := each.Get(GoTypeName); ok {
+		if n, ok := each.Get(mtx.GoTypeName); ok {
 			fieldType = mtx.NewBasicType(n.(string))
 		} else {
 			fieldType = FromBasicType(each.AttributeType)

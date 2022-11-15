@@ -111,7 +111,7 @@ func (t *Table) ToEntity() *basic.Entity {
 		// attr.IsNullable = each.IsNullable
 		// for conversion bring the nullable info into the datatype.
 		if each.IsNullable {
-			dt = dt.Nullable()
+			dt = dt.WithNullable()
 		}
 		// convert
 		attr.AttributeType = each.Extensions.ToBasicType(dt)

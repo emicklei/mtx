@@ -6,7 +6,6 @@ import (
 	"github.com/emicklei/mtx"
 	"github.com/emicklei/mtx/basic"
 	"github.com/emicklei/mtx/db"
-	"github.com/emicklei/mtx/golang"
 )
 
 // ToJSONSchema returns a BigQuery Schema in JSON string.
@@ -70,38 +69,10 @@ func ToTable(ent *basic.Entity) *db.Table {
 func ToBasicType(dt mtx.Datatype) mtx.Datatype {
 	mtx.CheckClass(dt, registry.Class())
 
-	if !dt.IsNullable {
-		switch dt.Name {
-		case "DECIMAL":
-			return basic.Decimal.Set(golang.GoName, "*big.Rat")
-		case Date.Name:
-			return basic.Date.Set(golang.GoName, "civil.Date")
-		default:
-			return *dt.BasicDatatype
-		}
+	bt := *dt.BasicDatatype
+	bt.CopyPropertiesFrom(dt.Named)
+	if dt.IsNullable {
+		return bt.WithNullable()
 	}
-	var bt mtx.Datatype
-	switch dt.Name {
-	case String.Name:
-		bt = basic.String.Set(golang.GoNullableTypeName, "bigquery.NullString")
-	case "DECIMAL":
-		bt = basic.Decimal.Set(golang.GoNullableTypeName, "*big.Rat")
-	case Bool.Name:
-		bt = basic.Boolean.Set(golang.GoNullableTypeName, "bigquery.NullBool")
-	case Timestamp.Name:
-		bt = basic.Boolean.Set(golang.GoNullableTypeName, "bigquery.NullTimestamp")
-	case Date.Name:
-		bt = basic.Boolean.Set(golang.GoNullableTypeName, "bigquery.NullDate")
-	case DateTime.Name:
-		bt = basic.Boolean.Set(golang.GoNullableTypeName, "bigquery.NullDateTime")
-	case DateTime.Name:
-		bt = basic.Boolean.Set(golang.GoNullableTypeName, "bigquery.NullDateTime")
-	case Bytes.Name:
-		bt = basic.Bytes // empty bytes are considered null
-	case JSON.Name:
-		bt = basic.JSON.Set(golang.GoNullableTypeName, "bigquery.NullString")
-	default:
-		bt = basic.Unknown
-	}
-	return bt.Nullable()
+	return bt
 }

@@ -31,6 +31,4 @@ func init() {
 	registry.EncodeAs(basic.Date, Time)
 	registry.EncodeAs(basic.Timestamp, Time)
 	registry.EncodeAs(basic.DateTime, Time)
-	// TODO
-	//registry.Trace()
 }

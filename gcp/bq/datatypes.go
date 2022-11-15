@@ -16,8 +16,9 @@ var (
 
 var (
 	Bytes  = registry.Standard("BYTES", basic.Bytes)
-	String = registry.Standard("STRING", basic.String)
+	String = registry.Standard("STRING", basic.String, mtx.GoNullableTypeName, "bigquery.NullString")
 	Record = registry.Standard("RECORD", mtx.Unknown)
+	Bool   = registry.Standard("BOOL", basic.Boolean, mtx.GoNullableTypeName, "bigquery.NullBool")
 )
 
 func init() {
@@ -33,18 +34,20 @@ func MaxBytes(max int64) mtx.Datatype {
 
 var (
 	// https://cloud.google.com/bigquery/docs/reference/standard-sql/json-data#sql
-	JSON = registry.Standard("JSON", basic.JSON)
+	JSON = registry.Standard("JSON", basic.JSON).Set(mtx.GoNullableTypeName, "bigquery.NullString")
 )
 
 // TODO look at civil package https://pkg.go.dev/cloud.google.com/go/bigquery#InferSchema
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type
 // YYYY-[M]M-[D]D
-var Date = registry.Standard("DATE", basic.Date)
+var Date = registry.Standard("DATE", basic.Date).
+	Set(mtx.GoNullableTypeName, "bigquery.NullDate").
+	Set(mtx.GoName, "civil.Date")
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type
 // YYYY-[M]M-[D]D[( |T)[H]H:[M]M:[S]S[.F]]
-var DateTime = registry.Standard("DATETIME", basic.DateTime)
+var DateTime = registry.Standard("DATETIME", basic.DateTime).Set(mtx.GoNullableTypeName, "bigquery.NullDateTime")
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#geography_type
 var Geography = registry.Standard("GEOGRAPHY", basic.Unknown)
@@ -72,7 +75,7 @@ func Decimal(p, s int) mtx.Datatype {
 		Named:         mtx.N("bq.Datatype", "DECIMAL"),
 		Extensions:    DatatypeExtensions{Scale: s, Precision: p},
 		BasicDatatype: &basic.Decimal,
-	}
+	}.Set(mtx.GoNullableTypeName, "*big.Rat").Set(mtx.GoName, "*big.Rat")
 }
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type
@@ -94,6 +97,4 @@ func BigDecimal(precision, scale int) mtx.Datatype {
 }
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type
-var Timestamp = registry.Standard("TIMESTAMP", basic.Timestamp)
-
-var Bool = registry.Standard("BOOL", basic.Boolean)
+var Timestamp = registry.Standard("TIMESTAMP", basic.Timestamp).Set(mtx.GoNullableTypeName, "bigquery.NullTimestamp")

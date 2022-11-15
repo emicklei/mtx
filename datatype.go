@@ -46,9 +46,8 @@ func (d Datatype) WithBasicDatatype(dt Datatype) Datatype {
 	return d
 }
 
-// Nullable returns a copy with IsNullable = true
-// TODO: rename to WithNullable?
-func (d Datatype) Nullable() Datatype {
+// WithNullable returns a copy with IsNullable = true
+func (d Datatype) WithNullable() Datatype {
 	d.IsNullable = true
 	return d
 }

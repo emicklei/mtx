@@ -7,7 +7,6 @@ import (
 	"github.com/emicklei/mtx"
 	"github.com/emicklei/mtx/basic"
 	"github.com/emicklei/mtx/db"
-	"github.com/emicklei/mtx/golang"
 	"github.com/iancoleman/strcase"
 )
 
@@ -77,7 +76,7 @@ func (t ColumnExtensions) OwnerClass() string { return "bq.Column" }
 func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *basic.Attribute) {
 	// TODO
 	if c.ColumnType == Record {
-		a.Set(golang.GoTypeName, strcase.ToCamel(c.Name))
+		a.Set(mtx.GoTypeName, strcase.ToCamel(c.Name))
 		a.Set("IsEntity", true)                       // TODO constant?
 		a.Set("AttributeCount", len(t.NestedColumns)) // TODO constant?
 	}

@@ -91,10 +91,15 @@ func (r *TypeRegistry) RegisterType(typename string, attrType Datatype) Datatype
 	return r.Add(dt)
 }
 
-func (r *TypeRegistry) Standard(typename string, attrType Datatype) Datatype {
+func (r *TypeRegistry) Standard(typename string, attrType Datatype, props ...any) Datatype {
 	dt := Datatype{
 		Named:         N(r.class, typename),
 		BasicDatatype: &attrType,
+	}
+	for i := 0; i < len(props); i = i + 2 {
+		key := props[i].(string)
+		value := props[i+1]
+		dt = dt.Set(key, value)
 	}
 	return r.Add(dt)
 }

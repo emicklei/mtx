@@ -52,13 +52,20 @@ func TestDatatypeMappingGolang(t *testing.T) {
 			TypeName:     "string",
 			NullTypeName: "spanner.NullString",
 		},
+		{
+			In:           spanner.Bool,
+			Convert:      spanner.ToBasicType,
+			TypeName:     "bool",
+			NullTypeName: "spanner.NullBool",
+		},
 	} {
 		in := each.Convert(each.In)
 		gt := golang.FromBasicType(in)
 		if got, want := gt.Name, each.TypeName; got != want {
 			t.Errorf("%d:%v got [%v]:%T want [%v]:%T", i, each.In, got, got, want, want)
 		}
-		in = each.Convert(each.In.Nullable())
+		nullin := each.In.WithNullable()
+		in = each.Convert(nullin)
 		gt = golang.FromBasicType(in)
 		if got, want := gt.Name, each.NullTypeName; got != want {
 			t.Errorf("%d:%v got [%v]:%T want nullable [%v]:%T", i, each.In, got, got, want, want)

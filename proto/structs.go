@@ -9,7 +9,7 @@ import (
 )
 
 type Package struct {
-	*mtx.Named
+	mtx.Named
 	Messages []*Message `json:"messages"`
 }
 
@@ -35,7 +35,7 @@ func (p *Package) SourceOn(w io.Writer) {
 }
 
 type Message struct {
-	*mtx.Named
+	mtx.Named
 	Fields []*Field `json:"fields"`
 }
 
@@ -50,7 +50,7 @@ func (p *Package) Message(name string) *Message {
 }
 
 func (p *Package) Doc(doc string) *Package {
-	p.Named.Doc(doc)
+	p.Named = p.Named.Doc(doc)
 	return p
 }
 
@@ -114,7 +114,7 @@ func (m *Message) Doc(d string) *Message {
 var _ mtx.TypedLabel = new(Field)
 
 type Field struct {
-	*mtx.Named
+	mtx.Named
 	Category       string       `json:"category,omitempty"`
 	FieldType      mtx.Datatype `json:"type"`
 	IsRepeated     bool         `json:"repeated,omitempty"`

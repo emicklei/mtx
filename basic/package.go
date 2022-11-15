@@ -7,7 +7,7 @@ import (
 )
 
 type Package struct {
-	*mtx.Named
+	mtx.Named
 	Entities  []*Entity
 	Relations []any
 }

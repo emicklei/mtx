@@ -26,27 +26,27 @@ type Named struct {
 	Documentation string         `json:"doc,omitempty"`
 }
 
-func (n *Named) Namespace() string {
+func (n Named) Namespace() string {
 	return n.Class[0:strings.LastIndex(n.Class, ".")]
 }
 
-func (n *Named) Validate(c *ErrorCollector) {
+func (n Named) Validate(c *ErrorCollector) {
 	if n.Name == "" {
 		c.Add(n, errors.New("empty name"))
 	}
 }
 
-func (n *Named) CheckClass(c *ErrorCollector, must string) {
+func (n Named) CheckClass(c *ErrorCollector, must string) {
 	if got, want := n.Class, must; got != want {
 		c.Add(n, fmt.Errorf("got %s want %s", n.Class, must))
 	}
 }
 
-func (n *Named) GetName() string {
+func (n Named) GetName() string {
 	return n.Name
 }
 
-func (n *Named) SourceOn(w io.Writer) {
+func (n Named) SourceOn(w io.Writer) {
 	if d := n.Documentation; d != "" {
 		fmt.Fprintf(w, ".Doc(\"%s\")", d)
 	}
@@ -62,7 +62,7 @@ func (n *Named) SourceOn(w io.Writer) {
 }
 
 // Set add/overwrites a property that can used to pass context information.
-func (n *Named) Set(key string, value any) *Named {
+func (n Named) Set(key string, value any) Named {
 	if n.Properties == nil {
 		n.Properties = map[string]any{key: value}
 	}
@@ -70,7 +70,7 @@ func (n *Named) Set(key string, value any) *Named {
 	return n
 }
 
-func (n *Named) Get(key string) (any, bool) {
+func (n Named) Get(key string) (any, bool) {
 	if n.Properties == nil {
 		return "", false
 	}
@@ -78,7 +78,7 @@ func (n *Named) Get(key string) (any, bool) {
 	return v, ok
 }
 
-func (n *Named) GetInt(key string, absent int) int {
+func (n Named) GetInt(key string, absent int) int {
 	if n.Properties == nil {
 		return absent
 	}
@@ -93,7 +93,7 @@ func (n *Named) GetInt(key string, absent int) int {
 	return i
 }
 
-func (n *Named) CopyPropertiesFrom(n2 *Named) {
+func (n Named) CopyPropertiesFrom(n2 Named) {
 	if n2.Properties == nil {
 		return
 	}
@@ -107,9 +107,9 @@ func (n *Named) CopyPropertiesFrom(n2 *Named) {
 	}
 }
 
-func (n *Named) Doc(d string) *Named {
+func (n Named) Doc(d string) Named {
 	n.Documentation = d
 	return n
 }
 
-func N(class, name string) *Named { return &Named{Name: name, Class: class} }
+func N(class, name string) Named { return Named{Name: name, Class: class} }

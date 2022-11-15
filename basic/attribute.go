@@ -8,7 +8,7 @@ import (
 )
 
 type Attribute struct {
-	*mtx.Named
+	mtx.Named
 	Category      string       `json:"category,omitempty"`
 	AttributeType mtx.Datatype `json:"type"`
 }

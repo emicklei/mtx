@@ -91,6 +91,7 @@ func (r *TypeRegistry) RegisterType(typename string, attrType Datatype) Datatype
 	return r.Add(dt)
 }
 
+// TODO change to used slice of Prop
 func (r *TypeRegistry) Standard(typename string, attrType Datatype, props ...any) Datatype {
 	dt := Datatype{
 		Named:         N(r.class, typename),
@@ -108,3 +109,10 @@ func trace(params ...any) {
 	fmt.Print("[trace] ")
 	fmt.Println(params...)
 }
+
+type Prop struct {
+	Key   string
+	Value any
+}
+
+func Property(key string, value any) Prop { return Prop{Key: key, Value: value} }

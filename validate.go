@@ -21,7 +21,7 @@ type ErrorCollector struct {
 }
 
 type ErrorWithOrigin struct {
-	Origin *Named
+	Origin Named
 	Err    error
 }
 
@@ -30,7 +30,7 @@ func (e *ErrorCollector) Print() {
 		fmt.Println(each.Origin.Name, each.Err)
 	}
 }
-func (e *ErrorCollector) Add(who *Named, err error) {
+func (e *ErrorCollector) Add(who Named, err error) {
 	e.list = append(e.list, ErrorWithOrigin{who, err})
 }
 

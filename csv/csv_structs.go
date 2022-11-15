@@ -6,7 +6,7 @@ import (
 )
 
 type Sheet struct {
-	*mtx.Named
+	mtx.Named
 	Tabs []*db.Table
 }
 

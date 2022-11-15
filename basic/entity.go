@@ -16,7 +16,7 @@ const (
 )
 
 type Entity struct {
-	*mtx.Named
+	mtx.Named
 	pkg        *Package
 	Attributes []*Attribute `json:"attributes"`
 }

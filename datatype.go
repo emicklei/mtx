@@ -14,7 +14,7 @@ type ExtendsDatatype interface {
 var Unknown = NewBasicType("Unknown")
 
 type Datatype struct {
-	*Named
+	Named
 	BasicDatatype *Datatype `json:"attribute_type,omitempty"`
 	IsNullable    bool      `json:"is_nullable"`
 	IsUserDefined bool      `json:"is_userdefined"`
@@ -29,7 +29,7 @@ func NewBasicType(name string) Datatype {
 	}
 }
 
-func (d Datatype) HasName() bool { return d.Named != nil && d.Name != "" }
+func (d Datatype) HasName() bool { return d.Name != "" }
 
 func (d Datatype) BasicType() Datatype {
 	return *d.BasicDatatype
@@ -62,9 +62,6 @@ func (d Datatype) String() string {
 	if d.IsNullable {
 		required = " ? "
 	}
-	if d.Named == nil {
-		return fmt.Sprintf("*unnamed*%sDatatype", required)
-	}
 	if d.Properties != nil {
 		doc, _ := json.Marshal(d.Properties)
 		return fmt.Sprintf("%s%s(%s) %s", d.Name, required, d.Class, string(doc))
@@ -83,7 +80,7 @@ func (d Datatype) SourceOn(w io.Writer) {
 
 // Set overrides Named.Set to preserve return type
 func (d Datatype) Set(key string, value any) Datatype {
-	d.Named.Set(key, value)
+	d.Named = d.Named.Set(key, value)
 	return d
 }
 

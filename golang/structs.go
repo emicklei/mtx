@@ -9,7 +9,7 @@ import (
 )
 
 type Package struct {
-	*mtx.Named
+	mtx.Named
 	Structs []*Struct
 }
 
@@ -37,7 +37,7 @@ func (p *Package) Type(name string) *Struct {
 }
 
 type Struct struct {
-	*mtx.Named
+	mtx.Named
 	Package *Package
 	Fields  []*Field
 	Methods []*Method
@@ -96,7 +96,7 @@ func (s *Struct) WriteGoOn(w io.Writer) {
 }
 
 type Field struct {
-	*mtx.Named
+	mtx.Named
 	FieldType mtx.Datatype
 	Tags      []Tag
 }
@@ -112,6 +112,6 @@ func (f *Field) Type(dt mtx.Datatype) *Field {
 }
 
 type Method struct {
-	*mtx.Named
+	mtx.Named
 	Source string // full source of method, without documentation, typically created from a template
 }

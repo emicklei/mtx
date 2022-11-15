@@ -36,7 +36,7 @@ func (p *Package) ManyToMany(left, right *Entity) *Relation {
 }
 
 type Relation struct {
-	*mtx.Named
+	mtx.Named
 	pkg              *Package
 	LeftRef          EntityRef    `json:"left"`
 	LeftRole         string       `json:"left_role_name"`

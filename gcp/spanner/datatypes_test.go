@@ -17,12 +17,12 @@ func TestCoreMapping(t *testing.T) {
 
 func TestMappedAttributeType(t *testing.T) {
 	st := MappedAttributeType(basic.String)
-	if got, want := st, String; got != want {
+	if got, want := st, String; !got.Equal(want) {
 		t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 	}
 	{
 		st := MappedAttributeType(basic.JSON)
-		if got, want := st, JSON; got != want {
+		if got, want := st, JSON; !got.Equal(want) {
 			t.Errorf("got [%v]:%T want [%v]:%T", got, got, want, want)
 		}
 	}

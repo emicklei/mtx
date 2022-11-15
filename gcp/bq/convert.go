@@ -58,7 +58,7 @@ func ToTable(ent *basic.Entity) *db.Table {
 	for _, each := range ent.Attributes {
 		mt := MappedAttributeType(each.AttributeType)
 		c := tab.C(each.Name, mt, each.Documentation)
-		if mt == mtx.Unknown {
+		if mt.Equal(mtx.Unknown) {
 			c.Set("maperror", each.AttributeType.Name)
 		}
 	}

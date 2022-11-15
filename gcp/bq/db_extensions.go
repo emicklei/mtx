@@ -75,7 +75,7 @@ func (t ColumnExtensions) OwnerClass() string { return "bq.Column" }
 // TODO this is very Go specific ; should not be here
 func (t ColumnExtensions) PostBuildAttribute(c *db.Column, a *basic.Attribute) {
 	// TODO
-	if c.ColumnType == Record {
+	if c.ColumnType.Equal(Record) {
 		a.Set(mtx.GoTypeName, strcase.ToCamel(c.Name))
 		a.Set("IsEntity", true)                       // TODO constant?
 		a.Set("AttributeCount", len(t.NestedColumns)) // TODO constant?

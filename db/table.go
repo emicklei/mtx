@@ -8,7 +8,7 @@ import (
 )
 
 type Database struct {
-	*mtx.Named
+	mtx.Named
 	Tables []*Table `json:"tables"`
 	// Views TODO
 	Extensions ExtendsDatabase `json:"ext"`
@@ -35,7 +35,7 @@ func (d *Database) Table(name string) *Table {
 }
 
 type Table struct {
-	*mtx.Named
+	mtx.Named
 	Columns    []*Column    `json:"columns,omitempty"`
 	Extensions ExtendsTable `json:"ext"`
 }

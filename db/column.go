@@ -12,7 +12,7 @@ var _ mtx.TypedLabel = new(Column)
 
 // Column is a descriptor of database table schema column.
 type Column struct {
-	*mtx.Named
+	mtx.Named
 	ColumnType mtx.Datatype `json:"type"`
 	IsPrimary  bool         `json:"is_primary"`
 	// IsNotNull = true means the value is never NULL
@@ -63,10 +63,7 @@ func (c *Column) SQLOn(buf io.Writer) {
 
 func (c *Column) Validate(e *mtx.ErrorCollector) {
 	c.Named.Validate(e)
-	if c.ColumnType.Named == nil {
-		e.Add(c.Named, errors.New("has no type"))
-		return
-	}
+
 	if c.ColumnType.Name == mtx.Unknown.Name { // we don't know the class so check against name
 		e.Add(c.Named, errors.New("has unknown type"))
 		return

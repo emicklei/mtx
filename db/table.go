@@ -117,7 +117,7 @@ func (t *Table) ToEntity() *basic.Entity {
 		attr.AttributeType = each.Extensions.ToBasicType(dt)
 		attr.Doc(each.Documentation)
 		// copy all
-		attr.CopyPropertiesFrom(each.Named)
+		attr.Named = attr.Named.WithPropertiesCopiedFrom(each.Named)
 		// needed? TODO
 		//each.Extensions.PostBuildAttribute(each, attr)
 	}

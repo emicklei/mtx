@@ -97,7 +97,7 @@ func (d Datatype) WithCopiedPropertiesFrom(o Datatype) Datatype {
 	if len(o.Properties) == 0 {
 		return d
 	}
-	d.CopyPropertiesFrom(o.Named)
+	d.Named = d.Named.WithPropertiesCopiedFrom(o.Named)
 	return d
 }
 

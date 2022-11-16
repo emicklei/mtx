@@ -14,6 +14,6 @@ func ToBasicType(pt mtx.Datatype) mtx.Datatype {
 	mtx.CheckClass(pt, registry.Class())
 
 	bt := *pt.BasicDatatype
-	bt.CopyPropertiesFrom(pt.Named)
+	bt.Named = bt.Named.WithPropertiesCopiedFrom(pt.Named)
 	return bt
 }

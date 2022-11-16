@@ -8,7 +8,7 @@ func ToBasicType(st mtx.Datatype) mtx.Datatype {
 	mtx.CheckClass(st, registry.Class())
 
 	bt := *st.BasicDatatype
-	bt.CopyPropertiesFrom(st.Named)
+	bt.Named = bt.Named.WithPropertiesCopiedFrom(st.Named)
 	if st.IsNullable {
 		return bt.WithNullable()
 	}

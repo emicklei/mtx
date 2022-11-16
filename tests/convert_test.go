@@ -17,16 +17,16 @@ func TestDatatypeMappingGolang(t *testing.T) {
 		NullTypeName string
 	}{
 		{
-			In:           bq.Bytes,
-			Convert:      bq.ToBasicType,
-			TypeName:     "[]byte",
-			NullTypeName: "[]byte",
-		},
-		{
 			In:           bq.String,
 			Convert:      bq.ToBasicType,
 			TypeName:     "string",
 			NullTypeName: "bigquery.NullString",
+		},
+		{
+			In:           bq.Bytes,
+			Convert:      bq.ToBasicType,
+			TypeName:     "[]byte",
+			NullTypeName: "[]byte",
 		},
 		{
 			In:           bq.JSON,

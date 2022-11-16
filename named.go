@@ -51,13 +51,7 @@ func (n Named) SourceOn(w io.Writer) {
 		fmt.Fprintf(w, ".Doc(\"%s\")", d)
 	}
 	for k, v := range n.Properties {
-		var vs string
-		if s, ok := v.(string); ok {
-			vs = s
-		} else {
-			vs = fmt.Sprintf("%v", v)
-		}
-		fmt.Fprintf(w, ".Set(\"%s\",%s)", k, vs)
+		fmt.Fprintf(w, ".Set(%q,%q)", k, v)
 	}
 }
 
@@ -93,18 +87,20 @@ func (n Named) GetInt(key string, absent int) int {
 	return i
 }
 
-func (n Named) CopyPropertiesFrom(n2 Named) {
+func (n Named) WithPropertiesCopiedFrom(n2 Named) Named {
 	if n2.Properties == nil {
-		return
+		return n
 	}
 	if n.Properties == nil {
 		n.Properties = n2.Properties
-		return
+		return n
 	}
+	m := map[string]any{}
 	for k, v := range n2.Properties {
-		// detect override?
-		n.Set(k, v)
+		m[k] = v
 	}
+	n.Properties = m
+	return n
 }
 
 func (n Named) Doc(d string) Named {

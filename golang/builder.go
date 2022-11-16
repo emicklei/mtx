@@ -41,7 +41,7 @@ func (b *StructBuilder) Build() *Struct {
 			Named:     mtx.N("golang.Field", b.goFieldName(each)),
 			FieldType: fieldType,
 		}
-		f.CopyPropertiesFrom(each.Named)
+		f.Named = f.Named.WithPropertiesCopiedFrom(each.Named)
 		// add tags
 		for _, tagger := range b.fieldTaggers {
 			tagger(each, f)

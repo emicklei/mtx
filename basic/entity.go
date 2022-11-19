@@ -34,6 +34,11 @@ func (e *Entity) Doc(doc string) *Entity {
 	return e
 }
 
+func (e *Entity) Set(key string, value any) *Entity {
+	e.Named = e.Named.Set(key, value)
+	return e
+}
+
 func (e *Entity) Attribute(name string) *Attribute {
 	attr, ok := mtx.FindByName(e.Attributes, name)
 	if ok {

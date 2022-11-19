@@ -29,6 +29,11 @@ func (a *Attribute) Doc(d string) *Attribute {
 	return a
 }
 
+func (a *Attribute) Set(key string, value any) *Attribute {
+	a.Named = a.Named.Set(key, value)
+	return a
+}
+
 // SourceOn writes Go source to recreate the receiver.
 func (a *Attribute) SourceOn(w io.Writer) {
 	fmt.Fprintf(w, "ent.Attribute(\"%s\")", a.Name)

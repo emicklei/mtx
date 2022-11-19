@@ -30,7 +30,7 @@ func (t TableExtensions) SQLOn(tab *db.Table, w io.Writer) {
 		}
 		each.SQLOn(w)
 	}
-	fmt.Fprint(w, ")\n")
+	fmt.Fprint(w, ");\n")
 }
 
 type ColumnExtensions struct{}

@@ -46,7 +46,7 @@ func (t *Table) Doc(d string) *Table {
 }
 
 func (t *Table) Set(key string, value any) *Table {
-	t.Named.Set(key, value)
+	t.Named = t.Named.Set(key, value)
 	return t
 }
 
@@ -96,6 +96,7 @@ func (t *Table) Validate(c *mtx.ErrorCollector) {
 // ToEntity creates a new Entity that represents a Row in this table data.
 func (t *Table) ToEntity() *basic.Entity {
 	m := basic.NewEntity(t.Name)
+	m.Named = m.Named.WithPropertiesCopiedFrom(t.Named) // TODO
 	// see if property overrides this
 	if n, ok := t.Get(basic.EntityName); ok {
 		m.Named.Name = n.(string)

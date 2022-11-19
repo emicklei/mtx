@@ -16,5 +16,10 @@ func FromBasicType(bt mtx.Datatype) mtx.Datatype {
 func ToBasicType(dt mtx.Datatype) mtx.Datatype {
 	mtx.CheckClass(dt, registry.Class())
 
-	return dt
+	bt := *dt.BasicDatatype
+	bt = bt.WithCopiedPropertiesFrom(dt)
+	if dt.IsNullable {
+		return bt.WithNullable()
+	}
+	return bt
 }

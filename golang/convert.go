@@ -23,7 +23,7 @@ func FromBasicType(gt mtx.Datatype) mtx.Datatype {
 		}
 	} else {
 		// If GoName set then return that type
-		if n, ok := gt.Get(mtx.GoName); ok {
+		if n, ok := gt.Get(mtx.GoTypeName); ok {
 			return Type(n.(string))
 		}
 	}

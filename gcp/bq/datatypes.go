@@ -43,7 +43,7 @@ var (
 // YYYY-[M]M-[D]D
 var Date = registry.Standard("DATE", basic.Date).
 	Set(mtx.GoNullableTypeName, "bigquery.NullDate").
-	Set(mtx.GoName, "civil.Date")
+	Set(mtx.GoTypeName, "civil.Date")
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type
 // YYYY-[M]M-[D]D[( |T)[H]H:[M]M:[S]S[.F]]
@@ -75,7 +75,7 @@ func Decimal(p, s int) mtx.Datatype {
 		Named:         mtx.N("bq.Datatype", "DECIMAL"),
 		Extensions:    DatatypeExtensions{Scale: s, Precision: p},
 		BasicDatatype: &basic.Decimal,
-	}.Set(mtx.GoNullableTypeName, "*big.Rat").Set(mtx.GoName, "*big.Rat")
+	}.Set(mtx.GoNullableTypeName, "*big.Rat").Set(mtx.GoTypeName, "*big.Rat")
 }
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#parameterized_decimal_type

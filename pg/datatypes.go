@@ -31,5 +31,5 @@ var (
 	Text       = registry.Standard("text", basic.String)
 	Timestamp  = registry.Standard("timestamp", basic.DateTime)
 	Timestampz = registry.Standard("timestampz", basic.Timestamp)
-	UUID       = registry.Standard("uuid", basic.UUID)
+	UUID       = registry.Standard("uuid", basic.UUID).Set(mtx.GoTypeName, "pg.UUID")
 )

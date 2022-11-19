@@ -28,8 +28,10 @@ func (c *Column) Set(key string, value any) *Column {
 }
 
 func (c *Column) Type(d mtx.Datatype) *Column {
-	if c.Namespace() != d.Namespace() {
-		panic(fmt.Sprintf("cannot set datatype of namespace %s, expected %s", d.Namespace(), c.Namespace()))
+	if d.ElementType == nil {
+		if c.Namespace() != d.Namespace() {
+			panic(fmt.Sprintf("cannot set datatype of namespace %s, expected %s", d.Namespace(), c.Namespace()))
+		}
 	}
 	c.ColumnType = d
 	return c

@@ -45,7 +45,7 @@ Transform this struct to Go source
 
 A pg model (db.Table) first needs to be converted to an Entity model (basic.Entity).
 The Entity model can be converted to a Go model (golang.Struct).
-The Entity model can be modified to drive the convertion to the struct:
+The Entity model can be modified to drive the conversion to the struct.
 
 - rename
 - change datatypes

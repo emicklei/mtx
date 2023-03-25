@@ -1,22 +1,23 @@
 # mtx
 
->   **M**odels and **T**ransformations, E**x**pressed
+> **M**odels and **T**ransformations, E**x**pressed
 
-Models in different technologies:
+A DSL to describe models targetting different technologies:
 
 - postgres database
 - gcp/bigquery database
 - gcp/spanner database
 - protocolbuffers
 - golang struct
-- good old csv
+- csv
 - entity–relationship
- 
-## example Postgres (pg) Database table.
+
+## example Postgres (pg) Database table
 
     db := pg.Database("example")
     tab := db.Table("persons")
     col := tab.Column("name").Datatype(pg.Text).Doc("what people call you")
+    
     // or the short version
     col = tab.C("name",pg.Text,"what people call you")
 
@@ -45,8 +46,10 @@ Transform this struct to Go source
 A pg model (db.Table) first needs to be converted to an Entity model (basic.Entity).
 The Entity model can be converted to a Go model (golang.Struct).
 The Entity model can be modified to drive the convertion to the struct:
+
 - rename
 - change datatypes
 
 Each model is using its own types and datatypes.
 Transformations to and from a selection of model combinations.
+

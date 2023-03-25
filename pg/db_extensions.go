@@ -21,6 +21,7 @@ func (t TableExtensions) ColumnExtensions() db.ExtendsColumn { return new(Column
 
 func (t TableExtensions) SQLOn(tab *db.Table, w io.Writer) {
 	// we know its actual type
+	fmt.Fprintf(w, "-- DROP TABLE %s\n", tab.Name)
 	fmt.Fprintf(w, "CREATE TABLE %s (\n", tab.Name)
 	for i, each := range tab.Columns {
 		if i > 0 {

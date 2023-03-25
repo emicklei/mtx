@@ -60,6 +60,8 @@ func (c *Column) SQLOn(buf io.Writer) {
 	}
 	if len(c.Documentation) > 0 {
 		fmt.Fprintf(buf, " -- %s\n", c.Documentation)
+	} else {
+		fmt.Fprintln(buf)
 	}
 }
 

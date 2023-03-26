@@ -25,6 +25,13 @@ Transforming this table to SQL creation statement
 
     sql := tab.ToSQL()
 
+then sql:
+
+        -- DROP TABLE persons
+    CREATE TABLE persons (
+        name text NOT NULL -- what people call you
+    );
+
 Transforming this table to an Entity representing a row.
 
     ent := tab.ToEntity()
@@ -41,6 +48,12 @@ Transform this struct to Go source
 
     src := str.ToGo()
 
+then src:
+
+    // Persons :
+    type Persons struct {
+        Name string // what people call you
+    }
 ## how to transform one model to another
 
 A pg model (db.Table) first needs to be converted to an Entity model (basic.Entity).

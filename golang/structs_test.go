@@ -12,7 +12,7 @@ import (
 func TestStructGoSource(t *testing.T) {
 	s := new(Struct)
 	s.Named = mtx.N("golang.Struct", "Test")
-	if got, want := s.ToGo(), `// Test : 
+	if got, want := s.ToGo(), `// Test 
 type Test struct {
 }
 `; got != want {
@@ -29,7 +29,7 @@ func TestStructWithFieldsGoSource(t *testing.T) {
 		FieldType: String,
 	})
 	// space after //
-	if got, want := s.ToGo(), `// Test : 
+	if got, want := s.ToGo(), `// Test 
 type Test struct {
 	Test string // 
 }
@@ -43,7 +43,7 @@ func TestStructFull(t *testing.T) {
 	p := NewPackage("test")
 	s := p.Type("Test")
 	s.F("Example", String, "some example")
-	if got, want := s.ToGo(), `// Test : 
+	if got, want := s.ToGo(), `// Test 
 type Test struct {
 	Example string // some example
 }
@@ -59,7 +59,7 @@ func TestStructBuilder(t *testing.T) {
 	e.A("name", basic.String, "nameless")
 	b := NewStructBuilder(e)
 	s := b.Build()
-	if got, want := s.ToGo(), `// Test : 
+	if got, want := s.ToGo(), `// Test 
 type Test struct {
 	Name string // nameless
 }
@@ -75,7 +75,7 @@ func TestStructWithCSVPopulate(t *testing.T) {
 	e.A("name", basic.String, "required name")
 	e.A("null_name", basic.String, "nullable name")
 	s := ToStruct(e, WithCSVPopulate)
-	if got, want := s.ToGo(), `// Test : 
+	if got, want := s.ToGo(), `// Test 
 type Test struct {
 	Name string // required name
 	NullName *string // nullable name

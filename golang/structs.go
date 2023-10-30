@@ -74,7 +74,7 @@ func (s *Struct) ToGo() string {
 }
 
 func (s *Struct) WriteGoOn(w io.Writer) {
-	fmt.Fprintf(w, "// %s : %s\n", s.Name, s.Documentation)
+	fmt.Fprintf(w, "// %s %s\n", s.Name, s.Documentation)
 	fmt.Fprintf(w, "type %s struct {\n", s.Name)
 	for _, each := range s.Fields {
 		fmt.Fprintf(w, "\t%s %s ", each.Name, each.FieldType.Name)

@@ -43,6 +43,7 @@ func FromBasicType(gt mtx.Datatype) mtx.Datatype {
 				return Type("int32")
 			}
 		}
+		return Type("int")
 	case basic.Timestamp.Name:
 		return Time
 	case basic.Bytes.Name:

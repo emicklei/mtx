@@ -2,7 +2,7 @@
 
 > **M**odels and **T**ransformations, E**x**pressed
 
-A DSL to describe models targetting different technologies:
+A DSL to describe models targeting different technologies:
 
 - postgres database
 - gcp/bigquery database
@@ -21,7 +21,7 @@ A DSL to describe models targetting different technologies:
     // or the short version
     col = tab.C("name",pg.Text,"what people call you")
 
-Transforming this table to SQL creation statement
+Transforming this table to DDL creation statement in SQL
 
     sql := tab.ToSQL()
 

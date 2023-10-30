@@ -98,3 +98,5 @@ func BigDecimal(precision, scale int) mtx.Datatype {
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type
 var Timestamp = registry.Standard("TIMESTAMP", basic.Timestamp).Set(mtx.GoNullableTypeName, "bigquery.NullTimestamp")
+
+var Float64 = registry.Standard("FLOAT64", basic.Float).Set(mtx.GoNullableTypeName, "bigquery.NullFloat64")

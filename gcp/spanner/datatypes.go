@@ -23,8 +23,8 @@ var (
 	Date      = registry.Standard("DATE", basic.Date)
 	JSON      = registry.Standard("JSON", basic.JSON)
 	Timestamp = registry.Standard("TIMESTAMP", basic.Timestamp)
-	Int64     = registry.Standard("INT64", basic.Integer).Set("bits", "64")
-	Float64   = registry.Standard("FLOAT64", basic.Float).Set("bits", "64")
+	Int64     = registry.Standard("INT64", basic.Integer).Set("bits", 64)
+	Float64   = registry.Standard("FLOAT64", basic.Float).Set("bits", 64)
 	Numeric   = registry.Standard("NUMERIC", basic.Decimal) // suitable for financial calculations
 	String    = registry.Standard("STRING(MAX)", basic.String, mtx.GoNullableTypeName, "spanner.NullString")
 )

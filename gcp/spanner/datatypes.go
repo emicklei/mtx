@@ -30,7 +30,6 @@ var (
 )
 
 func init() {
-	Int64.Set("bits", "64")
 	// define encoding for remaining standard types
 	registry.EncodeAs(basic.Duration, String)
 	registry.EncodeAs(basic.UUID, StringMax(36))

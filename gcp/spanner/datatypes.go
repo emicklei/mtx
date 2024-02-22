@@ -21,7 +21,7 @@ var (
 	Bool      = registry.Standard("BOOL", basic.Boolean, mtx.GoNullableTypeName, "spanner.NullBool")
 	Bytes     = registry.Standard("BYTES(MAX)", basic.Bytes)
 	Date      = registry.Standard("DATE", basic.Date)
-	JSON      = registry.Standard("JSON", basic.JSON)
+	JSON      = registry.Standard("JSON", basic.JSON, mtx.GoNullableTypeName, "spanner.NullJSON")
 	Timestamp = registry.Standard("TIMESTAMP", basic.Timestamp)
 	Int64     = registry.Standard("INT64", basic.Integer).Set("bits", 64)
 	Float64   = registry.Standard("FLOAT64", basic.Float).Set("bits", 64)

@@ -55,3 +55,7 @@ func FromBasicType(gt mtx.Datatype) mtx.Datatype {
 	}
 	return mtx.Unknown
 }
+
+func ToSource(s *Struct) string {
+	return s.ToGo()
+}

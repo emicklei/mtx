@@ -93,6 +93,10 @@ func (t *Table) Validate(c *mtx.ErrorCollector) {
 	}
 }
 
+func ToEntity(t *Table) *basic.Entity {
+	return t.ToEntity()
+}
+
 // ToEntity creates a new Entity that represents a Row in this table data.
 func (t *Table) ToEntity() *basic.Entity {
 	m := basic.NewEntity(t.Name)

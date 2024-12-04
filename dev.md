@@ -14,8 +14,3 @@ Now you check for incompatible changes.
 
 Compare a stored model with the current model of your database table.
 Compute the diff and export the ALTER TABLE statement.
-
-### use case: CSV into BigQuery
-
-The csv package has a `ScanSheet` that builds a model from an existing CSV file for which the columns are typed based on the actual values from (enough) rows.
-Transform this into a BigQuery model such that you can write code to insert rows into a BigQuery dataset table.

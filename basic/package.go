@@ -2,6 +2,7 @@ package basic
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/emicklei/mtx"
 )
@@ -38,4 +39,9 @@ func (p *Package) Relation(rel any) any {
 
 func (p *Package) Fullname(e *Entity) string {
 	return fmt.Sprintf("%s.%s", p.Name, e.Name)
+}
+
+// SourceOn writes Go source to recreate the receiver.
+func (p *Package) SourceOn(w io.Writer) {
+	io.WriteString(w, mtx.ToJSON(p))
 }

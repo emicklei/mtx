@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/emicklei/mtx"
 	"github.com/emicklei/mtx/db"
 	"github.com/emicklei/mtx/golang"
 	"github.com/emicklei/mtx/pg"
@@ -15,6 +16,6 @@ func main() {
 
 	ent := db.ToEntity(tab)
 	str := golang.ToStruct(ent)
-	src := golang.ToSource(str)
+	src := mtx.ToSource(str)
 	fmt.Println(src)
 }

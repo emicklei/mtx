@@ -63,6 +63,5 @@ func (e *Entity) String() string {
 
 // SourceOn writes Go source to recreate the receiver.
 func (e *Entity) SourceOn(w io.Writer) {
+	io.WriteString(w, mtx.ToJSON(e))
 }
-
-//var _ TypedLabel = new(Attribute)
